@@ -14,7 +14,7 @@ public abstract class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Money balance;
-//    private int secretKey; // Quiza se usa
+//    private int secretKey; //TODO { Quiza se usa. Si no es del authen de Postman
 
     @ManyToOne
     @JoinColumn(name = "primary_owner_ID")
