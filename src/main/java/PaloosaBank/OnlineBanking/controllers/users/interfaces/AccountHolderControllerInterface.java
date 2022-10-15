@@ -1,10 +1,11 @@
-package PaloosaBank.OnlineBanking.services.users.interfaces;
+package PaloosaBank.OnlineBanking.controllers.users.interfaces;
 
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
+import PaloosaBank.OnlineBanking.entities.users.Admin;
 
 import java.util.List;
 
-public interface AccountHolderServiceInterface {
+public interface AccountHolderControllerInterface {
 
     AccountHolder addAccountHolder(AccountHolder accountHolder);
     AccountHolder getAccountHolderById(Long id);
