@@ -31,7 +31,7 @@ public class AccountService implements AccountServiceInterface {
     }
 
     @Override
-    public Account updateAccount(Long id) {
+    public Account updateAccount(Long id, Account account) {
         return null;
     }
 }

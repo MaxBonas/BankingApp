@@ -31,7 +31,7 @@ public class StudentsCheckingController implements StudentsCheckingControllerInt
     }
 
     @Override
-    public StudentsChecking updateStudentsChecking(Long id) {
+    public StudentsChecking updateStudentsChecking(Long id, StudentsChecking studentsChecking) {
         return null;
     }
 }

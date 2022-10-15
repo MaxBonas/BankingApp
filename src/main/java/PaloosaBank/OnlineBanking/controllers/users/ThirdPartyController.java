@@ -3,6 +3,7 @@ package PaloosaBank.OnlineBanking.controllers.users;
 import PaloosaBank.OnlineBanking.controllers.users.interfaces.ThirdPartyControllerInterface;
 import PaloosaBank.OnlineBanking.entities.users.ThirdParty;
 import PaloosaBank.OnlineBanking.services.accounts.interfaces.AccountServiceInterface;
+import PaloosaBank.OnlineBanking.services.users.ThirdPartyService;
 import PaloosaBank.OnlineBanking.services.users.interfaces.ThirdPartyServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,7 +32,7 @@ public class ThirdPartyController implements ThirdPartyControllerInterface {
     }
 
     @Override
-    public ThirdParty updateThirdParty(Long id) {
+    public ThirdParty updateThirdParty(Long id, ThirdParty thirdParty) {
         return null;
     }
 }

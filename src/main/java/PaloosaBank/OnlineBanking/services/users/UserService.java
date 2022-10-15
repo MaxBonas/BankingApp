@@ -31,7 +31,7 @@ public class UserService implements UserServiceInterface {
     }
 
     @Override
-    public User updateUser(Long id) {
+    public User updateUser(Long id, User user) {
         return null;
     }
 }

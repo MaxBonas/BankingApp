@@ -30,7 +30,7 @@ public class AccountHolderController implements AccountHolderControllerInterface
     }
 
     @Override
-    public AccountHolder updateAccountHolder(Long id) {
+    public AccountHolder updateAccountHolder(Long id, AccountHolder accountHolder) {
         return null;
     }
 }

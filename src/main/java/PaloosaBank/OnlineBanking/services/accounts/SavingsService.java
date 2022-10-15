@@ -31,7 +31,7 @@ public class SavingsService implements SavingsServiceInterface {
     }
 
     @Override
-    public Savings updateSavings(Long id) {
+    public Savings updateSavings(Long id, Savings savings) {
         return null;
     }
 }

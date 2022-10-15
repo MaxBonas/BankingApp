@@ -1,10 +1,11 @@
 package PaloosaBank.OnlineBanking.embedables;
 
+import javax.persistence.Embeddable;
 import java.math.RoundingMode;
 import java.math.BigDecimal;
 import java.util.Currency;
 
-
+@Embeddable
 public class Money {
 
     private static final Currency EUR = Currency.getInstance("EUR");
@@ -34,6 +35,10 @@ public class Money {
      **/
     public Money(BigDecimal amount) {
         this(amount, EUR, DEFAULT_ROUNDING);
+    }
+
+    public Money() {
+        currency = EUR;
     }
 
     public BigDecimal increaseAmount(Money money) {

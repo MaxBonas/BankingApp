@@ -31,7 +31,7 @@ public class ThirdPartyService implements ThirdPartyServiceInterface {
     }
 
     @Override
-    public ThirdParty updateThirdParty(Long id) {
+    public ThirdParty updateThirdParty(Long id, ThirdParty thirdParty) {
         return null;
     }
 }

@@ -9,5 +9,5 @@ public interface SavingsServiceInterface {
     Savings addSavings(Savings savings);
     Savings getSavingsById(Long id);
     List<Savings> getAllSavings();
-    Savings updateSavings(Long id);
+    Savings updateSavings(Long id, Savings savings);
 }

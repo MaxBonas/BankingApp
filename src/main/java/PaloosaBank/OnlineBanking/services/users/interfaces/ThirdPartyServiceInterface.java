@@ -9,5 +9,5 @@ public interface ThirdPartyServiceInterface {
     ThirdParty addThirdParty(ThirdParty thirdParty);
     ThirdParty getThirdPartyById(Long id);
     List<ThirdParty> getAllThirdPartys();
-    ThirdParty updateThirdParty(Long id);
+    ThirdParty updateThirdParty(Long id, ThirdParty thirdParty);
 }

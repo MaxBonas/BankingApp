@@ -10,5 +10,5 @@ public interface AdminControllerInterface {
     Admin addAdmin(Admin admin);
     Admin getAdminById(Long id);
     List<Admin> getAllAdmins();
-    Admin updateAdmin(Long id);
+    Admin updateAdmin(Long id, Admin admin);
 }

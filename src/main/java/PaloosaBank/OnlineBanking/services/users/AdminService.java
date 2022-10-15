@@ -31,7 +31,7 @@ public class AdminService implements AdminServiceInterface {
     }
 
     @Override
-    public Admin updateAdmin(Long id) {
+    public Admin updateAdmin(Long id, Admin admin) {
         return null;
     }
 }

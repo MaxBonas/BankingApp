@@ -1,4 +1,5 @@
 package PaloosaBank.OnlineBanking.enums;
 
-public class Status {
+public enum Status {
+    ACTIVE, FROZEN
 }

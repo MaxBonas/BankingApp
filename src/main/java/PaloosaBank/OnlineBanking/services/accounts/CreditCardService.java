@@ -31,7 +31,7 @@ public class CreditCardService implements CreditCardServiceInterface {
     }
 
     @Override
-    public CreditCard updateCreditCard(Long id) {
+    public CreditCard updateCreditCard(Long id, CreditCard creditCard) {
         return null;
     }
 }

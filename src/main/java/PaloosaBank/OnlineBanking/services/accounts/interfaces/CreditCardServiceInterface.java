@@ -9,5 +9,5 @@ public interface CreditCardServiceInterface {
     CreditCard addCreditCard(CreditCard creditCard);
     CreditCard getCreditCardById(Long id);
     List<CreditCard> getAllCreditCards();
-    CreditCard updateCreditCard(Long id);
+    CreditCard updateCreditCard(Long id, CreditCard creditCard);
 }

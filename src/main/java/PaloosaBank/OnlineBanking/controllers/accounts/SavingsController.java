@@ -31,7 +31,7 @@ public class SavingsController implements SavingsControllerInterface {
     }
 
     @Override
-    public Savings updateSavings(Long id) {
+    public Savings updateSavings(Long id, Savings savings) {
         return null;
     }
 }

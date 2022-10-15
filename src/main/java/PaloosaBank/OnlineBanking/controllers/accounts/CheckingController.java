@@ -31,7 +31,7 @@ public class CheckingController implements CheckingControllerInterface {
     }
 
     @Override
-    public Checking updateChecking(Long id) {
+    public Checking updateChecking(Long id, Checking checking) {
         return null;
     }
 }

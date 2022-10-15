@@ -13,6 +13,12 @@ public abstract class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name="currency", column = @Column(name = "balance_currency")),
+            @AttributeOverride(name = "amount", column = @Column(name = "balance_amount"))
+    })
     private Money balance;
 //    private int secretKey; //TODO { Quiza se usa. Si no es del authen de Postman
 

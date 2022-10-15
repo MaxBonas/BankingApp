@@ -4,8 +4,7 @@ import PaloosaBank.OnlineBanking.embedables.Address;
 import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.accounts.Account;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -13,7 +12,15 @@ import java.util.List;
 public class AccountHolder extends User{
 
     private LocalDate dateOfBirth;
+
+//    @Embedded
     private Address primaryAddress;
+
+//    @Embedded
+//    @AttributeOverrides({
+//            @AttributeOverride(name="currency1", column = @Column(name = "fee_currency1")),
+//            @AttributeOverride(name = "amount1", column = @Column(name = "fee_amount1"))
+//    })
     private Address mailingAddress; // (Optional)
 
     @OneToMany(mappedBy = "primaryOwner")

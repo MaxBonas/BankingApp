@@ -31,7 +31,7 @@ public class StudentsCheckingService implements StudentsCheckingServiceInterface
     }
 
     @Override
-    public StudentsChecking updateStudentsChecking(Long id) {
+    public StudentsChecking updateStudentsChecking(Long id, StudentsChecking studentsChecking) {
         return null;
     }
 }
