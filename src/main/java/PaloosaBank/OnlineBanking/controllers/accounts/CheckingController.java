@@ -5,6 +5,9 @@ import PaloosaBank.OnlineBanking.entities.accounts.Checking;
 import PaloosaBank.OnlineBanking.services.accounts.interfaces.AccountServiceInterface;
 import PaloosaBank.OnlineBanking.services.accounts.interfaces.CheckingServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -26,8 +29,10 @@ public class CheckingController implements CheckingControllerInterface {
     }
 
     @Override
+    @GetMapping("/checkings")
+    @ResponseStatus(HttpStatus.OK)
     public List<Checking> getAllCheckings() {
-        return null;
+        return checkingServiceInterface.getAllCheckings();
     }
 
     @Override

@@ -27,7 +27,7 @@ public class CheckingService implements CheckingServiceInterface {
 
     @Override
     public List<Checking> getAllCheckings() {
-        return null;
+        return checkingRepository.findAll();  // TODO acabaer esto en todos
     }
 
     @Override
