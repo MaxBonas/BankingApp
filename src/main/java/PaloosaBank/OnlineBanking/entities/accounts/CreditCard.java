@@ -23,12 +23,8 @@ public class CreditCard extends Account{
 
     private double interestRate = 12;
 
-    public CreditCard(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner,
-                      LocalDate creationDate, Status status, Money creditLimit, Money penaltyFee, double interestRate) {
+    public CreditCard(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, LocalDate creationDate, Status status) {
         super(balance, primaryOwner, secondaryOwner, creationDate, status);
-        this.creditLimit = creditLimit;
-        this.penaltyFee = penaltyFee;
-        this.interestRate = interestRate;
     }
 
     public CreditCard() {
