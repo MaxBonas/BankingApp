@@ -5,7 +5,9 @@ import PaloosaBank.OnlineBanking.repositories.accounts.AccountRepository;
 import PaloosaBank.OnlineBanking.repositories.users.AdminRepository;
 import PaloosaBank.OnlineBanking.services.users.interfaces.AdminServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -17,12 +19,17 @@ public class AdminService implements AdminServiceInterface {
 
     @Override
     public Admin addAdmin(Admin admin) {
-        return null;
+        if (adminRepository.findById(admin.getId()).isPresent())
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
+                    "An Admin with this id already exist.");
+        return adminRepository.save(admin);
     }
 
     @Override
     public Admin getAdminById(Long id) {
-        return null;
+        return adminRepository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "An Admin with the given id doesn't exist"));
     }
 
     @Override

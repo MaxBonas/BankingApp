@@ -5,7 +5,9 @@ import PaloosaBank.OnlineBanking.repositories.accounts.AccountRepository;
 import PaloosaBank.OnlineBanking.repositories.users.ThirdPartyRepository;
 import PaloosaBank.OnlineBanking.services.users.interfaces.ThirdPartyServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -17,12 +19,17 @@ public class ThirdPartyService implements ThirdPartyServiceInterface {
 
     @Override
     public ThirdParty addThirdParty(ThirdParty thirdParty) {
-        return null;
+        if (thirdPartyRepository.findById(thirdParty.getId()).isPresent())
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
+                    "A Third Party with this id already exist.");
+        return thirdPartyRepository.save(thirdParty);
     }
 
     @Override
     public ThirdParty getThirdPartyById(Long id) {
-        return null;
+        return thirdPartyRepository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "A Third Party with the given id doesn't exist"));
     }
 
     @Override

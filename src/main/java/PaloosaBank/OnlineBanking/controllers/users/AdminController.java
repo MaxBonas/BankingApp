@@ -25,7 +25,9 @@ public class AdminController implements AdminControllerInterface {
     @Override
     @PostMapping("/admin")
     @ResponseStatus(HttpStatus.CREATED)
-    public Admin addAdmin(@RequestBody Admin admin) {
+    public Admin addAdmin(@RequestParam String name) {
+        Admin admin = new Admin();
+        admin.setName(name);
         return adminServiceInterface.addAdmin(admin);
     }
 

@@ -101,13 +101,13 @@ public class OnlineBankingApplication implements CommandLineRunner {
 
 		accountHolderRepository.saveAll(List.of(
 				new AccountHolder("Max Bonas", LocalDate.of(1989, 3, 22),
-						new Address("Anselm Clave 7", "Corbera de Llobregat", 8757),
-						new Address("Anselm Clave 7", "Barcelona", 8757)),
+						new Address("Anselm Clave 7", "Corbera de Llobregat", "08757"),
+						new Address("Carrer Caceres 26", "Barcelona", "08021")),
 				//TODO porque no me deja poner un codigo postal con 0 delante
 				new AccountHolder("Bill Adama", LocalDate.of(1943, 10, 30),
-						new Address("Palm Springs st 89", "Miami", 64532), null),
+						new Address("Palm Springs st 89", "Miami", "64532"), null),
 				new AccountHolder("Kara Thrace", LocalDate.of(1975, 8, 2),
-						new Address("Turette ave. 1265", "L.A.", 86756), null)));
+						new Address("Turette ave. 1265", "L.A.", "867-563"), null)));
 
 		thirdPartyRepository.saveAll(List.of(
 				new ThirdParty("Zara .ORG", "UJYGFjhgfvjghFV764576FG"),

@@ -5,7 +5,9 @@ import PaloosaBank.OnlineBanking.repositories.accounts.AccountRepository;
 import PaloosaBank.OnlineBanking.repositories.accounts.SavingsRepository;
 import PaloosaBank.OnlineBanking.services.accounts.interfaces.SavingsServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -17,12 +19,17 @@ public class SavingsService implements SavingsServiceInterface {
 
     @Override
     public Savings addSavings(Savings savings) {
-        return null;
+        if (savingsRepository.findById(savings.getId()).isPresent())
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
+                    "A Savings Account with this id already exist.");
+        return savingsRepository.save(savings);
     }
 
     @Override
     public Savings getSavingsById(Long id) {
-        return null;
+        return savingsRepository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "A Savings Account with the given id doesn't exist"));
     }
 
     @Override

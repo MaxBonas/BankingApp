@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface AdminControllerInterface {
 
-    Admin addAdmin(Admin admin);
+    Admin addAdmin(String name);
     Admin getAdminById(Long id);
     List<Admin> getAllAdmins();
     Admin updateAdmin(Long id, Admin admin);

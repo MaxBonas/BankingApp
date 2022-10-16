@@ -5,7 +5,9 @@ import PaloosaBank.OnlineBanking.repositories.accounts.AccountRepository;
 import PaloosaBank.OnlineBanking.repositories.users.UserRepository;
 import PaloosaBank.OnlineBanking.services.users.interfaces.UserServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -17,12 +19,17 @@ public class UserService implements UserServiceInterface {
 
     @Override
     public User addUser(User user) {
-        return null;
+        if (userRepository.findById(user.getId()).isPresent())
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
+                    "A User with this id already exist.");
+        return userRepository.save(user);
     }
 
     @Override
     public User getUserById(Long id) {
-        return null;
+        return userRepository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "A User with the given id doesn't exist"));
     }
 
     @Override

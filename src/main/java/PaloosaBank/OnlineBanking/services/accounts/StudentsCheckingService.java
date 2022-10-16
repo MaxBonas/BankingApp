@@ -5,7 +5,9 @@ import PaloosaBank.OnlineBanking.repositories.accounts.AccountRepository;
 import PaloosaBank.OnlineBanking.repositories.accounts.StudentsCheckingRepository;
 import PaloosaBank.OnlineBanking.services.accounts.interfaces.StudentsCheckingServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -17,12 +19,17 @@ public class StudentsCheckingService implements StudentsCheckingServiceInterface
 
     @Override
     public StudentsChecking addStudentsChecking(StudentsChecking studentsChecking) {
-        return null;
+        if (studentsCheckingRepository.findById(studentsChecking.getId()).isPresent())
+            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
+                    "A Students Checking Account with this id already exist.");
+        return studentsCheckingRepository.save(studentsChecking);
     }
 
     @Override
     public StudentsChecking getStudentsCheckingById(Long id) {
-        return null;
+        return studentsCheckingRepository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "A Students Checking Account with the given id doesn't exist"));
     }
 
     @Override
