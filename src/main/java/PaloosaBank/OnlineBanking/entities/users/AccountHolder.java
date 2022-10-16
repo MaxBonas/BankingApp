@@ -41,13 +41,13 @@ public class AccountHolder extends User{
         //TODO Aqui iria la lista?
     }
 
-    public AccountHolder(String name, LocalDate dateOfBirth, Address primaryAddress) { // TODO aqui no va el monthly, no?
-        super(name);
-        this.dateOfBirth = dateOfBirth;
-        this.primaryAddress = primaryAddress;
-        this.monthlySpended = new Money(BigDecimal.valueOf(0));
-        //TODO Aqui iria la lista?
-    }
+//    public AccountHolder(String name, LocalDate dateOfBirth, Address primaryAddress) { // TODO aqui no va el monthly, no?
+//        super(name);
+//        this.dateOfBirth = dateOfBirth;
+//        this.primaryAddress = primaryAddress;
+//        this.monthlySpended = new Money(BigDecimal.valueOf(0)); // TODO Constructor sin el address opcional?
+//        //TODO Aqui iria la lista?
+//    }
 
     public AccountHolder() {
     }

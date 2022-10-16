@@ -27,7 +27,7 @@ public class StudentsCheckingService implements StudentsCheckingServiceInterface
 
     @Override
     public List<StudentsChecking> getAllStudentsCheckings() {
-        return null;
+        return studentsCheckingRepository.findAll();
     }
 
     @Override

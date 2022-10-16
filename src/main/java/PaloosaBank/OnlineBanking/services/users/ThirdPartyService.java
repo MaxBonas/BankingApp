@@ -27,7 +27,7 @@ public class ThirdPartyService implements ThirdPartyServiceInterface {
 
     @Override
     public List<ThirdParty> getAllThirdPartys() {
-        return null;
+        return thirdPartyRepository.findAll();
     }
 
     @Override

@@ -27,7 +27,7 @@ public class AdminService implements AdminServiceInterface {
 
     @Override
     public List<Admin> getAllAdmins() {
-        return null;
+        return adminRepository.findAll();
     }
 
     @Override

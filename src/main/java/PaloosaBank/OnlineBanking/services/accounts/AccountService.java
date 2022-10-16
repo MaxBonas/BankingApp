@@ -27,7 +27,7 @@ public class AccountService implements AccountServiceInterface {
 
     @Override
     public List<Account> getAllAccounts() {
-        return null;
+        return accountRepository.findAll(); //TODO hace falta hacer estos metodos en las clases abstract?
     }
 
     @Override

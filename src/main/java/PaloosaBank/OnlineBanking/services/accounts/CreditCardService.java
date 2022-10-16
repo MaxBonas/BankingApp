@@ -27,7 +27,7 @@ public class CreditCardService implements CreditCardServiceInterface {
 
     @Override
     public List<CreditCard> getAllCreditCards() {
-        return null;
+        return creditCardRepository.findAll();
     }
 
     @Override

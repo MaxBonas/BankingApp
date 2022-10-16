@@ -27,7 +27,7 @@ public class SavingsService implements SavingsServiceInterface {
 
     @Override
     public List<Savings> getAllSavings() {
-        return null;
+        return savingsRepository.findAll();
     }
 
     @Override

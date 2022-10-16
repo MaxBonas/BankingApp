@@ -27,7 +27,7 @@ public class UserService implements UserServiceInterface {
 
     @Override
     public List<User> getAllUsers() {
-        return null;
+        return userRepository.findAll(); //TODO hace falta hacer estos metodos en las clases abstract?
     }
 
     @Override

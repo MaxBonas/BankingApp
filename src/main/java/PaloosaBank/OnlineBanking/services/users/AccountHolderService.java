@@ -27,7 +27,7 @@ public class AccountHolderService implements AccountHolderServiceInterface {
 
     @Override
     public List<AccountHolder> getAllAccountHolders() {
-        return null;
+        return accountHolderRepository.findAll();
     }
 
     @Override
