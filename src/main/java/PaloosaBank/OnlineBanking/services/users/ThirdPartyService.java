@@ -39,6 +39,9 @@ public class ThirdPartyService implements ThirdPartyServiceInterface {
 
     @Override
     public ThirdParty updateThirdParty(Long id, ThirdParty thirdParty) {
-        return null;
+        if (thirdPartyRepository.findById(id).isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This Third Party doesn't exist");
+
+        return thirdPartyRepository.save(thirdParty);
     }
 }

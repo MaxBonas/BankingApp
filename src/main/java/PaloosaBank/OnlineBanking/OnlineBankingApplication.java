@@ -89,9 +89,9 @@ public class OnlineBankingApplication implements CommandLineRunner {
 				new Admin("Luis Bàrcenas")));
 
 		thirdPartyRepository.saveAll(List.of(
-				new ThirdParty("Zara .ORG", "UJYGFjhgfvjghFV764576FG"),
-				new ThirdParty("Aldi Inc.", "jhvfjgjg563465DYHhfv"),
-				new ThirdParty("Audi .s.a", "JHGFJHUG7654FVghjhg")));
+				new ThirdParty("Zara .ORG"),
+				new ThirdParty("Aldi Inc."),
+				new ThirdParty("Audi .s.a")));
 
 		Checking checking1 = new Checking(new Money(BigDecimal.valueOf(1010.13)), accountHolder1, null);
 		Checking checking2 = new Checking(new Money(BigDecimal.valueOf(23002.23)), accountHolder3, accountHolder2);

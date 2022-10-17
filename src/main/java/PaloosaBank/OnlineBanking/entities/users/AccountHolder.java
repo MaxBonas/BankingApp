@@ -4,9 +4,10 @@ import PaloosaBank.OnlineBanking.embedables.Address;
 import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.accounts.Account;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sun.istack.NotNull;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
@@ -14,8 +15,11 @@ import java.util.List;
 @Entity
 public class AccountHolder extends User{
 
+    @NotBlank(message = "This field can't be blank")
+    @NotNull(message = "This field can't be null")
     private LocalDate dateOfBirth;
-    @NotNull // Esto me permitira dejar la secondary nula o no
+    @NotBlank(message = "This field can't be blank")
+    @NotNull(message = "This field can't be null") // Esto me permitira dejar la secondary nula o no
     @Embedded
     private Address primaryAddress;
 
@@ -27,6 +31,8 @@ public class AccountHolder extends User{
     })
     private Address mailingAddress; // (Optional)
 
+    @NotBlank(message = "This field can't be blank")
+    @NotNull(message = "This field can't be null")
     @OneToMany(mappedBy = "primaryOwner")
     @JsonIgnore
     private List<Account> primaryAccountList;
@@ -34,6 +40,8 @@ public class AccountHolder extends User{
     @OneToMany(mappedBy = "secondaryOwner")
     @JsonIgnore
     private List<Account> secondaryAccountList;  //TODO {No estoy seguro de que tenga que existir
+    @NotBlank(message = "This field can't be blank")
+    @NotNull(message = "This field can't be null")
     private Money monthlySpended = new Money(BigDecimal.valueOf(0)); //Todo como plantear esta suma en cada transaccion
 
     public AccountHolder(String name, LocalDate dateOfBirth, Address primaryAddress, Address mailingAddress) { // TODO aqui no va el monthly, no?

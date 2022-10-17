@@ -39,6 +39,9 @@ public class AdminService implements AdminServiceInterface {
 
     @Override
     public Admin updateAdmin(Long id, Admin admin) {
-        return null;
+        if (adminRepository.findById(id).isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This Admin doesn't exist");
+
+        return adminRepository.save(admin);
     }
 }

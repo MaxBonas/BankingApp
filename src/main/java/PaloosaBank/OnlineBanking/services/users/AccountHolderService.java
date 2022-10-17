@@ -1,5 +1,8 @@
 package PaloosaBank.OnlineBanking.services.users;
 
+import PaloosaBank.OnlineBanking.embedables.Address;
+import PaloosaBank.OnlineBanking.embedables.Money;
+import PaloosaBank.OnlineBanking.entities.accounts.StudentsChecking;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 import PaloosaBank.OnlineBanking.repositories.accounts.AccountRepository;
 import PaloosaBank.OnlineBanking.repositories.users.AccountHolderRepository;
@@ -9,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -39,7 +43,10 @@ public class AccountHolderService implements AccountHolderServiceInterface {
 
     @Override
     public AccountHolder updateAccountHolder(Long id, AccountHolder accountHolder) {
-        return null;
+        if (accountHolderRepository.findById(id).isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This Account Holder doesn't exist");
+
+        return accountHolderRepository.save(accountHolder);
     }
 }
 

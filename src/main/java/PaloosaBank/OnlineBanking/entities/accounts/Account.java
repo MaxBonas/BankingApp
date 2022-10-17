@@ -3,9 +3,11 @@ package PaloosaBank.OnlineBanking.entities.accounts;
 import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 import PaloosaBank.OnlineBanking.enums.Status;
-import com.sun.istack.NotNull;
+import javax.validation.constraints.NotNull;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -15,10 +17,13 @@ public abstract class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
+    @DecimalMin("-2500.00")
     private Money balance;
 //    private int secretKey; //TODO { Quiza se usa. Si no es del authen de Postman
 
     @NotNull
+    @NotBlank
     @ManyToOne
     @JoinColumn(name = "primary_owner_ID")
     private AccountHolder primaryOwner;
@@ -27,8 +32,12 @@ public abstract class Account {
     @JoinColumn(name = "secondary_owner_ID")
     private AccountHolder secondaryOwner;
 
+    @NotNull
+    @NotBlank
     private LocalDate creationDate;
 
+    @NotNull
+    @NotBlank
     private Status status;
 
     public Account(Money balance, AccountHolder primaryOwner,
