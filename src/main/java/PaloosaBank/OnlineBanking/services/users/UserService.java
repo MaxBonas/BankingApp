@@ -18,14 +18,6 @@ public class UserService implements UserServiceInterface {
     UserRepository userRepository;
 
     @Override
-    public User addUser(User user) {
-        if (userRepository.findById(user.getId()).isPresent())
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
-                    "A User with this id already exist.");
-        return userRepository.save(user);
-    }
-
-    @Override
     public User getUserById(Long id) {
         return userRepository.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND,
@@ -35,10 +27,5 @@ public class UserService implements UserServiceInterface {
     @Override
     public List<User> getAllUsers() {
         return userRepository.findAll(); //TODO hace falta hacer estos metodos en las clases abstract?
-    }
-
-    @Override
-    public User updateUser(Long id, User user) {
-        return null;
     }
 }

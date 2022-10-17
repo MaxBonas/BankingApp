@@ -18,7 +18,7 @@ public class CreditCardController implements CreditCardControllerInterface {
     CreditCardServiceInterface creditCardServiceInterface;
 
     @Override
-    @PostMapping("/credit_card")
+    @PostMapping("/admin/credit_card")
     @ResponseStatus(HttpStatus.CREATED)
     public CreditCard addCreditCard(@RequestBody AccountDTO creditCard) {
         return creditCardServiceInterface.addCreditCard(creditCard);
@@ -39,7 +39,7 @@ public class CreditCardController implements CreditCardControllerInterface {
     }
 
     @Override
-    @PutMapping("/credit_card/{id}")
+    @PutMapping("/admin/credit_card/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public CreditCard updateCreditCard(@PathVariable Long id, @RequestBody AccountDTO creditCard) {
         return creditCardServiceInterface.updateCreditCard(id, creditCard);

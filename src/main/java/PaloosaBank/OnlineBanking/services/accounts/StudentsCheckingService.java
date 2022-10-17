@@ -52,10 +52,19 @@ public class StudentsCheckingService implements StudentsCheckingServiceInterface
     @Override
     public StudentsChecking updateStudentsChecking(Long id, AccountDTO studentsChecking) {
         if (studentsCheckingRepository.findById(id).isEmpty())
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
-                    "No Students Checking Account with this id appear in the system.");
-//        return studentsCheckingRepository.save(studentsChecking);
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This Students Checking Account doesn't exist");
 
+        AccountHolder accountHolder = accountHolderRepository.findById(studentsChecking.getPrimaryOwnerId()).get();
+        AccountHolder accountHolder2 = null;
+
+        if (studentsChecking.getSecondaryOwnerId() != null) {
+            accountHolder2 = accountHolderRepository.findById(studentsChecking.getSecondaryOwnerId()).get();
+        }
+
+        Money balance = new Money(BigDecimal.valueOf(studentsChecking.getBalance()));
+
+        return studentsCheckingRepository.save(new StudentsChecking(balance, accountHolder, accountHolder2));
+    }
 
 //    }
 
@@ -63,4 +72,6 @@ public class StudentsCheckingService implements StudentsCheckingServiceInterface
 //            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
 //        "An Account Holder with this id already exist.");
 //        return accountHolderRepository.save(accountHolder);
+
 }
+

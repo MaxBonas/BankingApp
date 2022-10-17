@@ -1,5 +1,7 @@
 package PaloosaBank.OnlineBanking.entities.users;
 
+import PaloosaBank.OnlineBanking.tools.HashkeyGenerator;
+
 import javax.persistence.Entity;
 
 @Entity
@@ -9,7 +11,7 @@ public class ThirdParty extends User{
 
     public ThirdParty(String name, String hashKey) {
         super(name);
-        this.hashKey = hashKey;
+        setHashKey(hashKey);
     }
 
     public ThirdParty() {
@@ -20,6 +22,6 @@ public class ThirdParty extends User{
     }
 
     public void setHashKey(String hashKey) {
-        this.hashKey = hashKey;
+        this.hashKey = HashkeyGenerator.generateString();
     }
 }

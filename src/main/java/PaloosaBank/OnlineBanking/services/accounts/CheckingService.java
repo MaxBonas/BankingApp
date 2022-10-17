@@ -3,6 +3,7 @@ package PaloosaBank.OnlineBanking.services.accounts;
 import PaloosaBank.OnlineBanking.DTOs.accounts.AccountDTO;
 import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.accounts.Checking;
+import PaloosaBank.OnlineBanking.entities.accounts.CreditCard;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 import PaloosaBank.OnlineBanking.repositories.accounts.AccountRepository;
 import PaloosaBank.OnlineBanking.repositories.accounts.CheckingRepository;
@@ -46,11 +47,26 @@ public class CheckingService implements CheckingServiceInterface {
 
     @Override
     public List<Checking> getAllCheckings() {
-        return checkingRepository.findAll();  // TODO acabaer esto en todos
+        return checkingRepository.findAll();
     }
 
     @Override
     public Checking updateChecking(Long id, AccountDTO checking) {
-        return null;
+        if (checkingRepository.findById(id).isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This Checking Account doesn't exist");
+
+//        if (checking.getPrimaryOwnerId() == null) //todo Esto con el @Notnull quiza no hace falta?
+//            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "You must to insert at least a Primary Owner.");
+
+        AccountHolder accountHolder = accountHolderRepository.findById(checking.getPrimaryOwnerId()).get();
+        AccountHolder accountHolder2 = null;
+
+        if (checking.getSecondaryOwnerId() != null) {
+            accountHolder2 = accountHolderRepository.findById(checking.getSecondaryOwnerId()).get();
+        }
+
+        Money balance = new Money(BigDecimal.valueOf(checking.getBalance()));
+
+        return checkingRepository.save(new Checking(balance, accountHolder, accountHolder2));
     }
 }

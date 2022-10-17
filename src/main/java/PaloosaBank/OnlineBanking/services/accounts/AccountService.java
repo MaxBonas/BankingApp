@@ -24,8 +24,4 @@ public class AccountService implements AccountServiceInterface {
         return accountRepository.findAll(); //TODO hace falta hacer estos metodos en las clases abstract?
     }
 
-    @Override
-    public Account updateAccount(Long id, Account account) {
-        return null;
-    }
 }

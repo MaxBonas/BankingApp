@@ -8,5 +8,4 @@ public interface AccountServiceInterface {
 
     Account getAccountById(Long id);
     List<Account> getAllAccounts();
-    Account updateAccount(Long id, Account account);
 }

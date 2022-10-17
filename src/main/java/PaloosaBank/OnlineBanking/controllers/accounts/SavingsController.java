@@ -18,7 +18,7 @@ public class SavingsController implements SavingsControllerInterface {
     SavingsServiceInterface savingsServiceInterface;
 
     @Override
-    @PostMapping("/savings")
+    @PostMapping("/admin/savings")
     @ResponseStatus(HttpStatus.CREATED)
     public Savings addSavings(AccountDTO savings) {
         return savingsServiceInterface.addSavings(savings);
@@ -39,7 +39,7 @@ public class SavingsController implements SavingsControllerInterface {
     }
 
     @Override
-    @PutMapping("/savings/{id}")
+    @PutMapping("/admin/savings/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public Savings updateSavings(@PathVariable Long id, @RequestBody AccountDTO savings) {
         return savingsServiceInterface.updateSavings(id, savings);

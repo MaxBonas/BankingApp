@@ -4,6 +4,7 @@ import PaloosaBank.OnlineBanking.DTOs.accounts.AccountDTO;
 import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.accounts.Checking;
 import PaloosaBank.OnlineBanking.entities.accounts.CreditCard;
+import PaloosaBank.OnlineBanking.entities.accounts.Savings;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 import PaloosaBank.OnlineBanking.repositories.accounts.AccountRepository;
 import PaloosaBank.OnlineBanking.repositories.accounts.CreditCardRepository;
@@ -51,6 +52,18 @@ public class CreditCardService implements CreditCardServiceInterface {
 
     @Override
     public CreditCard updateCreditCard(Long id, AccountDTO creditCard) {
-        return null;
+        if (creditCardRepository.findById(id).isEmpty())
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This Credit Card Account doesn't exist");
+
+        AccountHolder accountHolder = accountHolderRepository.findById(creditCard.getPrimaryOwnerId()).get();
+        AccountHolder accountHolder2 = null;
+
+        if (creditCard.getSecondaryOwnerId() != null) {
+            accountHolder2 = accountHolderRepository.findById(creditCard.getSecondaryOwnerId()).get();
+        }
+
+        Money balance = new Money(BigDecimal.valueOf(creditCard.getBalance()));
+
+        return creditCardRepository.save(new CreditCard(balance, accountHolder, accountHolder2));
     }
 }

@@ -18,7 +18,7 @@ public class CheckingController implements CheckingControllerInterface {
     CheckingServiceInterface checkingServiceInterface;
 
     @Override
-    @PostMapping("/checking_account")
+    @PostMapping("/admin/checking_account")
     @ResponseStatus(HttpStatus.CREATED)
     public Checking addChecking(AccountDTO checking) {
         return checkingServiceInterface.addChecking(checking);
@@ -39,7 +39,7 @@ public class CheckingController implements CheckingControllerInterface {
     }
 
     @Override
-    @PutMapping("/checking_account/{id}")
+    @PutMapping("/admin/checking_account/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public Checking updateChecking(@PathVariable Long id, @RequestBody AccountDTO checking) {
         return checkingServiceInterface.updateChecking(id, checking);

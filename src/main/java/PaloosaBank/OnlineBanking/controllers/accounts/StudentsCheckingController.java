@@ -18,7 +18,7 @@ public class StudentsCheckingController implements StudentsCheckingControllerInt
     StudentsCheckingServiceInterface studentsCheckingServiceInterface;
 
     @Override
-    @PostMapping("/students_checking")
+    @PostMapping("/admin/students_checking")
     @ResponseStatus(HttpStatus.CREATED)
     public StudentsChecking addStudentsChecking(AccountDTO studentsChecking) {
         return studentsCheckingServiceInterface.addStudentsChecking(studentsChecking);
@@ -39,7 +39,7 @@ public class StudentsCheckingController implements StudentsCheckingControllerInt
     }
 
     @Override
-    @PutMapping("/students_checking/{id}")
+    @PutMapping("/admin/students_checking/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public StudentsChecking updateStudentsChecking(@PathVariable Long id, @RequestBody AccountDTO studentsChecking) {
         return studentsCheckingServiceInterface.updateStudentsChecking(id, studentsChecking);

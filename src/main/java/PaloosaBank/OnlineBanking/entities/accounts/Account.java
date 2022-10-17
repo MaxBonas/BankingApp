@@ -3,6 +3,7 @@ package PaloosaBank.OnlineBanking.entities.accounts;
 import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 import PaloosaBank.OnlineBanking.enums.Status;
+import com.sun.istack.NotNull;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -14,21 +15,17 @@ public abstract class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-//    @Embedded
-//    @AttributeOverrides({
-//            @AttributeOverride(name="currency", column = @Column(name = "balance_currency")),
-//            @AttributeOverride(name = "amount", column = @Column(name = "balance_amount"))
-//    })
     private Money balance;
 //    private int secretKey; //TODO { Quiza se usa. Si no es del authen de Postman
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "primary_owner_ID")
     private AccountHolder primaryOwner;
 
     @ManyToOne
     @JoinColumn(name = "secondary_owner_ID")
-    private AccountHolder secondaryOwner; // (optional)
+    private AccountHolder secondaryOwner;
 
     private LocalDate creationDate;
 
@@ -40,7 +37,7 @@ public abstract class Account {
         this.primaryOwner = primaryOwner;
         this.secondaryOwner = secondaryOwner;
         this.creationDate = LocalDate.now();
-        this.status = Status.ACTIVE;
+        this.status = Status.ACTIVE; // Quiza lo tocas para la validacion de cuentas
     }
 
     public Account() {
