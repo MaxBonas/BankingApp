@@ -6,7 +6,8 @@ import PaloosaBank.OnlineBanking.services.accounts.interfaces.AccountServiceInte
 import PaloosaBank.OnlineBanking.services.users.ThirdPartyService;
 import PaloosaBank.OnlineBanking.services.users.interfaces.ThirdPartyServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,22 +18,30 @@ public class ThirdPartyController implements ThirdPartyControllerInterface {
     ThirdPartyServiceInterface thirdPartyServiceInterface;
 
     @Override
+    @PostMapping("/third_party")
+    @ResponseStatus(HttpStatus.CREATED)
     public ThirdParty addThirdParty(ThirdParty thirdParty) {
-        return null;
+        return thirdPartyServiceInterface.addThirdParty(thirdParty);
     }
 
     @Override
-    public ThirdParty getThirdPartyById(Long id) {
-        return null;
+    @GetMapping("/third_party/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ThirdParty getThirdPartyById(@PathVariable Long id) {
+        return thirdPartyServiceInterface.getThirdPartyById(id);
     }
 
     @Override
+    @GetMapping("/third_partys")
+    @ResponseStatus(HttpStatus.OK)
     public List<ThirdParty> getAllThirdPartys() {
-        return null;
+        return thirdPartyServiceInterface.getAllThirdPartys();
     }
 
     @Override
-    public ThirdParty updateThirdParty(Long id, ThirdParty thirdParty) {
-        return null;
+    @PutMapping("/third_party/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public ThirdParty updateThirdParty(@PathVariable Long id, @RequestBody ThirdParty thirdParty) {
+        return thirdPartyServiceInterface.updateThirdParty(id, thirdParty);
     }
 }

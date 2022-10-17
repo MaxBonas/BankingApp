@@ -12,6 +12,10 @@ import java.time.LocalDate;
 public class CreditCard extends Account{
 
     @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name="currency", column = @Column(name = "credit_limit_currency")),
+            @AttributeOverride(name = "amount", column = @Column(name = "credit_limit_amount"))
+    })
     private Money creditLimit = new Money(BigDecimal.valueOf(250));
 
     @Embedded
@@ -23,8 +27,8 @@ public class CreditCard extends Account{
 
     private double interestRate = 12;
 
-    public CreditCard(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, LocalDate creationDate, Status status) {
-        super(balance, primaryOwner, secondaryOwner, creationDate, status);
+    public CreditCard(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner) {
+        super(balance, primaryOwner, secondaryOwner);
     }
 
     public CreditCard() {

@@ -35,12 +35,12 @@ public abstract class Account {
     private Status status;
 
     public Account(Money balance, AccountHolder primaryOwner,
-                   AccountHolder secondaryOwner, LocalDate creationDate, Status status) {
+                   AccountHolder secondaryOwner) {
         this.balance = balance;
         this.primaryOwner = primaryOwner;
         this.secondaryOwner = secondaryOwner;
-        this.creationDate = creationDate;
-        this.status = status;
+        this.creationDate = LocalDate.now();
+        this.status = Status.ACTIVE;
     }
 
     public Account() {

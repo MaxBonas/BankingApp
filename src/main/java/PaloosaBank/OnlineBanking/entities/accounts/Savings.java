@@ -15,8 +15,8 @@ public class Savings extends Account{
     private Money minimumBalance = new Money(BigDecimal.valueOf(1000));
     private double interestedRate = 0.0025; //Max 0,5
 
-    public Savings(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, LocalDate creationDate, Status status) {
-        super(balance, primaryOwner, secondaryOwner, creationDate, status);
+    public Savings(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner) {
+        super(balance, primaryOwner, secondaryOwner);
     }
 
     public Savings() {

@@ -4,7 +4,8 @@ import PaloosaBank.OnlineBanking.controllers.users.interfaces.AccountHolderContr
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 import PaloosaBank.OnlineBanking.services.users.interfaces.AccountHolderServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -15,22 +16,30 @@ public class AccountHolderController implements AccountHolderControllerInterface
     AccountHolderServiceInterface accountHolderServiceInterface;
 
     @Override
+    @PostMapping("/account_holder")
+    @ResponseStatus(HttpStatus.CREATED)
     public AccountHolder addAccountHolder(AccountHolder accountHolder) {
-        return null;
+        return accountHolderServiceInterface.addAccountHolder(accountHolder);
     }
 
     @Override
-    public AccountHolder getAccountHolderById(Long id) {
-        return null;
+    @GetMapping("/account_holder/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public AccountHolder getAccountHolderById(@PathVariable Long id) {
+        return accountHolderServiceInterface.getAccountHolderById(id);
     }
 
     @Override
+    @GetMapping("/account_holders")
+    @ResponseStatus(HttpStatus.OK)
     public List<AccountHolder> getAllAccountHolders() {
-        return null;
+        return accountHolderServiceInterface.getAllAccountHolders();
     }
 
     @Override
-    public AccountHolder updateAccountHolder(Long id, AccountHolder accountHolder) {
-        return null;
+    @PutMapping("/account_holder/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public AccountHolder updateAccountHolder(@PathVariable Long id, @RequestBody AccountHolder accountHolder) {
+        return accountHolderServiceInterface.updateAccountHolder(id,accountHolder);
     }
 }

@@ -13,8 +13,8 @@ import java.time.LocalDate;
 @Entity
 public class StudentsChecking extends Account{
 
-    public StudentsChecking(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner, LocalDate creationDate, Status status) {
-        super(balance, primaryOwner, secondaryOwner, creationDate, status);
+    public StudentsChecking(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner) {
+        super(balance, primaryOwner, secondaryOwner);
     }
 
     public StudentsChecking() {

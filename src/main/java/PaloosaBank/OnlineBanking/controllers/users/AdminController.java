@@ -6,6 +6,7 @@ import PaloosaBank.OnlineBanking.entities.accounts.CreditCard;
 import PaloosaBank.OnlineBanking.entities.users.Admin;
 import PaloosaBank.OnlineBanking.services.accounts.interfaces.AccountServiceInterface;
 import PaloosaBank.OnlineBanking.services.accounts.interfaces.CreditCardServiceInterface;
+import PaloosaBank.OnlineBanking.services.users.AdminService;
 import PaloosaBank.OnlineBanking.services.users.interfaces.AdminServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +18,7 @@ import java.util.List;
 public class AdminController implements AdminControllerInterface {
 
     @Autowired
-    AdminServiceInterface adminServiceInterface;
+    AdminServiceInterface adminServiceInterface; //TODO uy uy mirarho fort
 
     @Autowired
     CreditCardServiceInterface creditCardServiceInterface; //TODO Es necesario aqui para que admin controle?
@@ -25,9 +26,7 @@ public class AdminController implements AdminControllerInterface {
     @Override
     @PostMapping("/admin")
     @ResponseStatus(HttpStatus.CREATED)
-    public Admin addAdmin(@RequestParam String name) {
-        Admin admin = new Admin();
-        admin.setName(name);
+    public Admin addAdmin(@RequestBody Admin admin) {
         return adminServiceInterface.addAdmin(admin);
     }
 
@@ -62,24 +61,24 @@ public class AdminController implements AdminControllerInterface {
 //    modifyBalance()
 //    addThirdParty()
 
-    @PostMapping("/admin/credit_card")
-    @ResponseStatus(HttpStatus.CREATED)
-    //TODO Se tendria que hacer uno de cada accountType o solo uno de account y luego especificar?
-    public CreditCard addCreditCard(@RequestBody CreditCard creditCard) {
-        return creditCardServiceInterface.addCreditCard(creditCard);
-    }
-
-    @GetMapping("/credit_cards")
-    @ResponseStatus(HttpStatus.OK)
-    public List<CreditCard> getAllCreditCards() {
-        return creditCardServiceInterface.getAllCreditCards();
-    }
-
-    @GetMapping("/credit_card/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public CreditCard getCreditCardById(@PathVariable Long id) {
-        return creditCardServiceInterface.getCreditCardById(id);
-    }
+//    @PostMapping("/admin/credit_card")
+//    @ResponseStatus(HttpStatus.CREATED)
+//    //TODO Se tendria que hacer uno de cada accountType o solo uno de account y luego especificar?
+//    public CreditCard addCreditCard(@RequestBody CreditCard creditCard) {
+//        return creditCardServiceInterface.addCreditCard(creditCard);
+//    }
+//
+//    @GetMapping("/credit_cards")
+//    @ResponseStatus(HttpStatus.OK)
+//    public List<CreditCard> getAllCreditCards() {
+//        return creditCardServiceInterface.getAllCreditCards();
+//    }
+//
+//    @GetMapping("/credit_card/{id}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public CreditCard getCreditCardById(@PathVariable Long id) {
+//        return creditCardServiceInterface.getCreditCardById(id);
+//    }
 
 
 

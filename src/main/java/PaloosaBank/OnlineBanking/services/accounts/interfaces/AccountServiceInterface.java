@@ -6,7 +6,6 @@ import java.util.List;
 
 public interface AccountServiceInterface {
 
-    Account addAccount(Account account);
     Account getAccountById(Long id);
     List<Account> getAllAccounts();
     Account updateAccount(Long id, Account account);

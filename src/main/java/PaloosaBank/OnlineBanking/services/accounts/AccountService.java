@@ -14,12 +14,6 @@ public class AccountService implements AccountServiceInterface {
     @Autowired
     AccountRepository accountRepository;
 
-
-    @Override
-    public Account addAccount(Account account) {
-        return null;
-    }
-
     @Override
     public Account getAccountById(Long id) {
         return null;

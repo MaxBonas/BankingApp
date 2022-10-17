@@ -1,14 +1,19 @@
 package PaloosaBank.OnlineBanking.services.accounts;
 
+import PaloosaBank.OnlineBanking.DTOs.accounts.AccountDTO;
+import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.accounts.Checking;
+import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 import PaloosaBank.OnlineBanking.repositories.accounts.AccountRepository;
 import PaloosaBank.OnlineBanking.repositories.accounts.CheckingRepository;
+import PaloosaBank.OnlineBanking.repositories.users.AccountHolderRepository;
 import PaloosaBank.OnlineBanking.services.accounts.interfaces.CheckingServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -17,12 +22,19 @@ public class CheckingService implements CheckingServiceInterface {
     @Autowired
     CheckingRepository checkingRepository;
 
+    @Autowired
+    AccountHolderRepository accountHolderRepository;
+
     @Override
-    public Checking addChecking(Checking checking) {
-        if (checkingRepository.findById(checking.getId()).isPresent())
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
-                    "A Checking Account with this id already exist.");
-        return checkingRepository.save(checking);
+    public Checking addChecking(AccountDTO checking) {
+        AccountHolder accountHolder = accountHolderRepository.findById(checking.getPrimaryOwnerId()).get();
+        AccountHolder accountHolder2 = null;
+        if (checking.getSecondaryOwnerId() != null) {
+            accountHolder2 = accountHolderRepository.findById(checking.getSecondaryOwnerId()).get();
+        }
+        Money balance = new Money(BigDecimal.valueOf(checking.getBalance()));
+
+        return checkingRepository.save(new Checking(balance, accountHolder, accountHolder2));
     }
 
     @Override
@@ -38,7 +50,7 @@ public class CheckingService implements CheckingServiceInterface {
     }
 
     @Override
-    public Checking updateChecking(Long id, Checking checking) {
+    public Checking updateChecking(Long id, AccountDTO checking) {
         return null;
     }
 }

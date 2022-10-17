@@ -1,14 +1,20 @@
 package PaloosaBank.OnlineBanking.services.accounts;
 
+import PaloosaBank.OnlineBanking.DTOs.accounts.AccountDTO;
+import PaloosaBank.OnlineBanking.embedables.Money;
+import PaloosaBank.OnlineBanking.entities.accounts.Checking;
 import PaloosaBank.OnlineBanking.entities.accounts.CreditCard;
+import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 import PaloosaBank.OnlineBanking.repositories.accounts.AccountRepository;
 import PaloosaBank.OnlineBanking.repositories.accounts.CreditCardRepository;
+import PaloosaBank.OnlineBanking.repositories.users.AccountHolderRepository;
 import PaloosaBank.OnlineBanking.services.accounts.interfaces.CreditCardServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -17,12 +23,18 @@ public class CreditCardService implements CreditCardServiceInterface {
     @Autowired
     CreditCardRepository creditCardRepository;
 
+    @Autowired
+    AccountHolderRepository accountHolderRepository;
+
     @Override
-    public CreditCard addCreditCard(CreditCard creditCard) {
-        if (creditCardRepository.findById(creditCard.getId()).isPresent())
-            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
-                    "A Credit Card with this id already exist.");
-        return creditCardRepository.save(creditCard);
+    public CreditCard addCreditCard(AccountDTO creditCard) {
+        AccountHolder accountHolder = accountHolderRepository.findById(creditCard.getPrimaryOwnerId()).get();
+        AccountHolder accountHolder2 = null;
+        if (creditCard.getSecondaryOwnerId() != null) {
+            accountHolder2 = accountHolderRepository.findById(creditCard.getSecondaryOwnerId()).get();
+        }
+        Money balance = new Money(BigDecimal.valueOf(creditCard.getBalance()));
+        return creditCardRepository.save(new CreditCard(balance, accountHolder, accountHolder2));
     }
 
     @Override
@@ -38,7 +50,7 @@ public class CreditCardService implements CreditCardServiceInterface {
     }
 
     @Override
-    public CreditCard updateCreditCard(Long id, CreditCard creditCard) {
+    public CreditCard updateCreditCard(Long id, AccountDTO creditCard) {
         return null;
     }
 }

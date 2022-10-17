@@ -62,57 +62,57 @@ public class OnlineBankingApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 
 
-		Checking checking1 = new Checking(new Money(BigDecimal.valueOf(1010.13)), null, null,
-				LocalDate.of(2012, 12, 12), null);
-		Checking checking2 = new Checking(new Money(BigDecimal.valueOf(23002.23)), null, null,
-				LocalDate.of(2038, 6, 8), null);
-		Checking checking3 = new Checking(new Money(BigDecimal.valueOf(53)), null, null,
-				LocalDate.of(1872, 2, 7), null);
-		checkingRepository.saveAll(List.of(checking1, checking2, checking3)); // Another way to do it, with other strong points
-
-		creditCardRepository.saveAll(List.of(
-				new CreditCard(new Money(BigDecimal.valueOf(2310.98)), null, null,
-						LocalDate.of(2008, 1, 2), null),
-				new CreditCard(new Money(BigDecimal.valueOf(250.45)), null, null,
-						LocalDate.of(2021, 5, 15), null),
-				new CreditCard(new Money(BigDecimal.valueOf(12000350)), null, null,
-						LocalDate.of(2003, 7, 4), null)));
-
-		savingsRepository.saveAll(List.of(
-				new Savings(new Money(BigDecimal.valueOf(46023.53)), null, null,
-						LocalDate.of(1923, 4, 21), null),
-				new Savings(new Money(BigDecimal.valueOf(342.30)), null, null,
-						LocalDate.of(1999, 1, 11), null),
-				new Savings(new Money(BigDecimal.valueOf(2569.32)), null, null,
-						LocalDate.of(2001, 9, 8), null)));
-
-		studentsCheckingRepository.saveAll(List.of(
-				new StudentsChecking(new Money(BigDecimal.valueOf(7801.21)), null, null,
-						LocalDate.of(2022, 11, 16), null),
-				new StudentsChecking(new Money(BigDecimal.valueOf(1010.00)), null, null,
-						LocalDate.of(2005, 8, 9), null),
-				new StudentsChecking(new Money(BigDecimal.valueOf(27.90)), null, null,
-						LocalDate.of(1993, 2, 28), null)));
+		AccountHolder accountHolder1 = new AccountHolder("May Lord", LocalDate.of(1989, 3, 22),
+				new Address("Anselm Clave 7", "Corbera de Llobregat", "08757"),
+				new Address("Carrer Caceres 26", "Barcelona", "08021"));
+		AccountHolder accountHolder2 = new AccountHolder("Bill Adama", LocalDate.of(1943, 10, 30),
+				new Address("Palm Springs st 89", "Miami", "64532"),
+				null);
+		AccountHolder accountHolder3 = new AccountHolder("Kara Thrace", LocalDate.of(1975, 8, 2),
+				new Address("Turette ave. 1265", "L.A.", "867-563"),
+				null);
+		AccountHolder accountHolder4 = new AccountHolder("Thomson McThomson", LocalDate.of(1998, 9, 2),
+				new Address("Carrer Viviera", "La Calma", "23157"),
+				new Address("Carrer Victoria", "Barcelona", "08032"));
+		AccountHolder accountHolder5 = new AccountHolder("Crystal Clair", LocalDate.of(1973, 11, 20),
+				new Address("Buenaventura st 91", "Santa Carla", "68-654"),
+				null);
+		AccountHolder accountHolder6 = new AccountHolder("Kant BeRight", LocalDate.of(1935, 1, 24),
+				new Address("Crisol ave. 365", "New York", "46266"),
+				null);
+		accountHolderRepository.saveAll(List.of(accountHolder1, accountHolder2, accountHolder3, accountHolder4, accountHolder5,
+				accountHolder6));
 
 		adminRepository.saveAll(List.of(
 				new Admin("Emilio Botín"),
 				new Admin("Tio Gilito"),
 				new Admin("Luis Bàrcenas")));
 
-		accountHolderRepository.saveAll(List.of(
-				new AccountHolder("Max Bonas", LocalDate.of(1989, 3, 22),
-						new Address("Anselm Clave 7", "Corbera de Llobregat", "08757"),
-						new Address("Carrer Caceres 26", "Barcelona", "08021")),
-				//TODO porque no me deja poner un codigo postal con 0 delante
-				new AccountHolder("Bill Adama", LocalDate.of(1943, 10, 30),
-						new Address("Palm Springs st 89", "Miami", "64532"), null),
-				new AccountHolder("Kara Thrace", LocalDate.of(1975, 8, 2),
-						new Address("Turette ave. 1265", "L.A.", "867-563"), null)));
-
 		thirdPartyRepository.saveAll(List.of(
 				new ThirdParty("Zara .ORG", "UJYGFjhgfvjghFV764576FG"),
 				new ThirdParty("Aldi Inc.", "jhvfjgjg563465DYHhfv"),
 				new ThirdParty("Audi .s.a", "JHGFJHUG7654FVghjhg")));
+
+		Checking checking1 = new Checking(new Money(BigDecimal.valueOf(1010.13)), accountHolder1, null);
+		Checking checking2 = new Checking(new Money(BigDecimal.valueOf(23002.23)), accountHolder3, accountHolder2);
+		Checking checking3 = new Checking(new Money(BigDecimal.valueOf(53)), accountHolder5, accountHolder4);
+		checkingRepository.saveAll(List.of(checking1, checking2, checking3)); // Another way to do it, with other strong points
+
+		creditCardRepository.saveAll(List.of(
+				new CreditCard(new Money(BigDecimal.valueOf(2310.98)), accountHolder4, null),
+				new CreditCard(new Money(BigDecimal.valueOf(250.45)), accountHolder1, accountHolder2),
+				new CreditCard(new Money(BigDecimal.valueOf(12000350)), accountHolder3, accountHolder1)));
+
+		savingsRepository.saveAll(List.of(
+				new Savings(new Money(BigDecimal.valueOf(46023.53)), accountHolder5, null),
+				new Savings(new Money(BigDecimal.valueOf(342.30)), accountHolder3, accountHolder1),
+				new Savings(new Money(BigDecimal.valueOf(2569.32)), accountHolder2, null)));
+
+		studentsCheckingRepository.saveAll(List.of(
+				new StudentsChecking(new Money(BigDecimal.valueOf(7801.21)), accountHolder1, accountHolder4),
+				new StudentsChecking(new Money(BigDecimal.valueOf(1010.00)), accountHolder2, null),
+				new StudentsChecking(new Money(BigDecimal.valueOf(27.90)), accountHolder5, accountHolder3)));
+
 
 	}
 }

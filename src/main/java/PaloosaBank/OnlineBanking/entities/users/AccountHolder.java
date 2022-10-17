@@ -3,6 +3,7 @@ package PaloosaBank.OnlineBanking.entities.users;
 import PaloosaBank.OnlineBanking.embedables.Address;
 import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.accounts.Account;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
@@ -27,27 +28,21 @@ public class AccountHolder extends User{
     private Address mailingAddress; // (Optional)
 
     @OneToMany(mappedBy = "primaryOwner")
+    @JsonIgnore
     private List<Account> primaryAccountList;
 
-//    @OneToMany(mappedBy = "secondaryOwner")
-//    private List<Account> secondaryAccountList;  //TODO {No estoy seguro de que tenga que existir
-    private Money monthlySpended = new Money(BigDecimal.valueOf(0));
+    @OneToMany(mappedBy = "secondaryOwner")
+    @JsonIgnore
+    private List<Account> secondaryAccountList;  //TODO {No estoy seguro de que tenga que existir
+    private Money monthlySpended = new Money(BigDecimal.valueOf(0)); //Todo como plantear esta suma en cada transaccion
 
     public AccountHolder(String name, LocalDate dateOfBirth, Address primaryAddress, Address mailingAddress) { // TODO aqui no va el monthly, no?
         super(name);
         this.dateOfBirth = dateOfBirth;
         this.primaryAddress = primaryAddress;
         this.mailingAddress = mailingAddress;
-        //TODO Aqui iria la lista?
     }
 
-//    public AccountHolder(String name, LocalDate dateOfBirth, Address primaryAddress) { // TODO aqui no va el monthly, no?
-//        super(name);
-//        this.dateOfBirth = dateOfBirth;
-//        this.primaryAddress = primaryAddress;
-//        this.monthlySpended = new Money(BigDecimal.valueOf(0)); // TODO Constructor sin el address opcional?
-//        //TODO Aqui iria la lista?
-//    }
 
     public AccountHolder() {
     }

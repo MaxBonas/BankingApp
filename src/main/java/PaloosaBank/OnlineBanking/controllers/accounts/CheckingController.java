@@ -1,14 +1,13 @@
 package PaloosaBank.OnlineBanking.controllers.accounts;
 
+import PaloosaBank.OnlineBanking.DTOs.accounts.AccountDTO;
 import PaloosaBank.OnlineBanking.controllers.accounts.interfaces.CheckingControllerInterface;
 import PaloosaBank.OnlineBanking.entities.accounts.Checking;
 import PaloosaBank.OnlineBanking.services.accounts.interfaces.AccountServiceInterface;
 import PaloosaBank.OnlineBanking.services.accounts.interfaces.CheckingServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,13 +18,17 @@ public class CheckingController implements CheckingControllerInterface {
     CheckingServiceInterface checkingServiceInterface;
 
     @Override
-    public Checking addChecking(Checking checking) {
-        return null;
+    @PostMapping("/checking_account")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Checking addChecking(AccountDTO checking) {
+        return checkingServiceInterface.addChecking(checking);
     }
 
     @Override
+    @GetMapping("/checking_account/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public Checking getCheckingById(Long id) {
-        return null;
+        return checkingServiceInterface.getCheckingById(id);
     }
 
     @Override
@@ -36,7 +39,9 @@ public class CheckingController implements CheckingControllerInterface {
     }
 
     @Override
-    public Checking updateChecking(Long id, Checking checking) {
-        return null;
+    @PutMapping("/checking_account/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public Checking updateChecking(@PathVariable Long id, @RequestBody AccountDTO checking) {
+        return checkingServiceInterface.updateChecking(id, checking);
     }
 }
