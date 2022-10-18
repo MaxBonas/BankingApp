@@ -1,5 +1,7 @@
 package PaloosaBank.OnlineBanking.services.users.interfaces;
 
+import PaloosaBank.OnlineBanking.embedables.Money;
+import PaloosaBank.OnlineBanking.entities.accounts.Account;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 
 import java.util.List;
@@ -11,5 +13,5 @@ public interface AccountHolderServiceInterface {
     List<AccountHolder> getAllAccountHolders();
     AccountHolder updateAccountHolder(Long id, AccountHolder accountHolder);
 
-
+    List<Account> transferAccountHolderAnyAccount(Long accountOutId, Long accountInId, Money balance, String secretKey);
 }

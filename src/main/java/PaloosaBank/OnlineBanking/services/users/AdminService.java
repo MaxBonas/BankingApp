@@ -2,6 +2,7 @@ package PaloosaBank.OnlineBanking.services.users;
 
 import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.accounts.Account;
+import PaloosaBank.OnlineBanking.entities.accounts.Checking;
 import PaloosaBank.OnlineBanking.entities.users.Admin;
 import PaloosaBank.OnlineBanking.repositories.accounts.AccountRepository;
 import PaloosaBank.OnlineBanking.repositories.users.AdminRepository;
@@ -48,6 +49,18 @@ public class AdminService implements AdminServiceInterface {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This Admin doesn't exist");
 
         return adminRepository.save(admin);
+    }
+
+    @Override
+    public Account adminGetAccountById(Long id) {
+        return accountRepository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "There is no Account with the given id."));
+    }
+
+    @Override
+    public List<Account> adminGetAllAccounts() {
+        return accountRepository.findAll();
     }
 
     @Override

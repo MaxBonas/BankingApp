@@ -12,4 +12,5 @@ public interface AccountServiceInterface {
 
     Account patchThirdPartyAnyAccountBalance(Long id, Money balance, String hashkey);
     Account patchAdminAnyAccountBalance(Long id, Money balance);
+    List<Account> transferAccountHolderAnyAccount(Long accountOutId, Long accountInId, Money balance, String secretKey);
 }

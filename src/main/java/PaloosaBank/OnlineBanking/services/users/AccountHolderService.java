@@ -2,6 +2,7 @@ package PaloosaBank.OnlineBanking.services.users;
 
 import PaloosaBank.OnlineBanking.embedables.Address;
 import PaloosaBank.OnlineBanking.embedables.Money;
+import PaloosaBank.OnlineBanking.entities.accounts.Account;
 import PaloosaBank.OnlineBanking.entities.accounts.StudentsChecking;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 import PaloosaBank.OnlineBanking.repositories.accounts.AccountRepository;
@@ -20,6 +21,9 @@ public class AccountHolderService implements AccountHolderServiceInterface {
 
     @Autowired
     AccountHolderRepository accountHolderRepository;
+
+    @Autowired
+    AccountRepository accountRepository;
 
     @Override
     public AccountHolder addAccountHolder(AccountHolder accountHolder) {
@@ -49,5 +53,23 @@ public class AccountHolderService implements AccountHolderServiceInterface {
         return accountHolderRepository.save(accountHolder);
     }
 
+    @Override
+    public List<Account> transferAccountHolderAnyAccount(Long accountOutId, Long accountInId, Money balance, String secretKey) {
+        Account accountOut = accountRepository.findById(accountOutId).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "The Account Id of the Sender doesn't exist."));
+        Account accountIn = accountRepository.findById(accountInId).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "The Account Id of the Receiver doesn't exist."));
+//        //Todo. hace falta tener en cuenta si el pago es en otra currency? con un if?
+        if (accountRepository.findBySecretKey(secretKey).isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "The password doesn't match with the system.");
+        }
+        if (accountOut.getBalance().getAmount().compareTo(balance.getAmount()) < 0) {
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "This Account don't have enough founds.");
+        }
+
+        accountOut.setBalance(new Money(accountOut.getBalance().decreaseAmount(balance.getAmount())));
+        accountIn.setBalance(new Money(accountIn.getBalance().increaseAmount(balance.getAmount())));
+        return accountRepository.saveAll(List.of(accountOut, accountIn));
+    }
 
 }

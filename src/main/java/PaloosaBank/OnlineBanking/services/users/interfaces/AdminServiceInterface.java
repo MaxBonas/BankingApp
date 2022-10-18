@@ -13,5 +13,7 @@ public interface AdminServiceInterface {
     List<Admin> getAllAdmins();
     Admin updateAdmin(Long id, Admin admin);
 
+    Account adminGetAccountById(Long id);
+    List<Account> adminGetAllAccounts();
     Account patchAdminAnyAccountBalance(Long accountId, Money balance);
 }

@@ -3,6 +3,7 @@ package PaloosaBank.OnlineBanking.services.accounts;
 import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.accounts.Account;
 import PaloosaBank.OnlineBanking.repositories.accounts.AccountRepository;
+import PaloosaBank.OnlineBanking.repositories.users.AccountHolderRepository;
 import PaloosaBank.OnlineBanking.repositories.users.ThirdPartyRepository;
 import PaloosaBank.OnlineBanking.services.accounts.interfaces.AccountServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,9 @@ public class AccountService implements AccountServiceInterface {
 
     @Autowired
     ThirdPartyRepository thirdPartyRepository;
+
+    @Autowired
+    AccountHolderRepository accountHolderRepository;
 
     @Override
     public Account getAccountById(Long id) {  // todo. No entiendo fallo. Pero... hace falta?
@@ -63,5 +67,24 @@ public class AccountService implements AccountServiceInterface {
 
         account1.setBalance(new Money(account1.getBalance().decreaseAmount(balance.getAmount())));
         return accountRepository.save(account1);
+    }
+
+    @Override
+    public List<Account> transferAccountHolderAnyAccount(Long accountOutId, Long accountInId, Money balance, String secretKey) {
+        Account accountOut = accountRepository.findById(accountOutId).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "The Account Id of the Sender doesn't exist."));
+        Account accountIn = accountRepository.findById(accountInId).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "The Account Id of the Receiver doesn't exist."));
+//        //Todo. hace falta tener en cuenta si el pago es en otra currency? con un if?
+        if (accountRepository.findBySecretKey(secretKey).isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "The password doesn't match with the system.");
+        }
+        if (accountOut.getBalance().getAmount().compareTo(balance.getAmount()) < 0) {
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "This Account don't have enough founds.");
+        }
+
+        accountOut.setBalance(new Money(accountOut.getBalance().decreaseAmount(balance.getAmount())));
+        accountIn.setBalance(new Money(accountIn.getBalance().increaseAmount(balance.getAmount())));
+        return accountRepository.saveAll(List.of(accountOut, accountIn));
     }
 }

@@ -3,6 +3,8 @@ package PaloosaBank.OnlineBanking.entities.accounts;
 import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 import PaloosaBank.OnlineBanking.enums.Status;
+import PaloosaBank.OnlineBanking.tools.PasswordHelper;
+
 import javax.validation.constraints.NotNull;
 
 import javax.persistence.*;
@@ -21,7 +23,7 @@ public abstract class Account {
 //    @DecimalMin("-2500.00") // todo a revisar. no cuentas con currency
     private Money balance; //TODO en el primer parametro con columnas repetidas no hace falta @AttributeOverride..
 
-//    private int secretKey; //TODO { Quiza se usa. Si no es del authen de Postman
+    private String secretKey;
 
     @NotNull
 //    @NotBlank
@@ -48,6 +50,7 @@ public abstract class Account {
         this.secondaryOwner = secondaryOwner;
         this.creationDate = LocalDate.now();
         this.status = Status.ACTIVE; // Quiza lo tocas para la validacion de cuentas
+        this.secretKey = PasswordHelper.generatePassword();
     }
 
     public Account() {
@@ -99,5 +102,13 @@ public abstract class Account {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public String getSecretKey() {
+        return secretKey;
+    }
+
+    public void setSecretKey(String secretKey) {
+        this.secretKey = secretKey;
     }
 }

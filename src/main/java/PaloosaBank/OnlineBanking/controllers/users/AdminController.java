@@ -86,6 +86,20 @@ public class AdminController implements AdminControllerInterface {
 //    }
 
     @Override
+    @GetMapping("/admin/account/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public Account adminGetAccountById(Long id) {
+        return accountServiceInterface.getAccountById(id);
+    }
+
+    @Override
+    @GetMapping("/admin/accounts")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Account> adminGetAllAccounts() {
+        return accountServiceInterface.getAllAccounts();
+    }
+
+    @Override
     @PatchMapping("/admin/reduce_balance_account")  // todo iria aqui o solo en account?
     @ResponseStatus(HttpStatus.ACCEPTED)
     public Account patchAdminAnyAccountBalance(@RequestParam Long accountId, @RequestParam BigDecimal balance) {

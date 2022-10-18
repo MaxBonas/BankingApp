@@ -120,9 +120,10 @@ public class OnlineBankingApplication implements CommandLineRunner {
 // Todo: HashKey ThirdParty, how works?
 //        todo requestheader haskey? --
 // Todo: Revisar Validates
-// Todo: Secretkey accounts, how works? is security?
-// Todo: PatchBalanceAnyAccount (Account). Donde va? se repite?
+// Todo: Secretkey accounts, how works? is security? deberia estar en el DTO? deberia encryptarse?
+// Todo: PatchBalanceAnyAccount (Account). Donde va? se repite? CASI ACABADO
 // Todo: Transfer Method. General in Account or Account Holder... OR specific in each account type?
+        // todo "message": "No converter found capable of converting from type [PaloosaBank.OnlineBanking.entities.accounts.Checking] to type [PaloosaBank.OnlineBanking.entities.users.ThirdParty]", "path": "/account_holder/transfer_amount_account"
 // Todo: MonthlySpended. confirm How works
 // Todo: < 24 creation account method
 // Todo: Credit Limit. Confirm how works
