@@ -51,4 +51,17 @@ public class AccountService implements AccountServiceInterface {
         account1.setBalance(new Money(account1.getBalance().decreaseAmount(balance.getAmount())));
         return accountRepository.save(account1);
     }
+
+    @Override  // todo SI SE REPITEN ENTRE ACCOUNT, THIRDPARTY Y ADMIN PETA
+    public Account patchAdminAnyAccountBalance(Long id, Money balance) {
+        Account account1 = accountRepository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND));
+//        //Todo. hace falta tener en cuenta si el pago es en otra currency? con un if?
+        if (account1.getBalance().getAmount().compareTo(balance.getAmount()) < 0) {
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "This Account don't have enough founds.");
+        }
+
+        account1.setBalance(new Money(account1.getBalance().decreaseAmount(balance.getAmount())));
+        return accountRepository.save(account1);
+    }
 }

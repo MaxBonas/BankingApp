@@ -52,10 +52,10 @@ public class ThirdPartyController implements ThirdPartyControllerInterface {
     }
 
     @Override
-    @PatchMapping("/third_party/payments_account")  // todo iria aqui o solo en account?
+    @PatchMapping("/third_party/reduce_balance_account")  // todo iria aqui o solo en account?
     @ResponseStatus(HttpStatus.ACCEPTED)
     public Account patchThirdPartyAnyAccountBalance(@RequestParam Long accountId, @RequestParam BigDecimal balance, @RequestHeader String hashkey) {
         Money balance1 = new Money(balance);
-        return accountServiceInterface.patchThirdPartyAnyAccountBalance(accountId, balance1, hashkey); // todo requestheader haskey
+        return accountServiceInterface.patchThirdPartyAnyAccountBalance(accountId, balance1, hashkey);
     }
 }

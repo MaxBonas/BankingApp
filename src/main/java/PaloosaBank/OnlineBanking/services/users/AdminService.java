@@ -1,5 +1,7 @@
 package PaloosaBank.OnlineBanking.services.users;
 
+import PaloosaBank.OnlineBanking.embedables.Money;
+import PaloosaBank.OnlineBanking.entities.accounts.Account;
 import PaloosaBank.OnlineBanking.entities.users.Admin;
 import PaloosaBank.OnlineBanking.repositories.accounts.AccountRepository;
 import PaloosaBank.OnlineBanking.repositories.users.AdminRepository;
@@ -16,6 +18,9 @@ public class AdminService implements AdminServiceInterface {
 
     @Autowired
     AdminRepository adminRepository;
+
+    @Autowired
+    AccountRepository accountRepository;
 
     @Override
     public Admin addAdmin(Admin admin) {
@@ -43,5 +48,18 @@ public class AdminService implements AdminServiceInterface {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This Admin doesn't exist");
 
         return adminRepository.save(admin);
+    }
+
+    @Override
+    public Account patchAdminAnyAccountBalance(Long id, Money balance) {
+        Account account1 = accountRepository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND));
+//        //Todo. hace falta tener en cuenta si el pago es en otra currency? con un if?
+        if (account1.getBalance().getAmount().compareTo(balance.getAmount()) < 0) {
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "This Account don't have enough founds.");
+        }
+
+        account1.setBalance(new Money(account1.getBalance().decreaseAmount(balance.getAmount())));
+        return accountRepository.save(account1);
     }
 }

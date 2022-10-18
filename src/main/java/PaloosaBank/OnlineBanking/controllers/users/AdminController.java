@@ -1,6 +1,7 @@
 package PaloosaBank.OnlineBanking.controllers.users;
 
 import PaloosaBank.OnlineBanking.controllers.users.interfaces.AdminControllerInterface;
+import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.accounts.Account;
 import PaloosaBank.OnlineBanking.entities.accounts.CreditCard;
 import PaloosaBank.OnlineBanking.entities.users.Admin;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -22,6 +24,9 @@ public class AdminController implements AdminControllerInterface {
 
     @Autowired
     CreditCardServiceInterface creditCardServiceInterface; //TODO Es necesario aqui para que admin controle?
+
+    @Autowired
+    AccountServiceInterface accountServiceInterface;
 
     @Override
     @PostMapping("/admin")
@@ -80,7 +85,13 @@ public class AdminController implements AdminControllerInterface {
 //        return creditCardServiceInterface.getCreditCardById(id);
 //    }
 
-
+    @Override
+    @PatchMapping("/admin/reduce_balance_account")  // todo iria aqui o solo en account?
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public Account patchAdminAnyAccountBalance(@RequestParam Long accountId, @RequestParam BigDecimal balance) {
+        Money balance1 = new Money(balance);
+        return accountServiceInterface.patchAdminAnyAccountBalance(accountId, balance1);
+    }
 
 
 }
