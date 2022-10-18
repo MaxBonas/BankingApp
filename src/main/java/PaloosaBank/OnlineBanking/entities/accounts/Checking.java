@@ -14,25 +14,25 @@ import java.time.LocalDate;
 public class Checking extends Account{
 
     @Embedded
-    @NotBlank(message = "This field can't be blank")
+//    @NotBlank(message = "This field can't be blank")
     @NotNull(message = "This field can't be null")
     @AttributeOverrides({
             @AttributeOverride(name="currency", column = @Column(name = "minimum_currency")),
             @AttributeOverride(name = "amount", column = @Column(name = "minimum_amount"))
     })
-    private Money minimumBalance = new Money(BigDecimal.valueOf(250));//TODO en el primero no hace falta @Attribute..
+    private Money minimumBalance = new Money(BigDecimal.valueOf(250));
 
     @Embedded
-    @NotBlank(message = "This field can't be blank")
+//    @NotBlank(message = "This field can't be blank")
     @NotNull(message = "This field can't be null")
     @AttributeOverrides({
             @AttributeOverride(name="currency", column = @Column(name = "fee_currency")),
             @AttributeOverride(name = "amount", column = @Column(name = "fee_amount"))
     })
-    private Money penaltyFee = new Money(BigDecimal.valueOf(40));
+    private final Money penaltyFee = new Money(BigDecimal.valueOf(40));
 
     @Embedded
-    @NotBlank(message = "This field can't be blank")
+//    @NotBlank(message = "This field can't be blank")
     @NotNull(message = "This field can't be null")
     @AttributeOverrides({
             @AttributeOverride(name="currency", column = @Column(name = "monthly_currency")),
@@ -58,10 +58,6 @@ public class Checking extends Account{
 
     public Money getPenaltyFee() {
         return penaltyFee;
-    }
-
-    public void setPenaltyFee(Money penaltyFee) {
-        this.penaltyFee = penaltyFee;
     }
 
     public Money getMonthlyMaintenanceFee() {

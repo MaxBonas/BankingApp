@@ -81,7 +81,7 @@ public class OnlineBankingApplication implements CommandLineRunner {
 				new Address("Crisol ave. 365", "New York", "46266"),
 				null);
 		accountHolderRepository.saveAll(List.of(accountHolder1, accountHolder2, accountHolder3, accountHolder4, accountHolder5,
-				accountHolder6));
+				accountHolder6));   // Another way to do it, with other strong points
 
 		adminRepository.saveAll(List.of(
 				new Admin("Emilio Botín"),
@@ -93,10 +93,10 @@ public class OnlineBankingApplication implements CommandLineRunner {
 				new ThirdParty("Aldi Inc."),
 				new ThirdParty("Audi .s.a")));
 
-		Checking checking1 = new Checking(new Money(BigDecimal.valueOf(1010.13)), accountHolder1, null);
-		Checking checking2 = new Checking(new Money(BigDecimal.valueOf(23002.23)), accountHolder3, accountHolder2);
-		Checking checking3 = new Checking(new Money(BigDecimal.valueOf(53)), accountHolder5, accountHolder4);
-		checkingRepository.saveAll(List.of(checking1, checking2, checking3)); // Another way to do it, with other strong points
+		checkingRepository.saveAll(List.of(
+				new Checking(new Money(BigDecimal.valueOf(1010.13)), accountHolder1, null),
+				new Checking(new Money(BigDecimal.valueOf(23002.23)), accountHolder3, accountHolder2),
+				new Checking(new Money(BigDecimal.valueOf(53)), accountHolder5, accountHolder4)));
 
 		creditCardRepository.saveAll(List.of(
 				new CreditCard(new Money(BigDecimal.valueOf(2310.98)), accountHolder4, null),
@@ -116,4 +116,22 @@ public class OnlineBankingApplication implements CommandLineRunner {
 
 	}
 }
+
+// Todo: HashKey ThirdParty, how works?
+//        todo requestheader haskey? --
+// Todo: Revisar Validates
+// Todo: Secretkey accounts, how works? is security?
+// Todo: PatchBalanceAnyAccount (Account). Donde va? se repite?
+// Todo: Transfer Method. General in Account or Account Holder... OR specific in each account type?
+// Todo: MonthlySpended. confirm How works
+// Todo: < 24 creation account method
+// Todo: Credit Limit. Confirm how works
+// Todo: Interested rate (CreditCard) confirm how works
+// Todo: Penalty Fee confirm how works. Como resta?
+// Todo: minimum balance. confirm how works
+// Todo: GetAbstractById (Account) hace falta?
+// Todo: Revisar Controllers
+// Todo: Revisar Services
+
+
 

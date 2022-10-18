@@ -48,9 +48,6 @@ public class AccountHolderService implements AccountHolderServiceInterface {
 
         return accountHolderRepository.save(accountHolder);
     }
-}
 
-//if (accountHolderRepository.findById(accountHolder.getId()).isPresent())
-//        throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
-//        "An Account Holder with this id already exist.");
-//        return accountHolderRepository.save(accountHolder);
+
+}

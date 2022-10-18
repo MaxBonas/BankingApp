@@ -16,10 +16,10 @@ import java.time.LocalDate;
 public class CreditCard extends Account{
 
     @Embedded
-    @NotBlank(message = "This field can't be blank")
+//    @NotBlank(message = "This field can't be blank")
     @NotNull(message = "This field can't be null")
-    @DecimalMin(value = "100.00", message = "The minimum value for the Credit Limit is 100.00")
-    @DecimalMax(value = "100000.00", message = "The minimum value for the Credit Limit is 100000.00")
+//    @DecimalMin(value = "100.00", message = "The minimum value for the Credit Limit is 100.00")
+//    @DecimalMax(value = "100000.00", message = "The minimum value for the Credit Limit is 100000.00")
     @AttributeOverrides({
             @AttributeOverride(name="currency", column = @Column(name = "credit_limit_currency")),
             @AttributeOverride(name = "amount", column = @Column(name = "credit_limit_amount"))
@@ -27,7 +27,7 @@ public class CreditCard extends Account{
     private Money creditLimit = new Money(BigDecimal.valueOf(100));
 
     @Embedded
-    @NotBlank(message = "This field can't be blank")
+//    @NotBlank(message = "This field can't be blank")
     @NotNull(message = "This field can't be null")
     @AttributeOverrides({
             @AttributeOverride(name="currency", column = @Column(name = "fee_currency")),
@@ -35,11 +35,11 @@ public class CreditCard extends Account{
     })
     private Money penaltyFee = new Money(BigDecimal.valueOf(40));
 
-    @NotBlank(message = "This field can't be blank")
+//    @NotBlank(message = "This field can't be blank")
     @NotNull(message = "This field can't be null")
-    @DecimalMax(value = "0,2", message = "The Interest Rate can't be higher that 0,2%")
-    @DecimalMin(value = "0,1", message = "The Interest Rate can't be higher that 0,1%")
-    private double interestRate = 0.2;
+//    @DecimalMax(value = "0,2", message = "The Interest Rate can't be higher that 0,2%")
+//    @DecimalMin(value = "0,1", message = "The Interest Rate can't be higher that 0,1%")
+    private Double interestRate = 0.2;
 
     public CreditCard(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner) {
         super(balance, primaryOwner, secondaryOwner);
@@ -65,11 +65,11 @@ public class CreditCard extends Account{
         this.penaltyFee = penaltyFee;
     }
 
-    public double getInterestRate() {
+    public Double getInterestRate() {
         return interestRate;
     }
 
-    public void setInterestRate(double interestRate) {
+    public void setInterestRate(Double interestRate) {
         this.interestRate = interestRate;
     }
 }

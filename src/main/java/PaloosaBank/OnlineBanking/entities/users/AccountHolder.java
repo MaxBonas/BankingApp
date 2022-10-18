@@ -15,10 +15,10 @@ import java.util.List;
 @Entity
 public class AccountHolder extends User{
 
-    @NotBlank(message = "This field can't be blank")
+//    @NotBlank(message = "This field can't be blank")
     @NotNull(message = "This field can't be null")
     private LocalDate dateOfBirth;
-    @NotBlank(message = "This field can't be blank")
+//    @NotBlank(message = "This field can't be blank")
     @NotNull(message = "This field can't be null") // Esto me permitira dejar la secondary nula o no
     @Embedded
     private Address primaryAddress;
@@ -29,10 +29,10 @@ public class AccountHolder extends User{
             @AttributeOverride(name="city", column = @Column(name = "city2")),
             @AttributeOverride(name = "postalCode", column = @Column(name = "postcode2"))
     })
-    private Address mailingAddress; // (Optional)
+    private Address mailingAddress;
 
-    @NotBlank(message = "This field can't be blank")
-    @NotNull(message = "This field can't be null")
+//    @NotBlank(message = "This field can't be blank")
+//    @NotNull(message = "This field can't be null") // todo revisar esto!
     @OneToMany(mappedBy = "primaryOwner")
     @JsonIgnore
     private List<Account> primaryAccountList;
@@ -40,7 +40,8 @@ public class AccountHolder extends User{
     @OneToMany(mappedBy = "secondaryOwner")
     @JsonIgnore
     private List<Account> secondaryAccountList;  //TODO {No estoy seguro de que tenga que existir
-    @NotBlank(message = "This field can't be blank")
+
+//    @NotBlank(message = "This field can't be blank")
     @NotNull(message = "This field can't be null")
     private Money monthlySpended = new Money(BigDecimal.valueOf(0)); //Todo como plantear esta suma en cada transaccion
 

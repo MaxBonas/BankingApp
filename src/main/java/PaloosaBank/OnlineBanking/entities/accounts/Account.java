@@ -18,12 +18,13 @@ public abstract class Account {
     private Long id;
 
     @NotNull
-    @DecimalMin("-2500.00")
-    private Money balance;
+//    @DecimalMin("-2500.00") // todo a revisar. no cuentas con currency
+    private Money balance; //TODO en el primer parametro con columnas repetidas no hace falta @AttributeOverride..
+
 //    private int secretKey; //TODO { Quiza se usa. Si no es del authen de Postman
 
     @NotNull
-    @NotBlank
+//    @NotBlank
     @ManyToOne
     @JoinColumn(name = "primary_owner_ID")
     private AccountHolder primaryOwner;
@@ -33,11 +34,11 @@ public abstract class Account {
     private AccountHolder secondaryOwner;
 
     @NotNull
-    @NotBlank
+//    @NotBlank
     private LocalDate creationDate;
 
     @NotNull
-    @NotBlank
+//    @NotBlank
     private Status status;
 
     public Account(Money balance, AccountHolder primaryOwner,

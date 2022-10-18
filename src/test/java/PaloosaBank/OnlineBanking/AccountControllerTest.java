@@ -8,6 +8,7 @@ import PaloosaBank.OnlineBanking.repositories.accounts.CreditCardRepository;
 
 import PaloosaBank.OnlineBanking.repositories.users.AccountHolderRepository;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -59,18 +60,22 @@ public class AccountControllerTest {
 
 
 
-        AccountDTO accountDTOTest = new AccountDTO(1L, accountHolderTest1.getId(), 5000D,
+        AccountDTO accountDTOTest = new AccountDTO(1L, accountHolderTest1.getId(), 523123D,
                 null, null, null, null );
 
 
         String body = objectMapper.writeValueAsString(accountDTOTest);
 
-        MvcResult mvcResult = mockMvc.perform(post("/credit_card").content(body).
+        MvcResult mvcResult = mockMvc.perform(post("/admin/credit_card").content(body).
                 contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated()).andReturn();
-//        creditCardRepository.fi
-        System.err.println(mvcResult.getResponse());
 
-//        Long id = mvcResult.getResponse().
-//        assertTrue(creditCardRepository.findById(id).isPresent());
+//        assertTrue(mvcResult.getResponse().getContentAsString().contains("523123"));
+
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode tree = mapper.readTree(mvcResult.getResponse().getContentAsString());
+        JsonNode node = tree.get("id");
+        Long id = node.asLong();
+
+        assertTrue(accountHolderRepository.findById(id).isPresent());
     }
 }
