@@ -17,16 +17,6 @@ public class UserController implements UserControllerInterface {
     @Autowired
     UserServiceInterface userServiceInterface;
 
-    @Override
-    public User getUserById(Long id) {
-        return null;
-    }
 
-    @Override
-    @GetMapping("/users")
-    @ResponseStatus(HttpStatus.OK)
-    public List<User> getAllUsers() {
-        return userServiceInterface.getAllUsers();
-    }
 
 }

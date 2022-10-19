@@ -19,24 +19,27 @@ public interface AdminControllerInterface {
 
     ThirdParty addThirdParty(ThirdParty thirdParty);
     ThirdParty getThirdPartyById(Long id);
-    List<ThirdParty> adminGetAllThirdPartys();
+    List<ThirdParty> getAllThirdPartys();
     ThirdParty updateThirdParty(Long id, ThirdParty thirdParty);
     AccountHolder addAccountHolder(AccountHolder accountHolder);
-    AccountHolder getAccountHolderyById(Long id);
-    List<AccountHolder> adminGetAllAccountHolders();
+    AccountHolder getAccountHolderById(Long id);
+    List<AccountHolder> getAllAccountHolders();
     AccountHolder updateAccountHolder(Long id, AccountHolder accountHolder);
-    User deleteUser(Long id);
+    String deleteUserById(Long id);
 
     Checking addChecking(AccountPostDTO checking);
     CreditCard addCreditCard(AccountPostDTO creditCard);
     Savings addSavings(AccountPostDTO savings);
     StudentsChecking addStudentsChecking(AccountPostDTO studentsChecking);
 
-    Account addAccount(AccountPostDTO account);
+//    Account addAccount(AccountPostDTO account); // todo esto que?
     Account getAccountById(Long id);
-    List<Account> adminGetAllAccounts();
+
+    List<Account> getAllAccounts();
     Account updateAccount(Long id, AccountPostDTO account);
-    Account deleteAccount(Long id);
+
+    String deleteAccountById(Long id);
+
     Account patchAdminAnyAccountBalance(Long accountId, BigDecimal balance);
     Account patchStatusAccount (Long id);
 

@@ -6,6 +6,4 @@ import PaloosaBank.OnlineBanking.entities.accounts.StudentsChecking;
 import java.util.List;
 
 public interface StudentsCheckingControllerInterface {
-
-    StudentsChecking updateStudentsChecking(Long id, AccountPostDTO studentsChecking);
 }

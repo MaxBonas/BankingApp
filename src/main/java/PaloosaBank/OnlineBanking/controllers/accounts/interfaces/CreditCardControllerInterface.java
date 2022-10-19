@@ -7,7 +7,5 @@ import java.util.List;
 
 public interface CreditCardControllerInterface {
 
-//    CreditCard addCreditCard(AccountDTO creditCard);
 
-    CreditCard updateCreditCard(Long id, AccountPostDTO creditCard);
 }

@@ -47,6 +47,21 @@ public class AccountService implements AccountServiceInterface {
     }
 
     @Override
+    public Account updateAccount(Long id, AccountPostDTO account) {
+        return null;
+    }
+
+    @Override
+    public Account deleteAccount(Long id) {
+        return null;
+    }
+
+    @Override
+    public Account patchStatusAccount(Long id) {
+        return null;
+    }
+
+    @Override
     public Account getAccountById(Long id) {
         return accountRepository.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND,
@@ -105,4 +120,13 @@ public class AccountService implements AccountServiceInterface {
         accountRepository.save(accountIn);
         return transferDTO;
     }
+
+    @Override
+    public BigDecimal getBalanceAccountAccountHolder(Long id) {
+        Account account1 = accountRepository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "An Account with the given id doesn't exist"));
+        return account1.getBalance().getAmount();
+    }
+
 }

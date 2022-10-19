@@ -16,31 +16,31 @@ public class SavingsController implements SavingsControllerInterface {
     @Autowired
     SavingsServiceInterface savingsServiceInterface;
 
-    @Override
-    @PostMapping("/admin/savings")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Savings addSavings(AccountPostDTO savings) {
-        return savingsServiceInterface.addSavings(savings);
-    }
-
-    @Override
-    @GetMapping("/savings/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public Savings getSavingsById(Long id) {
-        return savingsServiceInterface.getSavingsById(id);
-    }
-
-    @Override
-    @GetMapping("/savings")
-    @ResponseStatus(HttpStatus.OK)
-    public List<Savings> getAllSavings() {
-        return savingsServiceInterface.getAllSavings();
-    }
-
-    @Override
-    @PutMapping("/admin/savings/{id}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public Savings updateSavings(@PathVariable Long id, @RequestBody AccountPostDTO savings) {
-        return savingsServiceInterface.updateSavings(id, savings);
-    }
+//    @Override
+//    @PostMapping("/admin/savings")
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public Savings addSavings(AccountPostDTO savings) {
+//        return savingsServiceInterface.addSavings(savings);
+//    }
+//
+//    @Override
+//    @GetMapping("/savings/{id}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public Savings getSavingsById(Long id) {
+//        return savingsServiceInterface.getSavingsById(id);
+//    }
+//
+//    @Override
+//    @GetMapping("/savings")
+//    @ResponseStatus(HttpStatus.OK)
+//    public List<Savings> getAllSavings() {
+//        return savingsServiceInterface.getAllSavings();
+//    }
+//
+//    @Override
+//    @PutMapping("/admin/savings/{id}")
+//    @ResponseStatus(HttpStatus.ACCEPTED)
+//    public Savings updateSavings(@PathVariable Long id, @RequestBody AccountPostDTO savings) {
+//        return savingsServiceInterface.updateSavings(id, savings);
+//    }
 }

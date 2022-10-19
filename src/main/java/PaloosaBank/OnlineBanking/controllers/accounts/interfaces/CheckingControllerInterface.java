@@ -7,5 +7,4 @@ import java.util.List;
 
 public interface CheckingControllerInterface {
 
-//    Checking updateChecking(Long id, AccountPostDTO checking);
 }

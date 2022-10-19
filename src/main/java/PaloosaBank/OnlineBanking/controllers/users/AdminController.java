@@ -3,8 +3,7 @@ package PaloosaBank.OnlineBanking.controllers.users;
 import PaloosaBank.OnlineBanking.DTOs.accounts.AccountPostDTO;
 import PaloosaBank.OnlineBanking.controllers.users.interfaces.AdminControllerInterface;
 import PaloosaBank.OnlineBanking.embedables.Money;
-import PaloosaBank.OnlineBanking.entities.accounts.Account;
-import PaloosaBank.OnlineBanking.entities.accounts.CreditCard;
+import PaloosaBank.OnlineBanking.entities.accounts.*;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 import PaloosaBank.OnlineBanking.entities.users.Admin;
 import PaloosaBank.OnlineBanking.entities.users.ThirdParty;
@@ -28,7 +27,7 @@ public class AdminController implements AdminControllerInterface {
     AdminServiceInterface adminServiceInterface;
 
     @Autowired
-    CreditCardServiceInterface creditCardServiceInterface; //TODO Es necesario aqui para que admin controle?
+    CreditCardServiceInterface creditCardServiceInterface;
 
     @Autowired
     AccountServiceInterface accountServiceInterface;
@@ -80,9 +79,6 @@ public class AdminController implements AdminControllerInterface {
     public Admin updateAdmin(@PathVariable Long id, @RequestBody Admin admin) {
         return adminServiceInterface.updateAdmin(id, admin);
     }
-//    ThirdParty getThirdPartyById(Long id);
-//    List<ThirdParty> adminGetAllThirdPartys();
-//    ThirdParty updateThirdParty();
 
     @Override
     @PostMapping("/admin/third_party")
@@ -92,87 +88,168 @@ public class AdminController implements AdminControllerInterface {
     }
 
     @Override
+    @GetMapping("/admin/third_party/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ThirdParty getThirdPartyById(@PathVariable Long id) {
+        return thirdPartyServiceInterface.getThirdPartyById(id);
+    }
+
+    @Override
+    @GetMapping("/admin/third_partys")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ThirdParty> getAllThirdPartys() {
+        return thirdPartyServiceInterface.getAllThirdPartys();
+    }
+
+    @Override
+    @PutMapping("/admin/third_party/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public ThirdParty updateThirdParty(@PathVariable Long id, @RequestBody ThirdParty thirdParty) {
+        return thirdPartyServiceInterface.updateThirdParty(id, thirdParty);
+    }
+
+    @Override
     @PostMapping("/admin/account_holder")
     @ResponseStatus(HttpStatus.CREATED)
     public AccountHolder addAccountHolder (@RequestBody AccountHolder accountHolder) {
         return accountHolderServiceInterface.addAccountHolder(accountHolder);
     }
 
+
     @Override
-    @PostMapping("/admin/checking_account")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Account addChecking(AccountPostDTO checking) {
-        return checkingServiceInterface.addChecking(checking);
+    @GetMapping("/admin/account_holder/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public AccountHolder getAccountHolderById(@PathVariable Long id) {
+        return accountHolderServiceInterface.getAccountHolderById(id);
     }
 
     @Override
-    @PostMapping("/admin")
+    @GetMapping("/admin/account_holders")
+    @ResponseStatus(HttpStatus.OK)
+    public List<AccountHolder> getAllAccountHolders() {
+        return accountHolderServiceInterface.getAllAccountHolders();
+    }
+
+    @Override
+    @PutMapping("/admin/account_holder/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public AccountHolder updateAccountHolder(@PathVariable Long id, @RequestBody AccountHolder accountHolder) {
+        return accountHolderServiceInterface.updateAccountHolder(id,accountHolder);
+    }
+
+    @Override
+    @DeleteMapping("/admin/user/{id}")
+    @ResponseStatus(value = HttpStatus.ACCEPTED)
+    public String deleteUserById(@PathVariable Long id) {
+        return "This User was deleted correctly.";
+    }
+
+
+    @Override
+    @PostMapping("/admin/checking_account")
     @ResponseStatus(HttpStatus.CREATED)
-    public Admin addAdmin(@RequestBody Admin admin) {
-        return adminServiceInterface.addAdmin(admin);
+    public Checking addChecking(@RequestBody AccountPostDTO checking) {
+        return checkingServiceInterface.addChecking(checking);
     }
 
     @PostMapping("/admin/credit_card")
     @ResponseStatus(HttpStatus.CREATED)
-    //TODO Se tendria que hacer uno de cada accountType o solo uno de account y luego especificar?
     public CreditCard addCreditCard(@RequestBody AccountPostDTO creditCard) {
         return creditCardServiceInterface.addCreditCard(creditCard);
     }
 
     @Override
+    @PostMapping("/admin/savings")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Savings addSavings(@RequestBody AccountPostDTO savings) {
+        return savingsServiceInterface.addSavings(savings);
+    }
+
+    @Override
+    @PostMapping("/admin/students_checking")
+    @ResponseStatus(HttpStatus.CREATED)
+    public StudentsChecking addStudentsChecking(@RequestBody AccountPostDTO studentsChecking) {
+        return studentsCheckingServiceInterface.addStudentsChecking(studentsChecking);
+    }
+
+//    @Override
+//    public Account addAccount(AccountPostDTO account) {
+//        return null;
+//    }
+
+    @Override
     @GetMapping("/admin/account/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Account adminGetAccountById(Long id) {
+    public Account getAccountById(@PathVariable Long id) {
         return accountServiceInterface.getAccountById(id);
     }
+
 
     @Override
     @GetMapping("/admin/accounts")
     @ResponseStatus(HttpStatus.OK)
-    public List<Account> adminGetAllAccounts() {
+    public List<Account> getAllAccounts() {
         return accountServiceInterface.getAllAccounts();
     }
 
     @Override
-    @PatchMapping("/admin/reduce_balance_account")  // todo iria aqui o solo en account?
+    @PutMapping("/admin/account/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public Account patchAdminAnyAccountBalance(@RequestParam Long accountId, @RequestParam BigDecimal balance) {
+    public Account updateAccount(@PathVariable Long id, @RequestBody AccountPostDTO account) {
+        return accountServiceInterface.updateAccount(id, account);
+    }
+
+    @Override
+    @DeleteMapping("/admin/account/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public String deleteAccountById(@PathVariable Long id) {
+        return "This Account was deleted correctly.";
+    }
+
+    @Override
+    @PatchMapping("/admin/reduce_balance_account/{id}")  // todo iria aqui o solo en account?
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public Account patchAdminAnyAccountBalance(@PathVariable Long accountId, @RequestParam BigDecimal balance) {
         Money balance1 = new Money(balance);
         return accountServiceInterface.patchAdminAnyAccountBalance(accountId, balance1);
     }
 
-    @GetMapping("/credit_cards")
-    @ResponseStatus(HttpStatus.OK)
-    public List<CreditCard> getAllCreditCards() {
-        return creditCardServiceInterface.getAllCreditCards();
-    }
-
-    @GetMapping("/credit_card/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public CreditCard getCreditCardById(@PathVariable Long id) {
-        return creditCardServiceInterface.getCreditCardById(id);
+    @Override
+    @PatchMapping("/admin/change_status_account")  // todo iria aqui o solo en account?
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public Account patchStatusAccount(@PathVariable Long id) {
+        return null;
     }
 
 
-
+//    Account patchStatusAccount (Long id);
 //
-//    ThirdParty addThirdParty();
-//    ThirdParty getThirdPartyById(Long id);
-//    List<ThirdParty> adminGetAllThirdPartys();
-//    ThirdParty updateThirdParty();
-//    AccountHolder addAccountHolder();
-//    ThirdParty getThirdPartyById(Long id);
-//    List<AccountHolder> adminGetAllAccountHolders();
-//    AccountHolder updateAccountHolder();
-//    User deleteUser();
 //
-//    Account addAccount();
-//    Account adminGetAccountById(Long id);
-//    List<Account> adminGetAllAccounts();
-//    Account updateAccount();
-//    Account deleteAccount();
-//    Account patchAdminAnyAccountBalance(Long accountId, BigDecimal balance);
-//Account patchStatusAccount (Long id);
+//    @GetMapping("/credit_card/{id}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public CreditCard getCreditCardById(@PathVariable Long id) {
+//        return creditCardServiceInterface.getCreditCardById(id);
+//    }
+//
+//    @Override
+//    @GetMapping("/admin/savings/{id}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public Savings getSavingsById(Long id) {
+//        return savingsServiceInterface.getSavingsById(id);
+//    }
+//
+//    @Override
+//    @GetMapping("/admin/students_checking/{id}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public StudentsChecking getStudentsCheckingById(Long id) {
+//        return studentsCheckingServiceInterface.getStudentsCheckingById(id);
+//    }
+//    @GetMapping("/credit_cards")
+//    @ResponseStatus(HttpStatus.OK)
+//    public List<CreditCard> getAllCreditCards() {
+//        return creditCardServiceInterface.getAllCreditCards();
+//    }
+//
 
     //    createAccount()
 //    showAccounts()

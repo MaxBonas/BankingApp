@@ -22,25 +22,25 @@ public class CreditCardController implements CreditCardControllerInterface {
 //    public CreditCard addCreditCard(@RequestBody AccountDTO creditCard) {
 //        return creditCardServiceInterface.addCreditCard(creditCard);
 //    }
-
-    @Override
-    @GetMapping("/credit_card/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public CreditCard getCreditCardById(@PathVariable Long id) {
-        return creditCardServiceInterface.getCreditCardById(id);
-    }
-
-    @Override
-    @GetMapping("/credit_cards")
-    @ResponseStatus(HttpStatus.OK)
-    public List<CreditCard> getAllCreditCards() {
-        return creditCardServiceInterface.getAllCreditCards();
-    }
-
-    @Override
-    @PutMapping("/admin/credit_card/{id}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public CreditCard updateCreditCard(@PathVariable Long id, @RequestBody AccountPostDTO creditCard) {
-        return creditCardServiceInterface.updateCreditCard(id, creditCard);
-    }
+//
+//    @Override
+//    @GetMapping("/credit_card/{id}")
+//    @ResponseStatus(HttpStatus.OK)
+//    public CreditCard getCreditCardById(@PathVariable Long id) {
+//        return creditCardServiceInterface.getCreditCardById(id);
+//    }
+//
+//    @Override
+//    @GetMapping("/credit_cards")
+//    @ResponseStatus(HttpStatus.OK)
+//    public List<CreditCard> getAllCreditCards() {
+//        return creditCardServiceInterface.getAllCreditCards();
+//    }
+//
+//    @Override
+//    @PutMapping("/admin/credit_card/{id}")
+//    @ResponseStatus(HttpStatus.ACCEPTED)
+//    public CreditCard updateCreditCard(@PathVariable Long id, @RequestBody AccountPostDTO creditCard) {
+//        return creditCardServiceInterface.updateCreditCard(id, creditCard);
+//    }
 }

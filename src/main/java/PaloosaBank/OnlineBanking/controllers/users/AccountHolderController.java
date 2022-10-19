@@ -23,32 +23,12 @@ public class AccountHolderController implements AccountHolderControllerInterface
     @Autowired
     AccountServiceInterface accountServiceInterface;
 
-    @Override
-    @PostMapping("/account_holder")
-    @ResponseStatus(HttpStatus.CREATED)
-    public AccountHolder addAccountHolder(AccountHolder accountHolder) {
-        return accountHolderServiceInterface.addAccountHolder(accountHolder);
-    }
 
     @Override
-    @GetMapping("/account_holder/{id}")
+    @GetMapping("/account_holder/check_balance_account/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public AccountHolder getAccountHolderById(@PathVariable Long id) {
-        return accountHolderServiceInterface.getAccountHolderById(id);
-    }
-
-    @Override
-    @GetMapping("/account_holders")
-    @ResponseStatus(HttpStatus.OK)
-    public List<AccountHolder> getAllAccountHolders() {
-        return accountHolderServiceInterface.getAllAccountHolders();
-    }
-
-    @Override
-    @PutMapping("/account_holder/{id}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public AccountHolder updateAccountHolder(@PathVariable Long id, @RequestBody AccountHolder accountHolder) {
-        return accountHolderServiceInterface.updateAccountHolder(id,accountHolder);
+    public Account getBalanceAccountAccountHolder(@PathVariable Long id) {
+        return accountServiceInterface.getAccountById(id);
     }
 
     @Override
@@ -59,4 +39,28 @@ public class AccountHolderController implements AccountHolderControllerInterface
         Money balance2 = new Money(balance);
         return accountServiceInterface.transferAccountHolderAnyAccount(accountOutId, accountInId, balance2, secretKey);
     }
+
+
+//    @Override
+//    @PostMapping("/account_holder")
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public AccountHolder addAccountHolder(AccountHolder accountHolder) {
+//        return accountHolderServiceInterface.addAccountHolder(accountHolder);
+//    }
+//
+
+//
+//    @Override
+//    @GetMapping("/account_holders")
+//    @ResponseStatus(HttpStatus.OK)
+//    public List<AccountHolder> getAllAccountHolders() {
+//        return accountHolderServiceInterface.getAllAccountHolders();
+//    }
+//
+//    @Override
+//    @PutMapping("/account_holder/{id}")
+//    @ResponseStatus(HttpStatus.ACCEPTED)
+//    public AccountHolder updateAccountHolder(@PathVariable Long id, @RequestBody AccountHolder accountHolder) {
+//        return accountHolderServiceInterface.updateAccountHolder(id,accountHolder);
+//    }
 }

@@ -49,11 +49,4 @@ public class AdminService implements AdminServiceInterface {
         return adminRepository.save(admin);
     }
 
-    @Override
-    public Account adminGetAccountById(Long id) {
-        return accountRepository.findById(id).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "There is no Account with the given id."));
-    }
-
 }

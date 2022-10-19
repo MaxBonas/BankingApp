@@ -30,7 +30,7 @@ public class CheckingService implements CheckingServiceInterface {
     StudentsCheckingRepository studentsCheckingRepository;
 
     @Override
-    public Account addChecking(AccountPostDTO checking) {
+    public Checking addChecking(AccountPostDTO checking) {
         AccountHolder accountHolder = accountHolderRepository.findById(checking.getPrimaryOwnerId()).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "An Account Holder with the given id doesn't exist"));

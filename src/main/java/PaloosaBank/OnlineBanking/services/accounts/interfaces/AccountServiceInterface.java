@@ -4,6 +4,7 @@ import PaloosaBank.OnlineBanking.DTOs.accounts.AccountPostDTO;
 import PaloosaBank.OnlineBanking.DTOs.accounts.TransferDTO;
 import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.accounts.Account;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -21,5 +22,6 @@ public interface AccountServiceInterface {
     Account patchAdminAnyAccountBalance(Long id, Money balance);
     TransferDTO transferAccountHolderAnyAccount(Long accountOutId, Long accountInId, Money balance, String secretKey);
 
+    BigDecimal getBalanceAccountAccountHolder(Long id);
 
 }

@@ -25,6 +25,14 @@ public class UserService implements UserServiceInterface {
 
     @Override
     public List<User> getAllUsers() {
-        return userRepository.findAll(); //TODO hace falta hacer estos metodos en las clases abstract?
+        return userRepository.findAll();
+    }
+
+    @Override
+    public void deleteUser(Long id) {
+        User user1 = userRepository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "A User with the given id doesn't exist"));
+        userRepository.delete(user1);
     }
 }
