@@ -1,9 +1,8 @@
 package PaloosaBank.OnlineBanking.DTOs.accounts;
 
-import PaloosaBank.OnlineBanking.embedables.Money;
 import com.sun.istack.NotNull;
 
-public class AccountDTO {
+public class AccountPostDTO {
 
     @NotNull
     private Long primaryOwnerId;
@@ -20,7 +19,7 @@ public class AccountDTO {
 
     private Double interestRate;
 
-    public AccountDTO(Long primaryOwnerId, Long secondaryOwnerId, Double balance, Double minimumBalance, Double monthlyFee, Double creditLimit, Double interestRate) {
+    public AccountPostDTO(Long primaryOwnerId, Long secondaryOwnerId, Double balance, Double minimumBalance, Double monthlyFee, Double creditLimit, Double interestRate) {
         this.primaryOwnerId = primaryOwnerId;
         this.secondaryOwnerId = secondaryOwnerId;
         this.balance = balance;

@@ -1,9 +1,14 @@
 package PaloosaBank.OnlineBanking.services.users.interfaces;
 
+import PaloosaBank.OnlineBanking.DTOs.accounts.AccountPostDTO;
 import PaloosaBank.OnlineBanking.embedables.Money;
-import PaloosaBank.OnlineBanking.entities.accounts.Account;
+import PaloosaBank.OnlineBanking.entities.accounts.*;
+import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 import PaloosaBank.OnlineBanking.entities.users.Admin;
+import PaloosaBank.OnlineBanking.entities.users.ThirdParty;
+import PaloosaBank.OnlineBanking.entities.users.User;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface AdminServiceInterface {
@@ -13,7 +18,4 @@ public interface AdminServiceInterface {
     List<Admin> getAllAdmins();
     Admin updateAdmin(Long id, Admin admin);
 
-    Account adminGetAccountById(Long id);
-    List<Account> adminGetAllAccounts();
-    Account patchAdminAnyAccountBalance(Long accountId, Money balance);
 }

@@ -8,8 +8,6 @@ import javax.validation.constraints.NotNull;
 @Entity
 public class ThirdParty extends User{
 
-//    @NotBlank(message = "This field can't be blank")
-    @NotNull(message = "This field can't be null")
     String hashkey;
 
     public ThirdParty(String name) {

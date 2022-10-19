@@ -1,9 +1,8 @@
 package PaloosaBank.OnlineBanking.controllers.accounts;
 
-import PaloosaBank.OnlineBanking.DTOs.accounts.AccountDTO;
+import PaloosaBank.OnlineBanking.DTOs.accounts.AccountPostDTO;
 import PaloosaBank.OnlineBanking.controllers.accounts.interfaces.StudentsCheckingControllerInterface;
 import PaloosaBank.OnlineBanking.entities.accounts.StudentsChecking;
-import PaloosaBank.OnlineBanking.services.accounts.interfaces.AccountServiceInterface;
 import PaloosaBank.OnlineBanking.services.accounts.interfaces.StudentsCheckingServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +19,7 @@ public class StudentsCheckingController implements StudentsCheckingControllerInt
     @Override
     @PostMapping("/admin/students_checking")
     @ResponseStatus(HttpStatus.CREATED)
-    public StudentsChecking addStudentsChecking(AccountDTO studentsChecking) {
+    public StudentsChecking addStudentsChecking(AccountPostDTO studentsChecking) {
         return studentsCheckingServiceInterface.addStudentsChecking(studentsChecking);
     }
 
@@ -41,7 +40,7 @@ public class StudentsCheckingController implements StudentsCheckingControllerInt
     @Override
     @PutMapping("/admin/students_checking/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public StudentsChecking updateStudentsChecking(@PathVariable Long id, @RequestBody AccountDTO studentsChecking) {
+    public StudentsChecking updateStudentsChecking(@PathVariable Long id, @RequestBody AccountPostDTO studentsChecking) {
         return studentsCheckingServiceInterface.updateStudentsChecking(id, studentsChecking);
     }
 }

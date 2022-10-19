@@ -2,24 +2,21 @@ package PaloosaBank.OnlineBanking.entities.accounts;
 
 import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
-import PaloosaBank.OnlineBanking.enums.Status;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotNull;
 
 import javax.persistence.*;
-import javax.validation.constraints.DecimalMax;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotBlank;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 @Entity
 public class CreditCard extends Account{
 
     @Embedded
-//    @NotBlank(message = "This field can't be blank")
     @NotNull(message = "This field can't be null")
-//    @DecimalMin(value = "100.00", message = "The minimum value for the Credit Limit is 100.00")
-//    @DecimalMax(value = "100000.00", message = "The minimum value for the Credit Limit is 100000.00")
     @AttributeOverrides({
             @AttributeOverride(name="currency", column = @Column(name = "credit_limit_currency")),
             @AttributeOverride(name = "amount", column = @Column(name = "credit_limit_amount"))
@@ -27,7 +24,6 @@ public class CreditCard extends Account{
     private Money creditLimit = new Money(BigDecimal.valueOf(100));
 
     @Embedded
-//    @NotBlank(message = "This field can't be blank")
     @NotNull(message = "This field can't be null")
     @AttributeOverrides({
             @AttributeOverride(name="currency", column = @Column(name = "fee_currency")),
@@ -35,10 +31,9 @@ public class CreditCard extends Account{
     })
     private Money penaltyFee = new Money(BigDecimal.valueOf(40));
 
-//    @NotBlank(message = "This field can't be blank")
     @NotNull(message = "This field can't be null")
-//    @DecimalMax(value = "0,2", message = "The Interest Rate can't be higher that 0,2%")
-//    @DecimalMin(value = "0,1", message = "The Interest Rate can't be higher that 0,1%")
+    @DecimalMax(value = "0.2", message = "The Interest Rate can't be higher than 0,2%")
+    @DecimalMin(value = "0.1", message = "The Interest Rate can't be higher than 0,1%")
     private Double interestRate = 0.2;
 
     public CreditCard(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner) {
@@ -54,6 +49,12 @@ public class CreditCard extends Account{
     }
 
     public void setCreditLimit(Money creditLimit) {
+        if (creditLimit.getAmount().compareTo(BigDecimal.valueOf(100000)) > 0)
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,
+                    "The Credit Card Limit can't be higher than 100.000");
+        if (creditLimit.getAmount().compareTo(BigDecimal.valueOf(100)) < 0)
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,
+                    "The Credit Card Limit can't be lower than 100");
         this.creditLimit = creditLimit;
     }
 

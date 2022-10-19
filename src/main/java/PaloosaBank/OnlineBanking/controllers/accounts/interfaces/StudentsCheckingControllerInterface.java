@@ -1,15 +1,11 @@
 package PaloosaBank.OnlineBanking.controllers.accounts.interfaces;
 
-import PaloosaBank.OnlineBanking.DTOs.accounts.AccountDTO;
-import PaloosaBank.OnlineBanking.entities.accounts.CreditCard;
+import PaloosaBank.OnlineBanking.DTOs.accounts.AccountPostDTO;
 import PaloosaBank.OnlineBanking.entities.accounts.StudentsChecking;
 
 import java.util.List;
 
 public interface StudentsCheckingControllerInterface {
 
-    StudentsChecking addStudentsChecking(AccountDTO studentsChecking);
-    StudentsChecking getStudentsCheckingById(Long id);
-    List<StudentsChecking> getAllStudentsCheckings();
-    StudentsChecking updateStudentsChecking(Long id, AccountDTO studentsChecking);
+    StudentsChecking updateStudentsChecking(Long id, AccountPostDTO studentsChecking);
 }

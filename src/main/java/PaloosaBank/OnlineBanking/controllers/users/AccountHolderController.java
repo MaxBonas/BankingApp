@@ -1,5 +1,6 @@
 package PaloosaBank.OnlineBanking.controllers.users;
 
+import PaloosaBank.OnlineBanking.DTOs.accounts.TransferDTO;
 import PaloosaBank.OnlineBanking.controllers.users.interfaces.AccountHolderControllerInterface;
 import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.accounts.Account;
@@ -53,7 +54,8 @@ public class AccountHolderController implements AccountHolderControllerInterface
     @Override
     @PatchMapping("/account_holder/transfer_amount_account")  // todo iria aqui o solo en account?
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public List<Account> transferAccountHolderAnyAccount(@RequestParam Long accountOutId, @RequestParam Long accountInId, @RequestParam BigDecimal balance, @RequestParam String secretKey) {
+    public TransferDTO transferAccountHolderAnyAccount(@RequestParam Long accountOutId, @RequestParam Long accountInId,
+                                                       @RequestParam BigDecimal balance, @RequestParam String secretKey) {
         Money balance2 = new Money(balance);
         return accountServiceInterface.transferAccountHolderAnyAccount(accountOutId, accountInId, balance2, secretKey);
     }

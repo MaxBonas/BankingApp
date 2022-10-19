@@ -1,14 +1,11 @@
 package PaloosaBank.OnlineBanking.services.accounts;
 
-import PaloosaBank.OnlineBanking.DTOs.accounts.AccountDTO;
+import PaloosaBank.OnlineBanking.DTOs.accounts.AccountPostDTO;
 import PaloosaBank.OnlineBanking.embedables.Money;
-import PaloosaBank.OnlineBanking.entities.accounts.CreditCard;
 import PaloosaBank.OnlineBanking.entities.accounts.Savings;
-import PaloosaBank.OnlineBanking.entities.accounts.StudentsChecking;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
-import PaloosaBank.OnlineBanking.repositories.accounts.AccountRepository;
-import PaloosaBank.OnlineBanking.repositories.accounts.SavingsRepository;
-import PaloosaBank.OnlineBanking.repositories.users.AccountHolderRepository;
+import PaloosaBank.OnlineBanking.repositoriesTest.accounts.SavingsRepository;
+import PaloosaBank.OnlineBanking.repositoriesTest.users.AccountHolderRepository;
 import PaloosaBank.OnlineBanking.services.accounts.interfaces.SavingsServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,11 +25,15 @@ public class SavingsService implements SavingsServiceInterface {
     AccountHolderRepository accountHolderRepository;
 
     @Override
-    public Savings addSavings(AccountDTO savings) {
-        AccountHolder accountHolder = accountHolderRepository.findById(savings.getPrimaryOwnerId()).get();
+    public Savings addSavings(AccountPostDTO savings) {
+        AccountHolder accountHolder = accountHolderRepository.findById(savings.getPrimaryOwnerId()).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "An Account Holder with the given id doesn't exist"));
         AccountHolder accountHolder2 = null;
         if (savings.getSecondaryOwnerId() != null) {
-            accountHolder2 = accountHolderRepository.findById(savings.getSecondaryOwnerId()).get();
+            accountHolder2 = accountHolderRepository.findById(savings.getSecondaryOwnerId()).orElseThrow(() ->
+                    new ResponseStatusException(HttpStatus.NOT_FOUND,
+                            "An Account Holder with the given id doesn't exist"));
         }
         Money balance = new Money(BigDecimal.valueOf(savings.getBalance()));
         return savingsRepository.save(new Savings(balance, accountHolder, accountHolder2));
@@ -51,15 +52,19 @@ public class SavingsService implements SavingsServiceInterface {
     }
 
     @Override
-    public Savings updateSavings(Long id, AccountDTO savings) {
+    public Savings updateSavings(Long id, AccountPostDTO savings) {
         if (savingsRepository.findById(id).isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This Savings Account doesn't exist");
 
-        AccountHolder accountHolder = accountHolderRepository.findById(savings.getPrimaryOwnerId()).get();
+        AccountHolder accountHolder = accountHolderRepository.findById(savings.getPrimaryOwnerId()).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "An Account Holder with the given id doesn't exist"));
         AccountHolder accountHolder2 = null;
 
         if (savings.getSecondaryOwnerId() != null) {
-            accountHolder2 = accountHolderRepository.findById(savings.getSecondaryOwnerId()).get();
+            accountHolder2 = accountHolderRepository.findById(savings.getSecondaryOwnerId()).orElseThrow(() ->
+                    new ResponseStatusException(HttpStatus.NOT_FOUND,
+                            "An Account Holder with the given id doesn't exist"));
         }
 
         Money balance = new Money(BigDecimal.valueOf(savings.getBalance()));

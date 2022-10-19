@@ -8,7 +8,6 @@ public class HashkeyGenerator {
     }
 
     public static String generateString() {
-        String hashkey = UUID.randomUUID().toString();
-        return hashkey;
+        return UUID.randomUUID().toString();
     }
 }

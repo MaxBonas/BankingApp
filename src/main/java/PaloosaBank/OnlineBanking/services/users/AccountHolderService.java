@@ -1,19 +1,17 @@
 package PaloosaBank.OnlineBanking.services.users;
 
-import PaloosaBank.OnlineBanking.embedables.Address;
+import PaloosaBank.OnlineBanking.DTOs.accounts.TransferDTO;
 import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.accounts.Account;
-import PaloosaBank.OnlineBanking.entities.accounts.StudentsChecking;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
-import PaloosaBank.OnlineBanking.repositories.accounts.AccountRepository;
-import PaloosaBank.OnlineBanking.repositories.users.AccountHolderRepository;
+import PaloosaBank.OnlineBanking.repositoriesTest.accounts.AccountRepository;
+import PaloosaBank.OnlineBanking.repositoriesTest.users.AccountHolderRepository;
 import PaloosaBank.OnlineBanking.services.users.interfaces.AccountHolderServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -54,7 +52,7 @@ public class AccountHolderService implements AccountHolderServiceInterface {
     }
 
     @Override
-    public List<Account> transferAccountHolderAnyAccount(Long accountOutId, Long accountInId, Money balance, String secretKey) {
+    public TransferDTO transferAccountHolderAnyAccount(Long accountOutId, Long accountInId, Money balance, String secretKey) {
         Account accountOut = accountRepository.findById(accountOutId).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "The Account Id of the Sender doesn't exist."));
         Account accountIn = accountRepository.findById(accountInId).orElseThrow(() ->
@@ -69,7 +67,10 @@ public class AccountHolderService implements AccountHolderServiceInterface {
 
         accountOut.setBalance(new Money(accountOut.getBalance().decreaseAmount(balance.getAmount())));
         accountIn.setBalance(new Money(accountIn.getBalance().increaseAmount(balance.getAmount())));
-        return accountRepository.saveAll(List.of(accountOut, accountIn));
+        accountRepository.saveAll(List.of(accountOut, accountIn));
+        TransferDTO transferDTO = new TransferDTO(accountOut.getPrimaryOwner().getName(),
+                accountIn.getPrimaryOwner().getName(), balance.getAmount());
+        return transferDTO;
     }
 
 }

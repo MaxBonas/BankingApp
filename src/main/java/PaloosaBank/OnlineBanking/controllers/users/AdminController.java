@@ -1,14 +1,19 @@
 package PaloosaBank.OnlineBanking.controllers.users;
 
+import PaloosaBank.OnlineBanking.DTOs.accounts.AccountPostDTO;
 import PaloosaBank.OnlineBanking.controllers.users.interfaces.AdminControllerInterface;
 import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.accounts.Account;
 import PaloosaBank.OnlineBanking.entities.accounts.CreditCard;
+import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 import PaloosaBank.OnlineBanking.entities.users.Admin;
-import PaloosaBank.OnlineBanking.services.accounts.interfaces.AccountServiceInterface;
-import PaloosaBank.OnlineBanking.services.accounts.interfaces.CreditCardServiceInterface;
-import PaloosaBank.OnlineBanking.services.users.AdminService;
+import PaloosaBank.OnlineBanking.entities.users.ThirdParty;
+import PaloosaBank.OnlineBanking.entities.users.User;
+import PaloosaBank.OnlineBanking.services.accounts.interfaces.*;
+import PaloosaBank.OnlineBanking.services.users.interfaces.AccountHolderServiceInterface;
 import PaloosaBank.OnlineBanking.services.users.interfaces.AdminServiceInterface;
+import PaloosaBank.OnlineBanking.services.users.interfaces.ThirdPartyServiceInterface;
+import PaloosaBank.OnlineBanking.services.users.interfaces.UserServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -20,13 +25,33 @@ import java.util.List;
 public class AdminController implements AdminControllerInterface {
 
     @Autowired
-    AdminServiceInterface adminServiceInterface; //TODO uy uy mirarho fort
+    AdminServiceInterface adminServiceInterface;
 
     @Autowired
     CreditCardServiceInterface creditCardServiceInterface; //TODO Es necesario aqui para que admin controle?
 
     @Autowired
     AccountServiceInterface accountServiceInterface;
+
+    @Autowired
+    CheckingServiceInterface checkingServiceInterface;
+
+    @Autowired
+    StudentsCheckingServiceInterface studentsCheckingServiceInterface;
+
+    @Autowired
+    SavingsServiceInterface savingsServiceInterface;
+
+    @Autowired
+    ThirdPartyServiceInterface thirdPartyServiceInterface;
+
+    @Autowired
+    AccountHolderServiceInterface accountHolderServiceInterface;
+
+    @Autowired
+    UserServiceInterface userServiceInterface;
+
+
 
     @Override
     @PostMapping("/admin")
@@ -55,35 +80,44 @@ public class AdminController implements AdminControllerInterface {
     public Admin updateAdmin(@PathVariable Long id, @RequestBody Admin admin) {
         return adminServiceInterface.updateAdmin(id, admin);
     }
+//    ThirdParty getThirdPartyById(Long id);
+//    List<ThirdParty> adminGetAllThirdPartys();
+//    ThirdParty updateThirdParty();
 
-//    createAccount()
-//    showAccounts()
-//    validateAccount()
-//    modifyAccount()
-//    deleteAccount()
-//    freezeAccount()
-//    checkBalance()
-//    modifyBalance()
-//    addThirdParty()
+    @Override
+    @PostMapping("/admin/third_party")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ThirdParty addThirdParty(@RequestBody ThirdParty thirdParty) {
+        return thirdPartyServiceInterface.addThirdParty(thirdParty);
+    }
 
-//    @PostMapping("/admin/credit_card")
-//    @ResponseStatus(HttpStatus.CREATED)
-//    //TODO Se tendria que hacer uno de cada accountType o solo uno de account y luego especificar?
-//    public CreditCard addCreditCard(@RequestBody CreditCard creditCard) {
-//        return creditCardServiceInterface.addCreditCard(creditCard);
-//    }
-//
-//    @GetMapping("/credit_cards")
-//    @ResponseStatus(HttpStatus.OK)
-//    public List<CreditCard> getAllCreditCards() {
-//        return creditCardServiceInterface.getAllCreditCards();
-//    }
-//
-//    @GetMapping("/credit_card/{id}")
-//    @ResponseStatus(HttpStatus.OK)
-//    public CreditCard getCreditCardById(@PathVariable Long id) {
-//        return creditCardServiceInterface.getCreditCardById(id);
-//    }
+    @Override
+    @PostMapping("/admin/account_holder")
+    @ResponseStatus(HttpStatus.CREATED)
+    public AccountHolder addAccountHolder (@RequestBody AccountHolder accountHolder) {
+        return accountHolderServiceInterface.addAccountHolder(accountHolder);
+    }
+
+    @Override
+    @PostMapping("/admin/checking_account")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Account addChecking(AccountPostDTO checking) {
+        return checkingServiceInterface.addChecking(checking);
+    }
+
+    @Override
+    @PostMapping("/admin")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Admin addAdmin(@RequestBody Admin admin) {
+        return adminServiceInterface.addAdmin(admin);
+    }
+
+    @PostMapping("/admin/credit_card")
+    @ResponseStatus(HttpStatus.CREATED)
+    //TODO Se tendria que hacer uno de cada accountType o solo uno de account y luego especificar?
+    public CreditCard addCreditCard(@RequestBody AccountPostDTO creditCard) {
+        return creditCardServiceInterface.addCreditCard(creditCard);
+    }
 
     @Override
     @GetMapping("/admin/account/{id}")
@@ -107,5 +141,46 @@ public class AdminController implements AdminControllerInterface {
         return accountServiceInterface.patchAdminAnyAccountBalance(accountId, balance1);
     }
 
+    @GetMapping("/credit_cards")
+    @ResponseStatus(HttpStatus.OK)
+    public List<CreditCard> getAllCreditCards() {
+        return creditCardServiceInterface.getAllCreditCards();
+    }
 
+    @GetMapping("/credit_card/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public CreditCard getCreditCardById(@PathVariable Long id) {
+        return creditCardServiceInterface.getCreditCardById(id);
+    }
+
+
+
+//
+//    ThirdParty addThirdParty();
+//    ThirdParty getThirdPartyById(Long id);
+//    List<ThirdParty> adminGetAllThirdPartys();
+//    ThirdParty updateThirdParty();
+//    AccountHolder addAccountHolder();
+//    ThirdParty getThirdPartyById(Long id);
+//    List<AccountHolder> adminGetAllAccountHolders();
+//    AccountHolder updateAccountHolder();
+//    User deleteUser();
+//
+//    Account addAccount();
+//    Account adminGetAccountById(Long id);
+//    List<Account> adminGetAllAccounts();
+//    Account updateAccount();
+//    Account deleteAccount();
+//    Account patchAdminAnyAccountBalance(Long accountId, BigDecimal balance);
+//Account patchStatusAccount (Long id);
+
+    //    createAccount()
+//    showAccounts()
+//    validateAccount()
+//    modifyAccount()
+//    deleteAccount()
+//    freezeAccount()
+//    checkBalance()
+//    modifyBalance()
+//    addThirdParty()
 }

@@ -1,10 +1,14 @@
 package PaloosaBank.OnlineBanking.services.accounts;
 
+import PaloosaBank.OnlineBanking.DTOs.accounts.AccountPostDTO;
+import PaloosaBank.OnlineBanking.DTOs.accounts.TransferDTO;
 import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.accounts.Account;
-import PaloosaBank.OnlineBanking.repositories.accounts.AccountRepository;
-import PaloosaBank.OnlineBanking.repositories.users.AccountHolderRepository;
-import PaloosaBank.OnlineBanking.repositories.users.ThirdPartyRepository;
+import PaloosaBank.OnlineBanking.entities.accounts.Checking;
+import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
+import PaloosaBank.OnlineBanking.repositoriesTest.accounts.AccountRepository;
+import PaloosaBank.OnlineBanking.repositoriesTest.users.AccountHolderRepository;
+import PaloosaBank.OnlineBanking.repositoriesTest.users.ThirdPartyRepository;
 import PaloosaBank.OnlineBanking.services.accounts.interfaces.AccountServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,24 +31,37 @@ public class AccountService implements AccountServiceInterface {
     AccountHolderRepository accountHolderRepository;
 
     @Override
-    public Account getAccountById(Long id) {  // todo. No entiendo fallo. Pero... hace falta?
-//        if (accountRepository.findById(account.getId()).isPresent())
-//            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
-//                    "An Account with this id already exist.");
-//        return accountRepository.save(account);
-        return null;
+    public Account addAccount(AccountPostDTO account) {
+        AccountHolder accountHolder = accountHolderRepository.findById(account.getPrimaryOwnerId()).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "An Account Holder with the given id doesn't exist"));
+        AccountHolder accountHolder2 = null;
+        if (account.getSecondaryOwnerId() != null) {
+            accountHolder2 = accountHolderRepository.findById(account.getSecondaryOwnerId()).orElseThrow(() ->
+                    new ResponseStatusException(HttpStatus.NOT_FOUND,
+                            "An Account Holder with the given id doesn't exist"));
+        }
+        Money balance = new Money(BigDecimal.valueOf(account.getBalance()));
+
+        return accountRepository.save(new Checking(balance, accountHolder, accountHolder2));
+    }
+
+    @Override
+    public Account getAccountById(Long id) {
+        return accountRepository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "An Account with the given id doesn't exist"));
     }
 
     @Override
     public List<Account> getAllAccounts() {
-        return accountRepository.findAll(); //TODO hace falta hacer estos metodos en las clases abstract?
+        return accountRepository.findAll();
     }
 
-    @Override  // todo SI SE REPITEN ENTRE ACCOUNT, THIRDPARTY Y ADMIN PETA
+    @Override
     public Account patchThirdPartyAnyAccountBalance(Long id, Money balance, String hashkey) {
         Account account1 = accountRepository.findById(id).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND));
-//        //Todo. hace falta tener en cuenta si el pago es en otra currency? con un if?
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "No Account with this id exist in the system."));
         if (thirdPartyRepository.findByHashkey(hashkey).isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "This Hashkey doesn't match with the system.");
         }
@@ -56,26 +73,21 @@ public class AccountService implements AccountServiceInterface {
         return accountRepository.save(account1);
     }
 
-    @Override  // todo SI SE REPITEN ENTRE ACCOUNT, THIRDPARTY Y ADMIN PETA
+    @Override
     public Account patchAdminAnyAccountBalance(Long id, Money balance) {
         Account account1 = accountRepository.findById(id).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND));
-//        //Todo. hace falta tener en cuenta si el pago es en otra currency? con un if?
-        if (account1.getBalance().getAmount().compareTo(balance.getAmount()) < 0) {
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "This Account don't have enough founds.");
-        }
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "No Account with this id exist in the system."));
 
-        account1.setBalance(new Money(account1.getBalance().decreaseAmount(balance.getAmount())));
+        account1.setBalance(balance);
         return accountRepository.save(account1);
     }
 
     @Override
-    public List<Account> transferAccountHolderAnyAccount(Long accountOutId, Long accountInId, Money balance, String secretKey) {
+    public TransferDTO transferAccountHolderAnyAccount(Long accountOutId, Long accountInId, Money balance, String secretKey) {
         Account accountOut = accountRepository.findById(accountOutId).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "The Account Id of the Sender doesn't exist."));
         Account accountIn = accountRepository.findById(accountInId).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "The Account Id of the Receiver doesn't exist."));
-//        //Todo. hace falta tener en cuenta si el pago es en otra currency? con un if?
         if (accountRepository.findBySecretKey(secretKey).isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "The password doesn't match with the system.");
         }
@@ -85,6 +97,12 @@ public class AccountService implements AccountServiceInterface {
 
         accountOut.setBalance(new Money(accountOut.getBalance().decreaseAmount(balance.getAmount())));
         accountIn.setBalance(new Money(accountIn.getBalance().increaseAmount(balance.getAmount())));
-        return accountRepository.saveAll(List.of(accountOut, accountIn));
+
+        TransferDTO transferDTO = new TransferDTO(accountOut.getPrimaryOwner().getName(),
+                accountIn.getPrimaryOwner().getName(), balance.getAmount());
+
+        accountRepository.save(accountOut);
+        accountRepository.save(accountIn);
+        return transferDTO;
     }
 }

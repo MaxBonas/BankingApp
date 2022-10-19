@@ -1,11 +1,13 @@
-package PaloosaBank.OnlineBanking.repositories.users;
+package PaloosaBank.OnlineBanking.repositoriesTest.users;
 
-import PaloosaBank.OnlineBanking.entities.accounts.Account;
 import PaloosaBank.OnlineBanking.entities.users.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface UserRepository  extends JpaRepository<User, Long> {
 
+    Optional<User> findByName(String name);
 }

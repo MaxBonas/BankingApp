@@ -8,8 +8,6 @@ import PaloosaBank.OnlineBanking.tools.PasswordHelper;
 import javax.validation.constraints.NotNull;
 
 import javax.persistence.*;
-import javax.validation.constraints.DecimalMin;
-import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 
 @Inheritance(strategy = InheritanceType.JOINED)

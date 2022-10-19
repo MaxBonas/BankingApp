@@ -9,11 +9,11 @@ import PaloosaBank.OnlineBanking.entities.accounts.StudentsChecking;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 import PaloosaBank.OnlineBanking.entities.users.Admin;
 import PaloosaBank.OnlineBanking.entities.users.ThirdParty;
-import PaloosaBank.OnlineBanking.repositories.accounts.*;
-import PaloosaBank.OnlineBanking.repositories.users.AccountHolderRepository;
-import PaloosaBank.OnlineBanking.repositories.users.AdminRepository;
-import PaloosaBank.OnlineBanking.repositories.users.ThirdPartyRepository;
-import PaloosaBank.OnlineBanking.repositories.users.UserRepository;
+import PaloosaBank.OnlineBanking.repositoriesTest.accounts.*;
+import PaloosaBank.OnlineBanking.repositoriesTest.users.AccountHolderRepository;
+import PaloosaBank.OnlineBanking.repositoriesTest.users.AdminRepository;
+import PaloosaBank.OnlineBanking.repositoriesTest.users.ThirdPartyRepository;
+import PaloosaBank.OnlineBanking.repositoriesTest.users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -117,16 +117,16 @@ public class OnlineBankingApplication implements CommandLineRunner {
 	}
 }
 
-// Todo: HashKey ThirdParty, how works?
-//        todo requestheader haskey? --
-// Todo: Revisar Validates
-// Todo: Secretkey accounts, how works? is security? deberia estar en el DTO? deberia encryptarse?
+// Todo: Secretkey accounts, how works? deberia estar en el DTO? deberia encryptarse?
 // Todo: PatchBalanceAnyAccount (Account). Donde va? se repite? CASI ACABADO
 // Todo: Transfer Method. General in Account or Account Holder... OR specific in each account type?
-        // todo "message": "No converter found capable of converting from type [PaloosaBank.OnlineBanking.entities.accounts.Checking] to type [PaloosaBank.OnlineBanking.entities.users.ThirdParty]", "path": "/account_holder/transfer_amount_account"
-// Todo: MonthlySpended. confirm How works
+//
+// Todo: MonthlySpended. confirm How works // IMPORTANTE, no con monthly para extra. entity Transactions
 // Todo: < 24 creation account method
-// Todo: Credit Limit. Confirm how works
+
+// Todo: Test: de que classes haria falta?
+// Todo: JPA Repositories. Estan bien? Hago el Optional bien?
+// Todo: Credit Limit. Confirm how works // no pide nada, no sirve, pero una ruta setter haria falta
 // Todo: Interested rate (CreditCard) confirm how works
 // Todo: Penalty Fee confirm how works. Como resta?
 // Todo: minimum balance. confirm how works

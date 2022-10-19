@@ -1,9 +1,8 @@
 package PaloosaBank.OnlineBanking.controllers.accounts;
 
-import PaloosaBank.OnlineBanking.DTOs.accounts.AccountDTO;
+import PaloosaBank.OnlineBanking.DTOs.accounts.AccountPostDTO;
 import PaloosaBank.OnlineBanking.controllers.accounts.interfaces.CreditCardControllerInterface;
 import PaloosaBank.OnlineBanking.entities.accounts.CreditCard;
-import PaloosaBank.OnlineBanking.services.accounts.interfaces.AccountServiceInterface;
 import PaloosaBank.OnlineBanking.services.accounts.interfaces.CreditCardServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,12 +16,12 @@ public class CreditCardController implements CreditCardControllerInterface {
     @Autowired
     CreditCardServiceInterface creditCardServiceInterface;
 
-    @Override
-    @PostMapping("/admin/credit_card")
-    @ResponseStatus(HttpStatus.CREATED)
-    public CreditCard addCreditCard(@RequestBody AccountDTO creditCard) {
-        return creditCardServiceInterface.addCreditCard(creditCard);
-    }
+//    @Override
+//    @PostMapping("/admin/credit_card")
+//    @ResponseStatus(HttpStatus.CREATED)
+//    public CreditCard addCreditCard(@RequestBody AccountDTO creditCard) {
+//        return creditCardServiceInterface.addCreditCard(creditCard);
+//    }
 
     @Override
     @GetMapping("/credit_card/{id}")
@@ -41,7 +40,7 @@ public class CreditCardController implements CreditCardControllerInterface {
     @Override
     @PutMapping("/admin/credit_card/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public CreditCard updateCreditCard(@PathVariable Long id, @RequestBody AccountDTO creditCard) {
+    public CreditCard updateCreditCard(@PathVariable Long id, @RequestBody AccountPostDTO creditCard) {
         return creditCardServiceInterface.updateCreditCard(id, creditCard);
     }
 }

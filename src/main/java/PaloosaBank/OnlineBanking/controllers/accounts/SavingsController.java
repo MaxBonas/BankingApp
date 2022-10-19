@@ -1,9 +1,8 @@
 package PaloosaBank.OnlineBanking.controllers.accounts;
 
-import PaloosaBank.OnlineBanking.DTOs.accounts.AccountDTO;
+import PaloosaBank.OnlineBanking.DTOs.accounts.AccountPostDTO;
 import PaloosaBank.OnlineBanking.controllers.accounts.interfaces.SavingsControllerInterface;
 import PaloosaBank.OnlineBanking.entities.accounts.Savings;
-import PaloosaBank.OnlineBanking.services.accounts.interfaces.AccountServiceInterface;
 import PaloosaBank.OnlineBanking.services.accounts.interfaces.SavingsServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,7 +19,7 @@ public class SavingsController implements SavingsControllerInterface {
     @Override
     @PostMapping("/admin/savings")
     @ResponseStatus(HttpStatus.CREATED)
-    public Savings addSavings(AccountDTO savings) {
+    public Savings addSavings(AccountPostDTO savings) {
         return savingsServiceInterface.addSavings(savings);
     }
 
@@ -41,7 +40,7 @@ public class SavingsController implements SavingsControllerInterface {
     @Override
     @PutMapping("/admin/savings/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public Savings updateSavings(@PathVariable Long id, @RequestBody AccountDTO savings) {
+    public Savings updateSavings(@PathVariable Long id, @RequestBody AccountPostDTO savings) {
         return savingsServiceInterface.updateSavings(id, savings);
     }
 }

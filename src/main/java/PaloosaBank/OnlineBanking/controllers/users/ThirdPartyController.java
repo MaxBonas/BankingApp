@@ -5,7 +5,6 @@ import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.accounts.Account;
 import PaloosaBank.OnlineBanking.entities.users.ThirdParty;
 import PaloosaBank.OnlineBanking.services.accounts.interfaces.AccountServiceInterface;
-import PaloosaBank.OnlineBanking.services.users.ThirdPartyService;
 import PaloosaBank.OnlineBanking.services.users.interfaces.ThirdPartyServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -54,7 +53,8 @@ public class ThirdPartyController implements ThirdPartyControllerInterface {
     @Override
     @PatchMapping("/third_party/reduce_balance_account")  // todo iria aqui o solo en account?
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public Account patchThirdPartyAnyAccountBalance(@RequestParam Long accountId, @RequestParam BigDecimal balance, @RequestHeader String hashkey) {
+    public Account patchThirdPartyAnyAccountBalance(@RequestParam Long accountId, @RequestParam BigDecimal balance,
+                                                    @RequestHeader String hashkey) {
         Money balance1 = new Money(balance);
         return accountServiceInterface.patchThirdPartyAnyAccountBalance(accountId, balance1, hashkey);
     }

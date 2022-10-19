@@ -2,19 +2,15 @@ package PaloosaBank.OnlineBanking.entities.accounts;
 
 import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
-import PaloosaBank.OnlineBanking.enums.Status;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 @Entity
 public class Checking extends Account{
 
     @Embedded
-//    @NotBlank(message = "This field can't be blank")
     @NotNull(message = "This field can't be null")
     @AttributeOverrides({
             @AttributeOverride(name="currency", column = @Column(name = "minimum_currency")),
@@ -23,7 +19,6 @@ public class Checking extends Account{
     private Money minimumBalance = new Money(BigDecimal.valueOf(250));
 
     @Embedded
-//    @NotBlank(message = "This field can't be blank")
     @NotNull(message = "This field can't be null")
     @AttributeOverrides({
             @AttributeOverride(name="currency", column = @Column(name = "fee_currency")),
@@ -32,7 +27,6 @@ public class Checking extends Account{
     private final Money penaltyFee = new Money(BigDecimal.valueOf(40));
 
     @Embedded
-//    @NotBlank(message = "This field can't be blank")
     @NotNull(message = "This field can't be null")
     @AttributeOverrides({
             @AttributeOverride(name="currency", column = @Column(name = "monthly_currency")),
@@ -66,5 +60,10 @@ public class Checking extends Account{
 
     public void setMonthlyMaintenanceFee(Money monthlyMaintenanceFee) {
         this.monthlyMaintenanceFee = monthlyMaintenanceFee;
+    }
+
+    @Override
+    public void setBalance(Money balance) {
+        super.setBalance(balance);
     }
 }

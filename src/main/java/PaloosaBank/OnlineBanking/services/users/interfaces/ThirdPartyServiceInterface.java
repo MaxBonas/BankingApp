@@ -13,5 +13,4 @@ public interface ThirdPartyServiceInterface {
     List<ThirdParty> getAllThirdPartys();
     ThirdParty updateThirdParty(Long id, ThirdParty thirdParty);
 
-    Account patchThirdPartyAnyAccountBalance(Long accountId, Money balance, String hashkey);  // TODO esta bien?
 }
