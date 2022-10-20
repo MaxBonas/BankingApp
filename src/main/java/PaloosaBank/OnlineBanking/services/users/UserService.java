@@ -29,10 +29,11 @@ public class UserService implements UserServiceInterface {
     }
 
     @Override
-    public void deleteUser(Long id) {
+    public User deleteUserById(Long id) {
         User user1 = userRepository.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "A User with the given id doesn't exist"));
         userRepository.delete(user1);
+        return user1;
     }
 }

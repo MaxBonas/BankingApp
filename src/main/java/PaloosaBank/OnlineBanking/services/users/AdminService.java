@@ -23,9 +23,9 @@ public class AdminService implements AdminServiceInterface {
 
     @Override
     public Admin addAdmin(Admin admin) {
-        if (adminRepository.findById(admin.getId()).isPresent())
+        if (adminRepository.findByName(admin.getName()).isPresent())
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
-                    "An Admin with this id already exist.");
+                    "An Admin with this name already exist.");
         return adminRepository.save(admin);
     }
 

@@ -57,7 +57,6 @@ public class AccountHolderService implements AccountHolderServiceInterface {
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "The Account Id of the Sender doesn't exist."));
         Account accountIn = accountRepository.findById(accountInId).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "The Account Id of the Receiver doesn't exist."));
-//        //Todo. hace falta tener en cuenta si el pago es en otra currency? con un if?
         if (accountRepository.findBySecretKey(secretKey).isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "The password doesn't match with the system.");
         }
@@ -68,9 +67,8 @@ public class AccountHolderService implements AccountHolderServiceInterface {
         accountOut.setBalance(new Money(accountOut.getBalance().decreaseAmount(balance.getAmount())));
         accountIn.setBalance(new Money(accountIn.getBalance().increaseAmount(balance.getAmount())));
         accountRepository.saveAll(List.of(accountOut, accountIn));
-        TransferDTO transferDTO = new TransferDTO(accountOut.getPrimaryOwner().getName(),
+        return new TransferDTO(accountOut.getPrimaryOwner().getName(),
                 accountIn.getPrimaryOwner().getName(), balance.getAmount());
-        return transferDTO;
     }
 
 }

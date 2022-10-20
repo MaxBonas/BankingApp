@@ -6,6 +6,7 @@ import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.accounts.Account;
 import PaloosaBank.OnlineBanking.entities.accounts.Checking;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
+import PaloosaBank.OnlineBanking.entities.users.User;
 import PaloosaBank.OnlineBanking.repositoriesTest.accounts.AccountRepository;
 import PaloosaBank.OnlineBanking.repositoriesTest.users.AccountHolderRepository;
 import PaloosaBank.OnlineBanking.repositoriesTest.users.ThirdPartyRepository;
@@ -53,7 +54,11 @@ public class AccountService implements AccountServiceInterface {
 
     @Override
     public Account deleteAccount(Long id) {
-        return null;
+        Account account1 = accountRepository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "An Account with the given id doesn't exist"));
+        accountRepository.delete(account1);
+        return account1;
     }
 
     @Override

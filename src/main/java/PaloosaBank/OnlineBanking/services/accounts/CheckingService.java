@@ -4,6 +4,7 @@ import PaloosaBank.OnlineBanking.DTOs.accounts.AccountPostDTO;
 import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.accounts.Account;
 import PaloosaBank.OnlineBanking.entities.accounts.Checking;
+import PaloosaBank.OnlineBanking.entities.accounts.StudentsChecking;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 import PaloosaBank.OnlineBanking.repositoriesTest.accounts.CheckingRepository;
 import PaloosaBank.OnlineBanking.repositoriesTest.accounts.StudentsCheckingRepository;
@@ -15,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
 @Service
@@ -30,7 +33,8 @@ public class CheckingService implements CheckingServiceInterface {
     StudentsCheckingRepository studentsCheckingRepository;
 
     @Override
-    public Checking addChecking(AccountPostDTO checking) {
+    public Account addChecking(AccountPostDTO checking) {
+        Money balance = new Money(BigDecimal.valueOf(checking.getBalance()));
         AccountHolder accountHolder = accountHolderRepository.findById(checking.getPrimaryOwnerId()).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "An Account Holder with the given id doesn't exist"));
@@ -40,8 +44,11 @@ public class CheckingService implements CheckingServiceInterface {
                     new ResponseStatusException(HttpStatus.NOT_FOUND,
                             "An Account Holder with the given id doesn't exist"));
         }
-//        if (accountHolder.getDateOfBirth().)  // class.period. Resviso luego
-        Money balance = new Money(BigDecimal.valueOf(checking.getBalance()));
+        LocalDate birth1 = accountHolder.getDateOfBirth();
+        Period period = Period.between(birth1, LocalDate.now());
+        if (period.getYears() < 24) {
+            return studentsCheckingRepository.save(new StudentsChecking(balance, accountHolder, accountHolder2));
+        }
 
         return checkingRepository.save(new Checking(balance, accountHolder, accountHolder2));
     }
@@ -62,9 +69,6 @@ public class CheckingService implements CheckingServiceInterface {
     public Checking updateChecking(Long id, AccountPostDTO checking) {
         if (checkingRepository.findById(id).isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This Checking Account doesn't exist");
-
-//        if (checking.getPrimaryOwnerId() == null) //todo Esto con el @Notnull quiza no hace falta?
-//            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "You must to insert at least a Primary Owner.");
 
         AccountHolder accountHolder = accountHolderRepository.findById(checking.getPrimaryOwnerId()).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND,

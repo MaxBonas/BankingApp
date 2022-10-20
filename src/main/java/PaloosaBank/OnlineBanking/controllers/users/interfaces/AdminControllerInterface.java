@@ -25,9 +25,9 @@ public interface AdminControllerInterface {
     AccountHolder getAccountHolderById(Long id);
     List<AccountHolder> getAllAccountHolders();
     AccountHolder updateAccountHolder(Long id, AccountHolder accountHolder);
-    String deleteUserById(Long id);
+    User deleteUserById(Long id);
 
-    Checking addChecking(AccountPostDTO checking);
+    Account addChecking(AccountPostDTO checking);
     CreditCard addCreditCard(AccountPostDTO creditCard);
     Savings addSavings(AccountPostDTO savings);
     StudentsChecking addStudentsChecking(AccountPostDTO studentsChecking);
@@ -38,7 +38,7 @@ public interface AdminControllerInterface {
     List<Account> getAllAccounts();
     Account updateAccount(Long id, AccountPostDTO account);
 
-    String deleteAccountById(Long id);
+    Account deleteAccountById(Long id);
 
     Account patchAdminAnyAccountBalance(Long accountId, BigDecimal balance);
     Account patchStatusAccount (Long id);

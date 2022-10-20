@@ -140,15 +140,15 @@ public class AdminController implements AdminControllerInterface {
     @Override
     @DeleteMapping("/admin/user/{id}")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
-    public String deleteUserById(@PathVariable Long id) {
-        return "This User was deleted correctly.";
+    public User deleteUserById(@PathVariable Long id) {
+        return userServiceInterface.deleteUserById(id);
     }
 
 
     @Override
     @PostMapping("/admin/checking_account")
     @ResponseStatus(HttpStatus.CREATED)
-    public Checking addChecking(@RequestBody AccountPostDTO checking) {
+    public Account addChecking(@RequestBody AccountPostDTO checking) {
         return checkingServiceInterface.addChecking(checking);
     }
 
@@ -202,8 +202,8 @@ public class AdminController implements AdminControllerInterface {
     @Override
     @DeleteMapping("/admin/account/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public String deleteAccountById(@PathVariable Long id) {
-        return "This Account was deleted correctly.";
+    public Account deleteAccountById(@PathVariable Long id) {
+        return accountServiceInterface.deleteAccount(id);
     }
 
     @Override
