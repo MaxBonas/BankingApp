@@ -21,6 +21,9 @@ public interface AdminControllerInterface {
     ThirdParty getThirdPartyById(Long id);
     List<ThirdParty> getAllThirdPartys();
     ThirdParty updateThirdParty(Long id, ThirdParty thirdParty);
+//    Admin updateAdmin(Long id, Admin admin);
+//    ThirdParty updateThirdParty(Long id, ThirdParty thirdParty);
+//    AccountHolder updateAccountHolder(Long id, AccountHolder accountHolder);
     AccountHolder addAccountHolder(AccountHolder accountHolder);
     AccountHolder getAccountHolderById(Long id);
     List<AccountHolder> getAllAccountHolders();
@@ -36,11 +39,10 @@ public interface AdminControllerInterface {
     Account getAccountById(Long id);
 
     List<Account> getAllAccounts();
-    Account updateAccount(Long id, AccountPostDTO account);
 
     Account deleteAccountById(Long id);
 
-    Account patchAdminAnyAccountBalance(Long accountId, BigDecimal balance);
+    Account patchAdminAnyAccountBalance(Long accountId, BigDecimal amount);
     Account patchStatusAccount (Long id);
 
 }

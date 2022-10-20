@@ -4,8 +4,8 @@ import PaloosaBank.OnlineBanking.DTOs.accounts.AccountPostDTO;
 import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.accounts.CreditCard;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
-import PaloosaBank.OnlineBanking.repositoriesTest.accounts.CreditCardRepository;
-import PaloosaBank.OnlineBanking.repositoriesTest.users.AccountHolderRepository;
+import PaloosaBank.OnlineBanking.repositories.accounts.CreditCardRepository;
+import PaloosaBank.OnlineBanking.repositories.users.AccountHolderRepository;
 import PaloosaBank.OnlineBanking.services.accounts.interfaces.CreditCardServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,12 +35,6 @@ public class CreditCardService implements CreditCardServiceInterface {
                     new ResponseStatusException(HttpStatus.NOT_FOUND,
                             "An Account Holder with the given id doesn't exist"));
         }
-//        if (creditCard.getInterestRate() > 0.2)
-//            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,
-//                    "The Credit Card Interest Rate can't be higher than 2%");
-//        if (creditCard.getInterestRate() < 0.1)
-//            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,
-//                    "The Credit Card Interest Rate can't be lower than 1%");
 
         Money balance = new Money(BigDecimal.valueOf(creditCard.getBalance()));
         return creditCardRepository.save(new CreditCard(balance, accountHolder, accountHolder2));

@@ -13,11 +13,8 @@ import java.util.List;
 
 @Entity
 public class AccountHolder extends User{
-
-//    @NotBlank(message = "This field can't be blank")
     @NotNull(message = "This field can't be null")
     private LocalDate dateOfBirth;
-//    @NotBlank(message = "This field can't be blank")
     @NotNull(message = "This field can't be null") // Esto me permitira dejar la secondary nula o no
     @Embedded
     private Address primaryAddress;
@@ -30,19 +27,14 @@ public class AccountHolder extends User{
     })
     private Address mailingAddress;
 
-//    @NotBlank(message = "This field can't be blank")
-//    @NotNull(message = "This field can't be null") // todo revisar esto!
     @OneToMany(mappedBy = "primaryOwner")
     @JsonIgnore
     private List<Account> primaryAccountList;
 
     @OneToMany(mappedBy = "secondaryOwner")
     @JsonIgnore
-    private List<Account> secondaryAccountList;  //TODO {No estoy seguro de que tenga que existir
+    private List<Account> secondaryAccountList;
 
-//    @NotBlank(message = "This field can't be blank")
-    @NotNull(message = "This field can't be null")
-    private Money monthlySpended = new Money(BigDecimal.valueOf(0)); //Todo como plantear esta suma en cada transaccion
 
     public AccountHolder(String name, LocalDate dateOfBirth, Address primaryAddress, Address mailingAddress) { // TODO aqui no va el monthly, no?
         super(name);
@@ -87,11 +79,4 @@ public class AccountHolder extends User{
         this.primaryAccountList = primaryAccountList;
     }
 
-    public Money getMonthlySpended() {
-        return monthlySpended;
-    }
-
-    public void setMonthlySpended(Money monthlySpended) {
-        this.monthlySpended = monthlySpended;
-    }
 }

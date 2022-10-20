@@ -1,4 +1,4 @@
-package PaloosaBank.OnlineBanking.repositoriesTest.accounts;
+package PaloosaBank.OnlineBanking.repositories.accounts;
 
 import org.springframework.boot.test.context.SpringBootTest;
 

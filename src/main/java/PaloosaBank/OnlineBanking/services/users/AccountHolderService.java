@@ -1,11 +1,8 @@
 package PaloosaBank.OnlineBanking.services.users;
 
-import PaloosaBank.OnlineBanking.DTOs.accounts.TransferDTO;
-import PaloosaBank.OnlineBanking.embedables.Money;
-import PaloosaBank.OnlineBanking.entities.accounts.Account;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
-import PaloosaBank.OnlineBanking.repositoriesTest.accounts.AccountRepository;
-import PaloosaBank.OnlineBanking.repositoriesTest.users.AccountHolderRepository;
+import PaloosaBank.OnlineBanking.repositories.accounts.AccountRepository;
+import PaloosaBank.OnlineBanking.repositories.users.AccountHolderRepository;
 import PaloosaBank.OnlineBanking.services.users.interfaces.AccountHolderServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -49,26 +46,6 @@ public class AccountHolderService implements AccountHolderServiceInterface {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This Account Holder doesn't exist");
 
         return accountHolderRepository.save(accountHolder);
-    }
-
-    @Override
-    public TransferDTO transferAccountHolderAnyAccount(Long accountOutId, Long accountInId, Money balance, String secretKey) {
-        Account accountOut = accountRepository.findById(accountOutId).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "The Account Id of the Sender doesn't exist."));
-        Account accountIn = accountRepository.findById(accountInId).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "The Account Id of the Receiver doesn't exist."));
-        if (accountRepository.findBySecretKey(secretKey).isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "The password doesn't match with the system.");
-        }
-        if (accountOut.getBalance().getAmount().compareTo(balance.getAmount()) < 0) {
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "This Account don't have enough founds.");
-        }
-
-        accountOut.setBalance(new Money(accountOut.getBalance().decreaseAmount(balance.getAmount())));
-        accountIn.setBalance(new Money(accountIn.getBalance().increaseAmount(balance.getAmount())));
-        accountRepository.saveAll(List.of(accountOut, accountIn));
-        return new TransferDTO(accountOut.getPrimaryOwner().getName(),
-                accountIn.getPrimaryOwner().getName(), balance.getAmount());
     }
 
 }

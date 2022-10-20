@@ -193,13 +193,6 @@ public class AdminController implements AdminControllerInterface {
     }
 
     @Override
-    @PutMapping("/admin/account/{id}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public Account updateAccount(@PathVariable Long id, @RequestBody AccountPostDTO account) {
-        return accountServiceInterface.updateAccount(id, account);
-    }
-
-    @Override
     @DeleteMapping("/admin/account/{id}")
     @ResponseStatus(HttpStatus.OK)
     public Account deleteAccountById(@PathVariable Long id) {
@@ -209,16 +202,16 @@ public class AdminController implements AdminControllerInterface {
     @Override
     @PatchMapping("/admin/reduce_balance_account/{id}")  // todo iria aqui o solo en account?
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public Account patchAdminAnyAccountBalance(@PathVariable Long accountId, @RequestParam BigDecimal balance) {
-        Money balance1 = new Money(balance);
-        return accountServiceInterface.patchAdminAnyAccountBalance(accountId, balance1);
+    public Account patchAdminAnyAccountBalance(@PathVariable Long accountId, @RequestParam BigDecimal amount) {
+        Money amount1 = new Money(amount);
+        return accountServiceInterface.patchAdminAnyAccountBalance(accountId, amount1);
     }
 
     @Override
     @PatchMapping("/admin/change_status_account")  // todo iria aqui o solo en account?
     @ResponseStatus(HttpStatus.ACCEPTED)
     public Account patchStatusAccount(@PathVariable Long id) {
-        return null;
+        return accountServiceInterface.patchStatusAccount(id);
     }
 
 

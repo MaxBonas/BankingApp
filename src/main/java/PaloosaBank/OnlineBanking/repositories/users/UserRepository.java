@@ -1,4 +1,4 @@
-package PaloosaBank.OnlineBanking.repositoriesTest.users;
+package PaloosaBank.OnlineBanking.repositories.users;
 
 import PaloosaBank.OnlineBanking.entities.users.User;
 import org.springframework.data.jpa.repository.JpaRepository;

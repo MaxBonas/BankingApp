@@ -9,11 +9,11 @@ import PaloosaBank.OnlineBanking.entities.accounts.StudentsChecking;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 import PaloosaBank.OnlineBanking.entities.users.Admin;
 import PaloosaBank.OnlineBanking.entities.users.ThirdParty;
-import PaloosaBank.OnlineBanking.repositoriesTest.accounts.*;
-import PaloosaBank.OnlineBanking.repositoriesTest.users.AccountHolderRepository;
-import PaloosaBank.OnlineBanking.repositoriesTest.users.AdminRepository;
-import PaloosaBank.OnlineBanking.repositoriesTest.users.ThirdPartyRepository;
-import PaloosaBank.OnlineBanking.repositoriesTest.users.UserRepository;
+import PaloosaBank.OnlineBanking.repositories.accounts.*;
+import PaloosaBank.OnlineBanking.repositories.users.AccountHolderRepository;
+import PaloosaBank.OnlineBanking.repositories.users.AdminRepository;
+import PaloosaBank.OnlineBanking.repositories.users.ThirdPartyRepository;
+import PaloosaBank.OnlineBanking.repositories.users.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -117,22 +117,19 @@ public class OnlineBankingApplication implements CommandLineRunner {
 	}
 }
 
-// Todo: Secretkey accounts, how works? deberia estar en el DTO? deberia encryptarse?
-// Todo: PatchBalanceAnyAccount (Account). Donde va? se repite? CASI ACABADO
-// Todo: Transfer Method. General in Account or Account Holder... OR specific in each account type?
-//
-// Todo: MonthlySpended. confirm How works // IMPORTANTE, no con monthly para extra. entity Transactions
-// Todo: < 24 creation account method
+// TODO: TEST, no me sale plantear el mock de los otros
 
-// Todo: Test: de que classes haria falta?
-// Todo: JPA Repositories. Estan bien? Hago el Optional bien?
-// Todo: Credit Limit. Confirm how works // no pide nada, no sirve, pero una ruta setter haria falta
+//TODO: SECURITY
+
+// TODO: EN ACCOUNTSERVICE ESTA MEDIO PLANTEADO
+
+// Todo: Transfer Method. relacionado con monthlyFee
+// Todo: minimumBalance. a medio plantear
 // Todo: Interested rate (CreditCard) confirm how works
 // Todo: Penalty Fee confirm how works. Como resta?
 // Todo: minimum balance. confirm how works
-// Todo: GetAbstractById (Account) hace falta?
-// Todo: Revisar Controllers
-// Todo: Revisar Services
+
+// TODO: preguntar sobre el tipo "Front" que nos enseño jaume
 
 
 

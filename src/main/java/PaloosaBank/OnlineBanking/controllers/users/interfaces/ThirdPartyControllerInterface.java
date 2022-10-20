@@ -1,12 +1,10 @@
 package PaloosaBank.OnlineBanking.controllers.users.interfaces;
 
-import PaloosaBank.OnlineBanking.entities.accounts.Account;
-import PaloosaBank.OnlineBanking.entities.users.ThirdParty;
+import PaloosaBank.OnlineBanking.DTOs.accounts.PaymentTPGetDTO;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 public interface ThirdPartyControllerInterface {
 
-    Account patchThirdPartyAnyAccountBalance(Long accountId, BigDecimal balance, String hashkey);  // TODO esta bien?
+    PaymentTPGetDTO patchThirdPartyAnyAccountBalance(Long accountId, BigDecimal amount, String hashkey);  // TODO esta bien?
 }

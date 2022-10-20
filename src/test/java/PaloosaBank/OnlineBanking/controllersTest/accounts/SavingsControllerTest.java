@@ -2,8 +2,8 @@ package PaloosaBank.OnlineBanking.controllersTest.accounts;
 
 import PaloosaBank.OnlineBanking.embedables.Address;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
-import PaloosaBank.OnlineBanking.repositoriesTest.accounts.SavingsRepository;
-import PaloosaBank.OnlineBanking.repositoriesTest.users.AccountHolderRepository;
+import PaloosaBank.OnlineBanking.repositories.accounts.SavingsRepository;
+import PaloosaBank.OnlineBanking.repositories.users.AccountHolderRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;

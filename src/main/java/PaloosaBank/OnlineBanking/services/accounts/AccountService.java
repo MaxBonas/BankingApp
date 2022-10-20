@@ -1,15 +1,17 @@
 package PaloosaBank.OnlineBanking.services.accounts;
 
+import PaloosaBank.OnlineBanking.DTOs.accounts.PaymentTPGetDTO;
 import PaloosaBank.OnlineBanking.DTOs.accounts.AccountPostDTO;
-import PaloosaBank.OnlineBanking.DTOs.accounts.TransferDTO;
+import PaloosaBank.OnlineBanking.DTOs.accounts.TransferGetDTO;
+import PaloosaBank.OnlineBanking.DTOs.accounts.TransferPostDTO;
 import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.accounts.Account;
 import PaloosaBank.OnlineBanking.entities.accounts.Checking;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
-import PaloosaBank.OnlineBanking.entities.users.User;
-import PaloosaBank.OnlineBanking.repositoriesTest.accounts.AccountRepository;
-import PaloosaBank.OnlineBanking.repositoriesTest.users.AccountHolderRepository;
-import PaloosaBank.OnlineBanking.repositoriesTest.users.ThirdPartyRepository;
+import PaloosaBank.OnlineBanking.enums.Status;
+import PaloosaBank.OnlineBanking.repositories.accounts.AccountRepository;
+import PaloosaBank.OnlineBanking.repositories.users.AccountHolderRepository;
+import PaloosaBank.OnlineBanking.repositories.users.ThirdPartyRepository;
 import PaloosaBank.OnlineBanking.services.accounts.interfaces.AccountServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -48,11 +50,6 @@ public class AccountService implements AccountServiceInterface {
     }
 
     @Override
-    public Account updateAccount(Long id, AccountPostDTO account) {
-        return null;
-    }
-
-    @Override
     public Account deleteAccount(Long id) {
         Account account1 = accountRepository.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND,
@@ -63,7 +60,15 @@ public class AccountService implements AccountServiceInterface {
 
     @Override
     public Account patchStatusAccount(Long id) {
-        return null;
+        Account account1 = accountRepository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "No Account with this id exist in the system."));
+
+        if (account1.getStatus() == Status.ACTIVE){
+            account1.setStatus(Status.FROZEN);
+        }
+        account1.setStatus(Status.ACTIVE);
+        return accountRepository.save(account1);
     }
 
     @Override
@@ -79,51 +84,61 @@ public class AccountService implements AccountServiceInterface {
     }
 
     @Override
-    public Account patchThirdPartyAnyAccountBalance(Long id, Money balance, String hashkey) {
+    public PaymentTPGetDTO patchThirdPartyAnyAccountBalance(Long id, Money amount, String hashkey) {
         Account account1 = accountRepository.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "No Account with this id exist in the system."));
         if (thirdPartyRepository.findByHashkey(hashkey).isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "This Hashkey doesn't match with the system.");
         }
-        if (account1.getBalance().getAmount().compareTo(balance.getAmount()) < 0) {
+        if (account1.getBalance().getAmount().compareTo(amount.getAmount()) < 0) {
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "This Account don't have enough founds.");
         }
 
-        account1.setBalance(new Money(account1.getBalance().decreaseAmount(balance.getAmount())));
-        return accountRepository.save(account1);
+        account1.setBalance(new Money(account1.getBalance().decreaseAmount(amount.getAmount())));
+
+//        if (account1.getClass() == Checking && account1.getBalance().getAmount().compareTo(account1.)) // TODO ????
+        accountRepository.save(account1);
+        return new PaymentTPGetDTO(account1.getId(), account1.getPrimaryOwner().getName(), amount.getAmount().doubleValue());
     }
 
     @Override
-    public Account patchAdminAnyAccountBalance(Long id, Money balance) {
+    public Account patchAdminAnyAccountBalance(Long id, Money amount) {
         Account account1 = accountRepository.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "No Account with this id exist in the system."));
 
-        account1.setBalance(balance);
+        account1.setBalance(amount);
         return accountRepository.save(account1);
     }
 
     @Override
-    public TransferDTO transferAccountHolderAnyAccount(Long accountOutId, Long accountInId, Money balance, String secretKey) {
-        Account accountOut = accountRepository.findById(accountOutId).orElseThrow(() ->
+    public TransferGetDTO transferAccountHolderAnyAccount(TransferPostDTO transferPostDTO) {
+        Money amount2 = new Money(transferPostDTO.getAmount());
+        Account accountOut = accountRepository.findById(transferPostDTO.getAccountOutId()).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "The Account Id of the Sender doesn't exist."));
-        Account accountIn = accountRepository.findById(accountInId).orElseThrow(() ->
+        Account accountIn = accountRepository.findById(transferPostDTO.getAccountInId()).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "The Account Id of the Receiver doesn't exist."));
-        if (accountRepository.findBySecretKey(secretKey).isEmpty()) {
+        if (accountRepository.findBySecretKey(transferPostDTO.getSecretKey()).isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "The password doesn't match with the system.");
         }
-        if (accountOut.getBalance().getAmount().compareTo(balance.getAmount()) < 0) {
+        if (accountOut.getBalance().getAmount().compareTo(amount2.getAmount()) < 0) {
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "This Account don't have enough founds.");
         }
 
-        accountOut.setBalance(new Money(accountOut.getBalance().decreaseAmount(balance.getAmount())));
-        accountIn.setBalance(new Money(accountIn.getBalance().increaseAmount(balance.getAmount())));
+        accountOut.setBalance(new Money(accountOut.getBalance().decreaseAmount(amount2.getAmount())));
+        accountIn.setBalance(new Money(accountIn.getBalance().increaseAmount(amount2.getAmount())));
 
-        TransferDTO transferDTO = new TransferDTO(accountOut.getPrimaryOwner().getName(),
-                accountIn.getPrimaryOwner().getName(), balance.getAmount());
+        TransferGetDTO transferGetDTO = new TransferGetDTO(accountOut.getPrimaryOwner().getName(),
+                accountIn.getPrimaryOwner().getName(), amount2.getAmount());
+
+//        LocalDate monthly1 = accountHolder.getDateOfBirth();
+//        Period period = Period.between(birth1, LocalDate.now()); // TODO ????????
+//        if (period.getYears() < 24) {
+//            return studentsCheckingRepository.save(new StudentsChecking(balance, accountHolder, accountHolder2));
+//        }
 
         accountRepository.save(accountOut);
         accountRepository.save(accountIn);
-        return transferDTO;
+        return transferGetDTO;
     }
 
     @Override

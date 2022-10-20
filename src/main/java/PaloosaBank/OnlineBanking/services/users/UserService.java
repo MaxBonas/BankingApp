@@ -1,7 +1,7 @@
 package PaloosaBank.OnlineBanking.services.users;
 
 import PaloosaBank.OnlineBanking.entities.users.User;
-import PaloosaBank.OnlineBanking.repositoriesTest.users.UserRepository;
+import PaloosaBank.OnlineBanking.repositories.users.UserRepository;
 import PaloosaBank.OnlineBanking.services.users.interfaces.UserServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

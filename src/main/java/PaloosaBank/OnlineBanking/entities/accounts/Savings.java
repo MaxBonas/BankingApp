@@ -2,6 +2,8 @@ package PaloosaBank.OnlineBanking.entities.accounts;
 
 import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.constraints.*;
 import javax.persistence.*;
@@ -12,16 +14,14 @@ public class Savings extends Account{
 
     @Embedded
     @NotNull(message = "This field can't be null")
-//    @DecimalMin(value = "1000.00", message = "A Savings Account can't be created with less than 1000.00") //
     @AttributeOverrides({
             @AttributeOverride(name="currency", column = @Column(name = "minimum_currency")),
             @AttributeOverride(name = "amount", column = @Column(name = "minimum_amount"))
     })
     private Money minimumBalance = new Money(BigDecimal.valueOf(1000));
-//    @NotBlank(message = "This field can't be blank")
+
     @NotNull(message = "This field can't be null")
     @DecimalMax(value = "0.5", message = "The maximum value for the Interest Rate is 0.5%")
-    @DecimalMin(value = "0.00", message = "The minimum value for the interest Rate is 0.00%") // todo a revisar
     private Double interestedRate = 0.0025;
 
     public Savings(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner) {
@@ -36,6 +36,9 @@ public class Savings extends Account{
     }
 
     public void setMinimumBalance(Money minimumBalance) {
+        if (minimumBalance.getAmount().compareTo(BigDecimal.valueOf(1000)) < 0)
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,
+                    "A Savings Account can't be created with less than 1000.00");
         this.minimumBalance = minimumBalance;
     }
 

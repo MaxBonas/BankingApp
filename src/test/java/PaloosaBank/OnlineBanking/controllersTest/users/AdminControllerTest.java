@@ -2,14 +2,20 @@ package PaloosaBank.OnlineBanking.controllersTest.users;
 
 import PaloosaBank.OnlineBanking.DTOs.accounts.AccountPostDTO;
 import PaloosaBank.OnlineBanking.embedables.Address;
+import PaloosaBank.OnlineBanking.entities.accounts.Account;
+import PaloosaBank.OnlineBanking.entities.accounts.CreditCard;
+import PaloosaBank.OnlineBanking.entities.accounts.Savings;
+import PaloosaBank.OnlineBanking.entities.accounts.StudentsChecking;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 import PaloosaBank.OnlineBanking.entities.users.Admin;
-import PaloosaBank.OnlineBanking.repositoriesTest.accounts.CheckingRepository;
-import PaloosaBank.OnlineBanking.repositoriesTest.accounts.CreditCardRepository;
-import PaloosaBank.OnlineBanking.repositoriesTest.accounts.SavingsRepository;
-import PaloosaBank.OnlineBanking.repositoriesTest.accounts.StudentsCheckingRepository;
-import PaloosaBank.OnlineBanking.repositoriesTest.users.AccountHolderRepository;
-import PaloosaBank.OnlineBanking.repositoriesTest.users.AdminRepository;
+import PaloosaBank.OnlineBanking.entities.users.ThirdParty;
+import PaloosaBank.OnlineBanking.repositories.accounts.CheckingRepository;
+import PaloosaBank.OnlineBanking.repositories.accounts.CreditCardRepository;
+import PaloosaBank.OnlineBanking.repositories.accounts.SavingsRepository;
+import PaloosaBank.OnlineBanking.repositories.accounts.StudentsCheckingRepository;
+import PaloosaBank.OnlineBanking.repositories.users.AccountHolderRepository;
+import PaloosaBank.OnlineBanking.repositories.users.AdminRepository;
+import PaloosaBank.OnlineBanking.repositories.users.ThirdPartyRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +29,9 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -51,14 +59,20 @@ public class AdminControllerTest {
     StudentsCheckingRepository studentsCheckingRepository;
 
     @Autowired
+    ThirdPartyRepository thirdPartyRepository;
+
+
+    @Autowired
     private WebApplicationContext webApplicationContext;
     private MockMvc mockMvc;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     AccountHolder accountHolderTest1;
     AccountHolder accountHolderTest2;
+    AccountHolder accountHolderTest3;
     Admin adminTest1;
     Admin adminTest2;
+    ThirdParty thirdPartyTest;
 
     @BeforeEach
     void setUp() {
@@ -77,6 +91,69 @@ public class AdminControllerTest {
         adminRepository.save(adminTest1);
     }
 
+    //-----------POST TESTS--------------
+    @Test
+    @DisplayName("Testing the method addAdmin by Admin")
+    void postAdminByAdmin_OK() throws Exception {
+
+        adminTest2 = new Admin("Test2 AdminUser");
+        adminTest2.setId(100L);
+
+        String body = objectMapper.writeValueAsString(adminTest2);
+
+        MvcResult mvcResult = mockMvc.perform(post("/admin").content(body).
+                contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated()).andReturn();
+
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode tree = mapper.readTree(mvcResult.getResponse().getContentAsString());
+        JsonNode node = tree.get("id");
+        Long id = node.asLong();
+
+        assertTrue(adminRepository.findById(id).isPresent());
+    }
+
+    @Test
+    @DisplayName("Testing the method addThirdParty by Admin")
+    void postThirdPartyByAdmin_OK() throws Exception {
+
+        thirdPartyTest = new ThirdParty("Test ThirdPartyUser");
+        thirdPartyTest.setId(100L);
+
+        String body = objectMapper.writeValueAsString(thirdPartyTest);
+
+        MvcResult mvcResult = mockMvc.perform(post("/admin/third_party").content(body).
+                contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated()).andReturn();
+
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode tree = mapper.readTree(mvcResult.getResponse().getContentAsString());
+        JsonNode node = tree.get("id");
+        Long id = node.asLong();
+
+        assertTrue(thirdPartyRepository.findById(id).isPresent());
+    }
+
+    @Test
+    @DisplayName("Testing the method addAccountHolder by Admin")
+    void postAccountHolderByAdmin_OK() throws Exception {
+
+        accountHolderTest3 = new AccountHolder("Test Testy", LocalDate.of(2012, 1, 22),
+                new Address("Test Basch ave. 365", "Test Old York", "Test 48988"),
+                null);
+        accountHolderTest3.setId(100L);
+
+        String body = objectMapper.writeValueAsString(accountHolderTest3); // TODO: no acepta LocalDate?
+
+        MvcResult mvcResult = mockMvc.perform(post("/admin/account_holder").content(body).
+                contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated()).andReturn();
+
+        ObjectMapper mapper = new ObjectMapper();
+        JsonNode tree = mapper.readTree(mvcResult.getResponse().getContentAsString());
+        JsonNode node = tree.get("id");
+        Long id = node.asLong();
+
+        assertTrue(accountHolderRepository.findById(id).isPresent());
+    }
+
     @Test
     @DisplayName("Testing the method addChecking from Admin")
     void postCheckingFromAdmin_OK() throws Exception {
@@ -88,9 +165,6 @@ public class AdminControllerTest {
 
         MvcResult mvcResult = mockMvc.perform(post("/admin/checking_account").content(body).
                 contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated()).andReturn();
-
-        //assertTrue(mvcResult.getResponse().getContentAsString().contains("523123"));
-        // One way, less efficient to test it
 
         ObjectMapper mapper = new ObjectMapper();
         JsonNode tree = mapper.readTree(mvcResult.getResponse().getContentAsString());
@@ -180,48 +254,49 @@ public class AdminControllerTest {
         assertTrue(studentsCheckingRepository.findById(id).isPresent());
     }
 
-    @Test
-    @DisplayName("Testing the method addAdmin")
-    void postAdmin_OK() throws Exception {
 
-        adminTest2 = new Admin("Test2 AdminUser");
-        adminTest2.setId(100L);
+    //    TODO AccountHolder addAccountHolder(); // Con un error
 
-        String body = objectMapper.writeValueAsString(adminTest2);
+    //------------------GET TESTS--------------  // TODO no se hacerlos
 
-        MvcResult mvcResult = mockMvc.perform(post("/admin").content(body).
-                contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated()).andReturn();
-
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode tree = mapper.readTree(mvcResult.getResponse().getContentAsString());
-        JsonNode node = tree.get("id");
-        Long id = node.asLong();
-
-        assertTrue(adminRepository.findById(id).isPresent());
-    }
-
-
-//    Admin getAdminById(Long id);
+    //    Admin getAdminById(Long id);
 //    List<Admin> getAllAdmins();
 //    Admin updateAdmin(Long id, Admin admin);
 //
-//    ThirdParty addThirdParty();
-//    ThirdParty getThirdPartyById(Long id);
+
+    //    ThirdParty getThirdPartyById(Long id);
 //    List<ThirdParty> adminGetAllThirdPartys();
 //    ThirdParty updateThirdParty();
-//    AccountHolder addAccountHolder();
-//    ThirdParty getThirdPartyById(Long id);
+
+//    AccountHolder getAccountHolderById(Long id);
 //    List<AccountHolder> adminGetAllAccountHolders();
 //    AccountHolder updateAccountHolder();
-//    User deleteUser();
+
+    //    Account getAccountById(Long id);
+//    List<Account> getAllAccounts();
+
+    //------------------UPDATE TESTS-------------------
+
+
+
+    //-----------------DELETE TESTS-----------------
+
+    //    User deleteUser();
+    //    Account deleteAccountById(Long id);
+
+    //-----------------PATCH TESTS------------------
+
+    //    Account patchAdminAnyAccountBalance(Long accountId, BigDecimal amount);
+//    Account patchStatusAccount (Long id);
+
+
+
+
+
 //
-//    Account addAccount();
-//    Account adminGetAccountById(Long id);
-//    List<Account> adminGetAllAccounts();
-//    Account updateAccount();
-//    Account deleteAccount();
-//    Account patchAdminAnyAccountBalance(Long accountId, BigDecimal balance);
-//Account patchStatusAccount (Long id);
+
+//
+
 
 
 }

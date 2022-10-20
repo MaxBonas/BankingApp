@@ -2,7 +2,7 @@ package PaloosaBank.OnlineBanking.DTOs.accounts;
 
 import java.math.BigDecimal;
 
-public class TransferDTO {
+public class TransferGetDTO {
 
     private String ownerName;
 
@@ -10,7 +10,7 @@ public class TransferDTO {
 
     private BigDecimal amount;
 
-    public TransferDTO(String ownerName, String recipientName, BigDecimal amount) {
+    public TransferGetDTO(String ownerName, String recipientName, BigDecimal amount) {
         this.ownerName = ownerName;
         this.recipientName = recipientName;
         this.amount = amount;
