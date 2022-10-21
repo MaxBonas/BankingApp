@@ -2,22 +2,23 @@ package PaloosaBank.OnlineBanking;
 
 import PaloosaBank.OnlineBanking.embedables.Address;
 import PaloosaBank.OnlineBanking.embedables.Money;
+import PaloosaBank.OnlineBanking.entities.Transfer;
 import PaloosaBank.OnlineBanking.entities.accounts.Checking;
 import PaloosaBank.OnlineBanking.entities.accounts.CreditCard;
 import PaloosaBank.OnlineBanking.entities.accounts.Savings;
 import PaloosaBank.OnlineBanking.entities.accounts.StudentsChecking;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 import PaloosaBank.OnlineBanking.entities.users.Admin;
+import PaloosaBank.OnlineBanking.entities.users.Role;
 import PaloosaBank.OnlineBanking.entities.users.ThirdParty;
+import PaloosaBank.OnlineBanking.repositories.TransferRepository;
 import PaloosaBank.OnlineBanking.repositories.accounts.*;
-import PaloosaBank.OnlineBanking.repositories.users.AccountHolderRepository;
-import PaloosaBank.OnlineBanking.repositories.users.AdminRepository;
-import PaloosaBank.OnlineBanking.repositories.users.ThirdPartyRepository;
-import PaloosaBank.OnlineBanking.repositories.users.UserRepository;
+import PaloosaBank.OnlineBanking.repositories.users.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -28,31 +29,25 @@ import java.util.List;
 public class OnlineBankingApplication implements CommandLineRunner {
 
 	@Autowired
-	AccountRepository accountRepository;
-
+	PasswordEncoder passwordEncoder;
+	@Autowired
+	RoleRepository roleRepository;
 	@Autowired
 	CheckingRepository checkingRepository;
-
 	@Autowired
 	CreditCardRepository creditCardRepository;
-
 	@Autowired
 	SavingsRepository savingsRepository;
-
 	@Autowired
 	StudentsCheckingRepository studentsCheckingRepository;
-
 	@Autowired
 	AccountHolderRepository accountHolderRepository;
-
 	@Autowired
 	AdminRepository adminRepository;
-
 	@Autowired
 	ThirdPartyRepository thirdPartyRepository;
-
 	@Autowired
-	UserRepository userRepository;
+	TransferRepository transferRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(OnlineBankingApplication.class, args);
@@ -61,42 +56,76 @@ public class OnlineBankingApplication implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 
-
-		AccountHolder accountHolder1 = new AccountHolder("May Lord", LocalDate.of(1989, 3, 22),
+		AccountHolder accountHolder1 = new AccountHolder("May Lord", "mylo@gmail.com",
+				passwordEncoder.encode("C@r@1212"), LocalDate.of(1989, 3, 22),
 				new Address("Anselm Clave 7", "Corbera de Llobregat", "08757"),
 				new Address("Carrer Caceres 26", "Barcelona", "08021"));
-		AccountHolder accountHolder2 = new AccountHolder("Bill Adama", LocalDate.of(1943, 10, 30),
+		accountHolderRepository.save(accountHolder1);
+		roleRepository.save(new Role("HOLDER_", accountHolder1));
+		AccountHolder accountHolder2 = new AccountHolder("Bill Adama", "galactica@gmail.com",
+				passwordEncoder.encode("BillyBill"), LocalDate.of(1943, 10, 30),
 				new Address("Palm Springs st 89", "Miami", "64532"),
 				null);
-		AccountHolder accountHolder3 = new AccountHolder("Kara Thrace", LocalDate.of(1975, 8, 2),
+		accountHolderRepository.save(accountHolder2);
+		roleRepository.save(new Role("HOLDER_", accountHolder2));
+		AccountHolder accountHolder3 = new AccountHolder("Kara Thrace", "speddfire@gmail.com",
+				passwordEncoder.encode("KyRaTo"), LocalDate.of(1975, 8, 2),
 				new Address("Turette ave. 1265", "L.A.", "867-563"),
 				null);
-		AccountHolder accountHolder4 = new AccountHolder("Thomson McThomson", LocalDate.of(1998, 9, 2),
+		accountHolderRepository.save(accountHolder3);
+		roleRepository.save(new Role("HOLDER_", accountHolder3));
+		AccountHolder accountHolder4 = new AccountHolder("Thomson McThomson", "tommygun@gmail.com",
+				passwordEncoder.encode("34443454G"), LocalDate.of(1998, 9, 2),
 				new Address("Carrer Viviera", "La Calma", "23157"),
 				new Address("Carrer Victoria", "Barcelona", "08032"));
-		AccountHolder accountHolder5 = new AccountHolder("Crystal Clair", LocalDate.of(1973, 11, 20),
+		accountHolderRepository.save(accountHolder4);
+		roleRepository.save(new Role("HOLDER_", accountHolder4));
+		AccountHolder accountHolder5 = new AccountHolder("Crystal Clair", "water@gmail.com",
+				passwordEncoder.encode("ghulopata23"), LocalDate.of(1973, 11, 20),
 				new Address("Buenaventura st 91", "Santa Carla", "68-654"),
 				null);
-		AccountHolder accountHolder6 = new AccountHolder("Kant BeRight", LocalDate.of(1935, 1, 24),
+		accountHolderRepository.save(accountHolder5);
+		roleRepository.save(new Role("HOLDER_", accountHolder5));
+		AccountHolder accountHolder6 = new AccountHolder("Kant BeRight", "mrpunctual@gmail.com",
+				passwordEncoder.encode("DEFEstado"), LocalDate.of(1935, 1, 24),
 				new Address("Crisol ave. 365", "New York", "46266"),
 				null);
+		accountHolderRepository.save(accountHolder6);
+		roleRepository.save(new Role("HOLDER_", accountHolder6));
 		accountHolderRepository.saveAll(List.of(accountHolder1, accountHolder2, accountHolder3, accountHolder4, accountHolder5,
 				accountHolder6));   // Another way to do it, with other strong points
 
-		adminRepository.saveAll(List.of(
-				new Admin("Emilio Botín"),
-				new Admin("Tio Gilito"),
-				new Admin("Luis Bàrcenas")));
+		Admin emilio = new Admin("Emilio Botín", "santender@gmail.com", passwordEncoder.encode("MiDiN3R0"));
+		Admin barcenas = new Admin("Luis Bàrcenas", "ppsede@gmail.com", passwordEncoder.encode("SOBREtodo"));
+		Admin titoGil = new Admin("Tio Gilito", "disney@gmail.com", passwordEncoder.encode("3patitos"));
+		adminRepository.save(emilio);
+		adminRepository.save(barcenas);
+		adminRepository.save(titoGil);
+		roleRepository.save(new Role("ADMIN_", emilio));
+		adminRepository.save(emilio);
+		roleRepository.save(new Role("ADMIN_", barcenas));
+		adminRepository.save(barcenas);
+		roleRepository.save(new Role("ADMIN_", titoGil));
+		adminRepository.save(titoGil);
 
-		thirdPartyRepository.saveAll(List.of(
-				new ThirdParty("Zara .ORG"),
-				new ThirdParty("Aldi Inc."),
-				new ThirdParty("Audi .s.a")));
+		ThirdParty thirdParty1 = new ThirdParty("Zara .ORG", "ropita@gmail.com",
+				passwordEncoder.encode("32234jhjfg"));
+		thirdPartyRepository.save(thirdParty1);
+		roleRepository.save(new Role("THIRD_", thirdParty1));
+		ThirdParty thirdParty2 = new ThirdParty("Aldi Inc.", "goodfood@gmail.com",
+				passwordEncoder.encode("7687kjhgbk"));
+		thirdPartyRepository.save(thirdParty2);
+		roleRepository.save(new Role("THIRD_", thirdParty2));
+		ThirdParty thirdParty3 = new ThirdParty("Audi .s.a", "motorpeople@gmail.com",
+				passwordEncoder.encode("jgfjugf76457"));
+		thirdPartyRepository.save(thirdParty3);
+		roleRepository.save(new Role("THIRD_", thirdParty3));
+		thirdPartyRepository.saveAll(List.of(thirdParty1, thirdParty2, thirdParty3));
 
-		checkingRepository.saveAll(List.of(
-				new Checking(new Money(BigDecimal.valueOf(1010.13)), accountHolder1, null),
-				new Checking(new Money(BigDecimal.valueOf(23002.23)), accountHolder3, accountHolder2),
-				new Checking(new Money(BigDecimal.valueOf(53)), accountHolder5, accountHolder4)));
+		Checking checking1 = new Checking(new Money(BigDecimal.valueOf(1010.13)), accountHolder1, null);
+		Checking checking2 = new Checking(new Money(BigDecimal.valueOf(23002.23)), accountHolder3, accountHolder2);
+		Checking checking3 = new Checking(new Money(BigDecimal.valueOf(53)), accountHolder5, accountHolder4);
+		checkingRepository.saveAll(List.of(checking1, checking2, checking3));
 
 		creditCardRepository.saveAll(List.of(
 				new CreditCard(new Money(BigDecimal.valueOf(2310.98)), accountHolder4, null),
@@ -113,23 +142,19 @@ public class OnlineBankingApplication implements CommandLineRunner {
 				new StudentsChecking(new Money(BigDecimal.valueOf(1010.00)), accountHolder2, null),
 				new StudentsChecking(new Money(BigDecimal.valueOf(27.90)), accountHolder5, accountHolder3)));
 
-
+		Transfer transfer1 = new Transfer(checking1, BigDecimal.valueOf(134.23));
+		Transfer transfer2 = new Transfer(checking2, BigDecimal.valueOf(2650.26));
+		Transfer transfer3 = new Transfer(checking2, BigDecimal.valueOf(3230.00));
+		transferRepository.saveAll(List.of(transfer1, transfer2, transfer3));
 	}
 }
 
-// TODO: TEST, no me sale plantear el mock de los otros
 
-//TODO: SECURITY
+//TODO: SECURITY// cualquier user lo puede hacer todo
 
-// TODO: EN ACCOUNTSERVICE ESTA MEDIO PLANTEADO
+//TODO: tests, con la security?, me pedira password?
 
-// Todo: Transfer Method. relacionado con monthlyFee
-// Todo: minimumBalance. a medio plantear
-// Todo: Interested rate (CreditCard) confirm how works
-// Todo: Penalty Fee confirm how works. Como resta?
-// Todo: minimum balance. confirm how works
 
-// TODO: preguntar sobre el tipo "Front" que nos enseño jaume
 
 
 

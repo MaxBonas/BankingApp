@@ -8,7 +8,7 @@ public interface UserServiceInterface {
 
 
     User getUserById(Long id);
-    User deleteUserById(Long id);
+    String deleteUserById(Long id);
 
     List<User> getAllUsers();
 }

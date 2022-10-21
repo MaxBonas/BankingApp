@@ -1,9 +1,6 @@
 package PaloosaBank.OnlineBanking.services.accounts.interfaces;
 
-import PaloosaBank.OnlineBanking.DTOs.accounts.PaymentTPGetDTO;
-import PaloosaBank.OnlineBanking.DTOs.accounts.AccountPostDTO;
-import PaloosaBank.OnlineBanking.DTOs.accounts.TransferGetDTO;
-import PaloosaBank.OnlineBanking.DTOs.accounts.TransferPostDTO;
+import PaloosaBank.OnlineBanking.DTOs.accounts.*;
 import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.accounts.Account;
 
@@ -13,8 +10,8 @@ import java.util.List;
 public interface AccountServiceInterface {
 
     Account addAccount(AccountPostDTO account);
-    Account deleteAccount(Long id);
-    Account patchStatusAccount (Long id);
+    String deleteAccount(Long id);
+    AccountGetDTO patchStatusAccount (Long id);
     Account getAccountById(Long id);
     List<Account> getAllAccounts();
 

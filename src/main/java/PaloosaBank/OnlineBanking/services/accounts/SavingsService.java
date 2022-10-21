@@ -2,6 +2,7 @@ package PaloosaBank.OnlineBanking.services.accounts;
 
 import PaloosaBank.OnlineBanking.DTOs.accounts.AccountPostDTO;
 import PaloosaBank.OnlineBanking.embedables.Money;
+import PaloosaBank.OnlineBanking.entities.accounts.CreditCard;
 import PaloosaBank.OnlineBanking.entities.accounts.Savings;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 import PaloosaBank.OnlineBanking.repositories.accounts.SavingsRepository;
@@ -36,7 +37,10 @@ public class SavingsService implements SavingsServiceInterface {
                             "An Account Holder with the given id doesn't exist"));
         }
         Money balance = new Money(BigDecimal.valueOf(savings.getBalance()));
-        return savingsRepository.save(new Savings(balance, accountHolder, accountHolder2));
+        Savings savings1 = new Savings(balance, accountHolder, accountHolder2);
+        savings1.setMinimumBalance(new Money(BigDecimal.valueOf(savings.getMinimumBalance())));
+        savings1.setInterestRate(savings.getInterestRate());
+        return savingsRepository.save(savings1);
     }
 
     @Override
@@ -68,7 +72,10 @@ public class SavingsService implements SavingsServiceInterface {
         }
 
         Money balance = new Money(BigDecimal.valueOf(savings.getBalance()));
-
-        return savingsRepository.save(new Savings(balance, accountHolder, accountHolder2));
+        Savings savings1 = new Savings(balance, accountHolder, accountHolder2);
+        savings1.setId(id);
+        savings1.setMinimumBalance(new Money(BigDecimal.valueOf(savings.getMinimumBalance())));
+        savings1.setInterestRate(savings.getInterestRate());
+        return savingsRepository.save(savings1);
     }
 }

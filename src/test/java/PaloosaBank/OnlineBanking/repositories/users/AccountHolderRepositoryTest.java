@@ -26,12 +26,14 @@ public class AccountHolderRepositoryTest {
     @BeforeEach
     void setUp() {
 
-        accountHolderTest1 = new AccountHolder("Test May Lord", LocalDate.of(1989, 3, 22),
+        accountHolderTest1 = new AccountHolder("Test May Lord", "test7@email.com", "testpass5",
+                LocalDate.of(1203, 3, 22),
                 new Address("Test Anselm Clave 7", "Test Corbera de Llobregat", "Test 08757"),
                 new Address("Test Carrer Caceres 26", "Test Barcelona", "Test 08021"));
         accountHolderRepository.save(accountHolderTest1);
 
-        accountHolderTest2 = new AccountHolder("Test Kant BeRight", LocalDate.of(2010, 1, 24),
+        accountHolderTest2 = new AccountHolder("Test Kant BeRight", "test6@email.com", "tsetpass6",
+                LocalDate.of(2010, 1, 24),
                 new Address("Test Crisol ave. 365", "Test New York", "Test 46266"),
                 null);
         accountHolderRepository.save(accountHolderTest2);
@@ -51,9 +53,8 @@ public class AccountHolderRepositoryTest {
     void findAccountHolderByDateOfBirth_OK () {
 
         LocalDate birthTest = accountHolderTest1.getDateOfBirth();
-        assertTrue(accountHolderRepository.findByDateOfBirth(birthTest).contains(accountHolderTest1));
-        // TODO no me va
-
+        assertTrue(accountHolderRepository.findByDateOfBirth(birthTest).get(0).getEmail().equals(accountHolderTest1.getEmail()));
+        System.out.println(accountHolderRepository.findByDateOfBirth(birthTest).get(0).getEmail());
     }
 
 

@@ -29,10 +29,10 @@ public class UserRepositoryTest {
     @BeforeEach
     void setUp() {
 
-        adminTest1 = new Admin("Test AdminUser");
+        adminTest1 = new Admin("Test AdminUser", "test5@email.com", "adminpass3");
         adminRepository.save(adminTest1);
 
-        thirdPartyTest1 = new ThirdParty("Test ThirdPartyUser");
+        thirdPartyTest1 = new ThirdParty("Test ThirdPartyUser", "test9@email.com", "TPpass3");
         thirdPartyRepository.save(thirdPartyTest1);
 
     }

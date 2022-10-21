@@ -2,6 +2,7 @@ package PaloosaBank.OnlineBanking.entities.users;
 
 import PaloosaBank.OnlineBanking.embedables.Address;
 import PaloosaBank.OnlineBanking.embedables.Money;
+import PaloosaBank.OnlineBanking.entities.Transfer;
 import PaloosaBank.OnlineBanking.entities.accounts.Account;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -10,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class AccountHolder extends User{
@@ -35,14 +37,18 @@ public class AccountHolder extends User{
     @JsonIgnore
     private List<Account> secondaryAccountList;
 
+    @OneToMany(mappedBy = "primaryOwner",fetch = FetchType.EAGER)
+    @JsonIgnore
+    private List<Transfer> transfers;
 
-    public AccountHolder(String name, LocalDate dateOfBirth, Address primaryAddress, Address mailingAddress) { // TODO aqui no va el monthly, no?
-        super(name);
+    public AccountHolder(String name, String email, String password, LocalDate dateOfBirth, Address primaryAddress, Address mailingAddress) {
+        super(name, email, password);
         this.dateOfBirth = dateOfBirth;
         this.primaryAddress = primaryAddress;
         this.mailingAddress = mailingAddress;
-    }
+        getRoles().add(new Role("HOLDER", this));
 
+    }
 
     public AccountHolder() {
     }
@@ -79,4 +85,19 @@ public class AccountHolder extends User{
         this.primaryAccountList = primaryAccountList;
     }
 
+    public List<Account> getSecondaryAccountList() {
+        return secondaryAccountList;
+    }
+
+    public void setSecondaryAccountList(List<Account> secondaryAccountList) {
+        this.secondaryAccountList = secondaryAccountList;
+    }
+
+    public List<Transfer> getTransfers() {
+        return transfers;
+    }
+
+    public void setTransfers(List<Transfer> transfers) {
+        this.transfers = transfers;
+    }
 }

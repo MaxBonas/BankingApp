@@ -11,6 +11,8 @@ import javax.validation.constraints.NotNull;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.Period;
 
 @Entity
 public class CreditCard extends Account{
@@ -35,6 +37,8 @@ public class CreditCard extends Account{
     @DecimalMax(value = "0.2", message = "The Interest Rate can't be higher than 0,2%")
     @DecimalMin(value = "0.1", message = "The Interest Rate can't be higher than 0,1%")
     private Double interestRate = 0.2;
+
+    private LocalDate lastInterest = LocalDate.now();
 
     public CreditCard(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner) {
         super(balance, primaryOwner, secondaryOwner);
@@ -72,5 +76,27 @@ public class CreditCard extends Account{
 
     public void setInterestRate(Double interestRate) {
         this.interestRate = interestRate;
+    }
+
+    public LocalDate getLastInterest() {
+        return lastInterest;
+    }
+
+    public void setLastInterest(LocalDate lastInterest) {
+        this.lastInterest = lastInterest;
+    }
+
+    @Override
+    public void setBalance(Money balance) { // Override balance in here allows me to use it in this entity, because is
+        // a method that is called every time that u use most complex methods.
+        Period period = Period.between(lastInterest, LocalDate.now());
+        int yearsPast = period.getYears();
+        int monthsPast = period.getMonths();
+        Double monthlyInterest = interestRate / 12D;
+        if (monthsPast >= 1) {
+            balance.decreaseAmount(((balance.getAmount().multiply(new BigDecimal(monthlyInterest)).multiply(new BigDecimal(monthsPast)))));
+            setLastInterest(LocalDate.now());
+        }
+        super.setBalance(balance);
     }
 }

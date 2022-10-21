@@ -5,11 +5,8 @@ import java.math.BigDecimal;
 public class TransferPostDTO {
 
     private Long accountOutId;
-
     private Long accountInId;
-
     private BigDecimal amount;
-
     private String secretKey;
 
     public TransferPostDTO(Long accountOutId, Long accountInId, BigDecimal amount, String secretKey) {

@@ -1,10 +1,8 @@
-package PaloosaBank.OnlineBanking.controllers.users;
+package PaloosaBank.OnlineBanking.controllers;
 
 import PaloosaBank.OnlineBanking.DTOs.accounts.TransferGetDTO;
 import PaloosaBank.OnlineBanking.DTOs.accounts.TransferPostDTO;
-import PaloosaBank.OnlineBanking.controllers.users.interfaces.AccountHolderControllerInterface;
-import PaloosaBank.OnlineBanking.embedables.Money;
-import PaloosaBank.OnlineBanking.entities.accounts.Account;
+import PaloosaBank.OnlineBanking.controllers.interfaces.AccountHolderControllerInterface;
 import PaloosaBank.OnlineBanking.services.accounts.interfaces.AccountServiceInterface;
 import PaloosaBank.OnlineBanking.services.users.interfaces.AccountHolderServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;

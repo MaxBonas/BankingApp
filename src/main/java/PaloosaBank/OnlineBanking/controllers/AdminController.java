@@ -1,13 +1,13 @@
-package PaloosaBank.OnlineBanking.controllers.users;
+package PaloosaBank.OnlineBanking.controllers;
 
+import PaloosaBank.OnlineBanking.DTOs.accounts.AccountGetDTO;
 import PaloosaBank.OnlineBanking.DTOs.accounts.AccountPostDTO;
-import PaloosaBank.OnlineBanking.controllers.users.interfaces.AdminControllerInterface;
+import PaloosaBank.OnlineBanking.controllers.interfaces.AdminControllerInterface;
 import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.accounts.*;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 import PaloosaBank.OnlineBanking.entities.users.Admin;
 import PaloosaBank.OnlineBanking.entities.users.ThirdParty;
-import PaloosaBank.OnlineBanking.entities.users.User;
 import PaloosaBank.OnlineBanking.services.accounts.interfaces.*;
 import PaloosaBank.OnlineBanking.services.users.interfaces.AccountHolderServiceInterface;
 import PaloosaBank.OnlineBanking.services.users.interfaces.AdminServiceInterface;
@@ -25,31 +25,22 @@ public class AdminController implements AdminControllerInterface {
 
     @Autowired
     AdminServiceInterface adminServiceInterface;
-
     @Autowired
     CreditCardServiceInterface creditCardServiceInterface;
-
     @Autowired
     AccountServiceInterface accountServiceInterface;
-
     @Autowired
     CheckingServiceInterface checkingServiceInterface;
-
     @Autowired
     StudentsCheckingServiceInterface studentsCheckingServiceInterface;
-
     @Autowired
     SavingsServiceInterface savingsServiceInterface;
-
     @Autowired
     ThirdPartyServiceInterface thirdPartyServiceInterface;
-
     @Autowired
     AccountHolderServiceInterface accountHolderServiceInterface;
-
     @Autowired
     UserServiceInterface userServiceInterface;
-
 
 
     @Override
@@ -67,7 +58,7 @@ public class AdminController implements AdminControllerInterface {
     }
 
     @Override
-    @GetMapping("/admins")
+    @GetMapping("/admin/admins")
     @ResponseStatus(HttpStatus.OK)
     public List<Admin> getAllAdmins() {
         return adminServiceInterface.getAllAdmins();
@@ -140,7 +131,7 @@ public class AdminController implements AdminControllerInterface {
     @Override
     @DeleteMapping("/admin/user/{id}")
     @ResponseStatus(value = HttpStatus.ACCEPTED)
-    public User deleteUserById(@PathVariable Long id) {
+    public String deleteUserById(@PathVariable Long id) {
         return userServiceInterface.deleteUserById(id);
     }
 
@@ -195,12 +186,12 @@ public class AdminController implements AdminControllerInterface {
     @Override
     @DeleteMapping("/admin/account/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Account deleteAccountById(@PathVariable Long id) {
+    public String deleteAccountById(@PathVariable Long id) {
         return accountServiceInterface.deleteAccount(id);
     }
 
     @Override
-    @PatchMapping("/admin/reduce_balance_account/{id}")  // todo iria aqui o solo en account?
+    @PatchMapping("/admin/reduce_balance_account/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public Account patchAdminAnyAccountBalance(@PathVariable Long accountId, @RequestParam BigDecimal amount) {
         Money amount1 = new Money(amount);
@@ -208,9 +199,9 @@ public class AdminController implements AdminControllerInterface {
     }
 
     @Override
-    @PatchMapping("/admin/change_status_account")  // todo iria aqui o solo en account?
+    @PatchMapping("/admin/change_status_account/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public Account patchStatusAccount(@PathVariable Long id) {
+    public AccountGetDTO patchStatusAccount(@PathVariable Long id) {
         return accountServiceInterface.patchStatusAccount(id);
     }
 

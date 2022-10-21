@@ -1,14 +1,18 @@
 package PaloosaBank.OnlineBanking.entities.accounts;
 
 import PaloosaBank.OnlineBanking.embedables.Money;
+import PaloosaBank.OnlineBanking.entities.Transfer;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 import PaloosaBank.OnlineBanking.enums.Status;
 import PaloosaBank.OnlineBanking.tools.PasswordHelper;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity
@@ -18,9 +22,10 @@ public abstract class Account {
     private Long id;
 
     @NotNull
-//    @DecimalMin("-2500.00") // todo a revisar. no cuentas con currency
-    private Money balance; //TODO en el primer parametro con columnas repetidas no hace falta @AttributeOverride..
-
+    private Money balance;
+    @NotBlank
+    @NotNull
+    @Column(unique = true)
     private String secretKey;
 
     @NotNull
@@ -33,13 +38,17 @@ public abstract class Account {
     @JoinColumn(name = "secondary_owner_ID")
     private AccountHolder secondaryOwner;
 
+    @OneToMany(mappedBy = "senderAccount")
+    @JsonIgnore
+    private List<Transfer> transfers;
+
     @NotNull
 //    @NotBlank
     private LocalDate creationDate;
 
     @NotNull
 //    @NotBlank
-    private Status status;
+    private Status status = Status.ACTIVE; // Quiza lo tocas para la validacion de cuentas
 
     public Account(Money balance, AccountHolder primaryOwner,
                    AccountHolder secondaryOwner) {
@@ -47,7 +56,6 @@ public abstract class Account {
         this.primaryOwner = primaryOwner;
         this.secondaryOwner = secondaryOwner;
         this.creationDate = LocalDate.now();
-        this.status = Status.ACTIVE; // Quiza lo tocas para la validacion de cuentas
         this.secretKey = PasswordHelper.generatePassword();
     }
 
@@ -108,5 +116,13 @@ public abstract class Account {
 
     public void setSecretKey(String secretKey) {
         this.secretKey = secretKey;
+    }
+
+    public List<Transfer> getTransfers() {
+        return transfers;
+    }
+
+    public void setTransfers(List<Transfer> transfers) {
+        this.transfers = transfers;
     }
 }

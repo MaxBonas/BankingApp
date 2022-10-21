@@ -1,11 +1,15 @@
 package PaloosaBank.OnlineBanking.services.users;
 
+import PaloosaBank.OnlineBanking.entities.users.Admin;
+import PaloosaBank.OnlineBanking.entities.users.Role;
 import PaloosaBank.OnlineBanking.entities.users.ThirdParty;
 import PaloosaBank.OnlineBanking.repositories.accounts.AccountRepository;
+import PaloosaBank.OnlineBanking.repositories.users.RoleRepository;
 import PaloosaBank.OnlineBanking.repositories.users.ThirdPartyRepository;
 import PaloosaBank.OnlineBanking.services.users.interfaces.ThirdPartyServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -18,14 +22,20 @@ public class ThirdPartyService implements ThirdPartyServiceInterface {
     ThirdPartyRepository thirdPartyRepository;
 
     @Autowired
-    AccountRepository accountRepository;
+    RoleRepository roleRepository;
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     @Override
     public ThirdParty addThirdParty(ThirdParty thirdParty) {
         if (thirdPartyRepository.findById(thirdParty.getId()).isPresent())
             throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
                     "A Third Party with this id already exist.");
-        return thirdPartyRepository.save(thirdParty);
+        String encodedPassword = passwordEncoder.encode(thirdParty.getPassword());
+        thirdParty.setPassword(encodedPassword);
+        ThirdParty thirdParty2 = thirdPartyRepository.save(thirdParty);
+        roleRepository.save(new Role("THIRD_", thirdParty2));
+        return thirdPartyRepository.save(thirdParty2);
     }
 
     @Override
@@ -44,7 +54,7 @@ public class ThirdPartyService implements ThirdPartyServiceInterface {
     public ThirdParty updateThirdParty(Long id, ThirdParty thirdParty) {
         if (thirdPartyRepository.findById(id).isEmpty())
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This Third Party doesn't exist");
-
+    thirdParty.setId(id);
         return thirdPartyRepository.save(thirdParty);
     }
 

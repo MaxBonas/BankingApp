@@ -25,7 +25,7 @@ public class ThirdPartyRepositoryTest {
     @BeforeEach
     void setUp() {
 
-        thirdPartyTest1 = new ThirdParty("Test ThirdPartyUser");
+        thirdPartyTest1 = new ThirdParty("Test ThirdPartyUser", "test5@email.com", "TPpass3");
         thirdPartyRepository.save(thirdPartyTest1);
 
     }

@@ -1,4 +1,4 @@
-package PaloosaBank.OnlineBanking.controllers.users.interfaces;
+package PaloosaBank.OnlineBanking.controllers.interfaces;
 
 import PaloosaBank.OnlineBanking.DTOs.accounts.PaymentTPGetDTO;
 

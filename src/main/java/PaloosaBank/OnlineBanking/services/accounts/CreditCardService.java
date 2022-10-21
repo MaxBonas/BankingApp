@@ -37,7 +37,10 @@ public class CreditCardService implements CreditCardServiceInterface {
         }
 
         Money balance = new Money(BigDecimal.valueOf(creditCard.getBalance()));
-        return creditCardRepository.save(new CreditCard(balance, accountHolder, accountHolder2));
+        CreditCard creditCard1 = new CreditCard(balance, accountHolder, accountHolder2);
+        creditCard1.setCreditLimit(new Money(BigDecimal.valueOf(creditCard.getCreditLimit())));
+        creditCard1.setInterestRate(creditCard.getInterestRate());
+        return creditCardRepository.save(creditCard1);
     }
 
     @Override
@@ -69,7 +72,10 @@ public class CreditCardService implements CreditCardServiceInterface {
         }
 
         Money balance = new Money(BigDecimal.valueOf(creditCard.getBalance()));
-
-        return creditCardRepository.save(new CreditCard(balance, accountHolder, accountHolder2));
+        CreditCard creditCard1 = new CreditCard(balance, accountHolder, accountHolder2);
+        creditCard1.setId(id);
+        creditCard1.setCreditLimit(new Money(BigDecimal.valueOf(creditCard.getCreditLimit())));
+        creditCard1.setInterestRate(creditCard.getInterestRate());
+        return creditCardRepository.save(creditCard1);
     }
 }

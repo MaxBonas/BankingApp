@@ -1,7 +1,7 @@
-package PaloosaBank.OnlineBanking.controllers.users;
+package PaloosaBank.OnlineBanking.controllers;
 
 import PaloosaBank.OnlineBanking.DTOs.accounts.PaymentTPGetDTO;
-import PaloosaBank.OnlineBanking.controllers.users.interfaces.ThirdPartyControllerInterface;
+import PaloosaBank.OnlineBanking.controllers.interfaces.ThirdPartyControllerInterface;
 import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.services.accounts.interfaces.AccountServiceInterface;
 import PaloosaBank.OnlineBanking.services.users.interfaces.ThirdPartyServiceInterface;

@@ -50,7 +50,10 @@ public class CheckingService implements CheckingServiceInterface {
             return studentsCheckingRepository.save(new StudentsChecking(balance, accountHolder, accountHolder2));
         }
 
-        return checkingRepository.save(new Checking(balance, accountHolder, accountHolder2));
+        Checking checking1 = new Checking(balance, accountHolder, accountHolder2);
+        checking1.setMinimumBalance(new Money(BigDecimal.valueOf(checking.getMinimumBalance())));
+        checking1.setMonthlyMaintenanceFee(new Money(BigDecimal.valueOf(checking.getMonthlyFee())));
+        return checkingRepository.save(checking1);
     }
 
     @Override
@@ -82,7 +85,10 @@ public class CheckingService implements CheckingServiceInterface {
         }
 
         Money balance = new Money(BigDecimal.valueOf(checking.getBalance()));
-
-        return checkingRepository.save(new Checking(balance, accountHolder, accountHolder2));
+        Checking checking1 = new Checking(balance, accountHolder, accountHolder2);
+        checking1.setId(id);
+        checking1.setMinimumBalance(new Money(BigDecimal.valueOf(checking.getMinimumBalance())));
+        checking1.setMonthlyMaintenanceFee(new Money(BigDecimal.valueOf(checking.getMonthlyFee())));
+        return checkingRepository.save(checking1);
     }
 }

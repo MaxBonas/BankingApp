@@ -1,8 +1,7 @@
-package PaloosaBank.OnlineBanking.controllers.users.interfaces;
+package PaloosaBank.OnlineBanking.controllers.interfaces;
 
 import PaloosaBank.OnlineBanking.DTOs.accounts.TransferGetDTO;
 import PaloosaBank.OnlineBanking.DTOs.accounts.TransferPostDTO;
-import PaloosaBank.OnlineBanking.entities.accounts.Account;
 
 import java.math.BigDecimal;
 

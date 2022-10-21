@@ -1,11 +1,11 @@
-package PaloosaBank.OnlineBanking.controllers.users.interfaces;
+package PaloosaBank.OnlineBanking.controllers.interfaces;
 
+import PaloosaBank.OnlineBanking.DTOs.accounts.AccountGetDTO;
 import PaloosaBank.OnlineBanking.DTOs.accounts.AccountPostDTO;
 import PaloosaBank.OnlineBanking.entities.accounts.*;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 import PaloosaBank.OnlineBanking.entities.users.Admin;
 import PaloosaBank.OnlineBanking.entities.users.ThirdParty;
-import PaloosaBank.OnlineBanking.entities.users.User;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -28,7 +28,7 @@ public interface AdminControllerInterface {
     AccountHolder getAccountHolderById(Long id);
     List<AccountHolder> getAllAccountHolders();
     AccountHolder updateAccountHolder(Long id, AccountHolder accountHolder);
-    User deleteUserById(Long id);
+    String deleteUserById(Long id);
 
     Account addChecking(AccountPostDTO checking);
     CreditCard addCreditCard(AccountPostDTO creditCard);
@@ -40,9 +40,9 @@ public interface AdminControllerInterface {
 
     List<Account> getAllAccounts();
 
-    Account deleteAccountById(Long id);
+    String deleteAccountById(Long id);
 
     Account patchAdminAnyAccountBalance(Long accountId, BigDecimal amount);
-    Account patchStatusAccount (Long id);
+    AccountGetDTO patchStatusAccount (Long id);
 
 }

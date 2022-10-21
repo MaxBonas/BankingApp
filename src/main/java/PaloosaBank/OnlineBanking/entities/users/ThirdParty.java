@@ -4,15 +4,17 @@ import PaloosaBank.OnlineBanking.tools.HashkeyGenerator;
 
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 @Entity
 public class ThirdParty extends User{
 
     String hashkey;
 
-    public ThirdParty(String name) {
-        super(name);
+    public ThirdParty(String name, String email, String password) {
+        super(name, email, password);
         setHashkey(hashkey);
+        getRoles().add(new Role("THIRD", this));
     }
 
     public ThirdParty() {

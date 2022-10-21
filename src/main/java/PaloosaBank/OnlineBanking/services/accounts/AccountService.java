@@ -1,14 +1,13 @@
 package PaloosaBank.OnlineBanking.services.accounts;
 
-import PaloosaBank.OnlineBanking.DTOs.accounts.PaymentTPGetDTO;
-import PaloosaBank.OnlineBanking.DTOs.accounts.AccountPostDTO;
-import PaloosaBank.OnlineBanking.DTOs.accounts.TransferGetDTO;
-import PaloosaBank.OnlineBanking.DTOs.accounts.TransferPostDTO;
+import PaloosaBank.OnlineBanking.DTOs.accounts.*;
 import PaloosaBank.OnlineBanking.embedables.Money;
+import PaloosaBank.OnlineBanking.entities.Transfer;
 import PaloosaBank.OnlineBanking.entities.accounts.Account;
 import PaloosaBank.OnlineBanking.entities.accounts.Checking;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 import PaloosaBank.OnlineBanking.enums.Status;
+import PaloosaBank.OnlineBanking.repositories.TransferRepository;
 import PaloosaBank.OnlineBanking.repositories.accounts.AccountRepository;
 import PaloosaBank.OnlineBanking.repositories.users.AccountHolderRepository;
 import PaloosaBank.OnlineBanking.repositories.users.ThirdPartyRepository;
@@ -19,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.List;
 
 @Service
@@ -32,6 +32,8 @@ public class AccountService implements AccountServiceInterface {
 
     @Autowired
     AccountHolderRepository accountHolderRepository;
+    @Autowired
+    TransferRepository transferRepository;
 
     @Override
     public Account addAccount(AccountPostDTO account) {
@@ -50,25 +52,31 @@ public class AccountService implements AccountServiceInterface {
     }
 
     @Override
-    public Account deleteAccount(Long id) {
+    public String deleteAccount(Long id) {
         Account account1 = accountRepository.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "An Account with the given id doesn't exist"));
         accountRepository.delete(account1);
-        return account1;
+        return "The Account with id " + id + " has been removed correctly.";
     }
 
     @Override
-    public Account patchStatusAccount(Long id) {
+    public AccountGetDTO patchStatusAccount(Long id) {
         Account account1 = accountRepository.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "No Account with this id exist in the system."));
-
-        if (account1.getStatus() == Status.ACTIVE){
-            account1.setStatus(Status.FROZEN);
+        if (account1.getStatus() == Status.FROZEN){
+            account1.setStatus(Status.ACTIVE);
+            AccountGetDTO account2 = new AccountGetDTO(account1.getId(), account1.getPrimaryOwner().getName(),
+                    account1.getBalance().getAmount().doubleValue(), account1.getStatus(), account1.getCreationDate());
+            accountRepository.save(account1);
+            return account2;
         }
-        account1.setStatus(Status.ACTIVE);
-        return accountRepository.save(account1);
+        account1.setStatus(Status.FROZEN);
+        AccountGetDTO account2 = new AccountGetDTO(account1.getId(), account1.getPrimaryOwner().getName(),
+                account1.getBalance().getAmount().doubleValue(), account1.getStatus(), account1.getCreationDate());
+        accountRepository.save(account1);
+        return account2;
     }
 
     @Override
@@ -85,6 +93,7 @@ public class AccountService implements AccountServiceInterface {
 
     @Override
     public PaymentTPGetDTO patchThirdPartyAnyAccountBalance(Long id, Money amount, String hashkey) {
+
         Account account1 = accountRepository.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "No Account with this id exist in the system."));
         if (thirdPartyRepository.findByHashkey(hashkey).isEmpty()) {
@@ -93,10 +102,10 @@ public class AccountService implements AccountServiceInterface {
         if (account1.getBalance().getAmount().compareTo(amount.getAmount()) < 0) {
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "This Account don't have enough founds.");
         }
+        Transfer transfer = new Transfer(account1, account1.getPrimaryOwner(), amount.getAmount());
+        transferRepository.save(transfer);
 
         account1.setBalance(new Money(account1.getBalance().decreaseAmount(amount.getAmount())));
-
-//        if (account1.getClass() == Checking && account1.getBalance().getAmount().compareTo(account1.)) // TODO ????
         accountRepository.save(account1);
         return new PaymentTPGetDTO(account1.getId(), account1.getPrimaryOwner().getName(), amount.getAmount().doubleValue());
     }
@@ -123,19 +132,14 @@ public class AccountService implements AccountServiceInterface {
         if (accountOut.getBalance().getAmount().compareTo(amount2.getAmount()) < 0) {
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "This Account don't have enough founds.");
         }
+        Transfer transfer = new Transfer(accountOut, accountOut.getPrimaryOwner(), transferPostDTO.getAmount());
+        transferRepository.save(transfer);
 
-        accountOut.setBalance(new Money(accountOut.getBalance().decreaseAmount(amount2.getAmount())));
-        accountIn.setBalance(new Money(accountIn.getBalance().increaseAmount(amount2.getAmount())));
+        accountOut.setBalance(new Money(accountOut.getBalance().getAmount().subtract(amount2.getAmount(), new MathContext(2))));
+        accountIn.setBalance(new Money(accountIn.getBalance().getAmount().add(amount2.getAmount(), new MathContext(2))));
 
         TransferGetDTO transferGetDTO = new TransferGetDTO(accountOut.getPrimaryOwner().getName(),
                 accountIn.getPrimaryOwner().getName(), amount2.getAmount());
-
-//        LocalDate monthly1 = accountHolder.getDateOfBirth();
-//        Period period = Period.between(birth1, LocalDate.now()); // TODO ????????
-//        if (period.getYears() < 24) {
-//            return studentsCheckingRepository.save(new StudentsChecking(balance, accountHolder, accountHolder2));
-//        }
-
         accountRepository.save(accountOut);
         accountRepository.save(accountIn);
         return transferGetDTO;

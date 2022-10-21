@@ -2,6 +2,7 @@ package PaloosaBank.OnlineBanking.services.accounts;
 
 import PaloosaBank.OnlineBanking.DTOs.accounts.AccountPostDTO;
 import PaloosaBank.OnlineBanking.embedables.Money;
+import PaloosaBank.OnlineBanking.entities.accounts.Savings;
 import PaloosaBank.OnlineBanking.entities.accounts.StudentsChecking;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 import PaloosaBank.OnlineBanking.repositories.accounts.StudentsCheckingRepository;
@@ -68,16 +69,10 @@ public class StudentsCheckingService implements StudentsCheckingServiceInterface
         }
 
         Money balance = new Money(BigDecimal.valueOf(studentsChecking.getBalance()));
+        StudentsChecking studentsChecking1 = new StudentsChecking(balance, accountHolder, accountHolder2);
+        studentsChecking1.setId(id);
 
         return studentsCheckingRepository.save(new StudentsChecking(balance, accountHolder, accountHolder2));
     }
-
-//    }
-
-//    if (accountHolderRepository.findById(accountHolder.getId()).isPresent())
-//            throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY,
-//        "An Account Holder with this id already exist.");
-//        return accountHolderRepository.save(accountHolder);
-
 }
 
