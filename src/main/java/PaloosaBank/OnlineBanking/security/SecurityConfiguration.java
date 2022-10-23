@@ -32,14 +32,14 @@ public class SecurityConfiguration {
         httpSecurity.httpBasic();
 
         httpSecurity.authorizeRequests()
-                .mvcMatchers(HttpMethod.GET, "/admin**").hasRole("ADMIN")
-                .mvcMatchers(HttpMethod.POST, "/admin**").hasRole("ADMIN")
-                .mvcMatchers(HttpMethod.PATCH, "/admin**").hasRole("ADMIN")
-                .mvcMatchers(HttpMethod.PUT, "/admin**").hasRole("ADMIN")
-                .mvcMatchers(HttpMethod.DELETE, "/admin**").hasRole("ADMIN")
-                .mvcMatchers(HttpMethod.GET, "/account_holder**").hasRole("HOLDER")
-                .mvcMatchers(HttpMethod.PATCH, "/account_holder**").hasRole("HOLDER")
-                .mvcMatchers(HttpMethod.PATCH, "/third_party**").hasRole("THIRD")
+                .mvcMatchers(HttpMethod.GET, "/admin/**").hasRole("ADMIN")
+                .mvcMatchers(HttpMethod.POST, "/admin/**").hasRole("ADMIN")
+                .mvcMatchers(HttpMethod.PATCH, "/admin/**").hasRole("ADMIN")
+                .mvcMatchers(HttpMethod.PUT, "/admin/**").hasRole("ADMIN")
+                .mvcMatchers(HttpMethod.DELETE, "/admin/**").hasRole("ADMIN")
+                .mvcMatchers(HttpMethod.GET, "/account_holder/**").hasRole("HOLDER")
+                .mvcMatchers(HttpMethod.PATCH, "/account_holder/**").hasRole("HOLDER")
+                .mvcMatchers(HttpMethod.PATCH, "/third_party/**").hasRole("THIRD")
                 .anyRequest().permitAll();
 
         httpSecurity.csrf().disable();

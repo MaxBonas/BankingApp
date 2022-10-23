@@ -184,6 +184,23 @@ public class AccountService implements AccountServiceInterface {
     }
 
     @Override
+    public AccountGetDTO validateAndActivateAccount(Long id) {
+        Account account1 = accountRepository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "No Account with this id exist in the system."));
+
+        if (account1.getStatus() == Status.ACTIVE) {
+
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,
+                    "This Account is already activated.");
+        }
+            AccountGetDTO account2 = new AccountGetDTO(account1.getId(), account1.getPrimaryOwner().getName(),
+                    account1.getBalance().getAmount().doubleValue(), account1.getStatus(), account1.getCreationDate());
+            accountRepository.save(account1);
+            return account2;
+    }
+
+    @Override
     public Account getAccountById(Long id) {
         return accountRepository.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND,

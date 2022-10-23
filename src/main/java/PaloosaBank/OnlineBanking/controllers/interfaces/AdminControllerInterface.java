@@ -41,5 +41,6 @@ public interface AdminControllerInterface {
 
     Account patchAdminAnyAccountBalance(Long accountId, BigDecimal amount);
     AccountGetDTO patchStatusAccount (Long id);
+//    AccountGetDTO validateAndActivateAccount(Long id);
 
 }

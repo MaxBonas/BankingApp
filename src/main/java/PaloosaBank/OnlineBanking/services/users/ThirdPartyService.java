@@ -34,7 +34,7 @@ public class ThirdPartyService implements ThirdPartyServiceInterface {
         String encodedPassword = passwordEncoder.encode(thirdParty.getPassword());
         thirdParty.setPassword(encodedPassword);
         ThirdParty thirdParty2 = thirdPartyRepository.save(thirdParty);
-        roleRepository.save(new Role("THIRD_", thirdParty2));
+        roleRepository.save(new Role("THIRD", thirdParty2));
         return thirdPartyRepository.save(thirdParty2);
     }
 

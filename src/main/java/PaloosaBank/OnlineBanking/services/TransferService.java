@@ -1,5 +1,6 @@
 package PaloosaBank.OnlineBanking.services;
 
+import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.Transfer;
 import PaloosaBank.OnlineBanking.entities.accounts.Account;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
@@ -52,6 +53,7 @@ public class TransferService implements TransferServiceInterface {
         Transfer transfer = new Transfer(senderAccount, receiverName, primaryOwner, amount);
 
         checkFraudLessThanSecond(transfer);
+        checkFraudTooMuch24h(transfer);
 
         transferRepository.save(transfer);
     }
@@ -72,24 +74,15 @@ public class TransferService implements TransferServiceInterface {
             }
         }
     }
+
+
+    public void checkFraudTooMuch24h(Transfer transfer) {
+        Money maxAmount24h = transferRepository.max24HourAmount(transfer.getPrimaryOwner().getId());
+        if (transfer.getAmount().compareTo(maxAmount24h.getAmount().multiply(BigDecimal.valueOf(1.5))) > 0) {
+            transfer.getSenderAccount().setStatus(Status.FROZEN);
+            accountRepository.save(transfer.getSenderAccount());
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,
+                    "Your Account was Frozen because fraud suspicions. Contact with your PaloosaBank Office.");
+        }
+    }
 }
-
-
-//    public void  checkFraudTooMuch24h(Transfer transfer) {
-//        for (Transfer transfer2 : transferRepository.findAll()) {
-//            if (transfer2.getTransferDate() == transfer2.getTransferDate()) {
-//
-//
-//            }
-//
-//        }
-//
-//    }
-//}
-//    public Money keepDailySpended(Transfer transfer) {
-//        Money dailySpended = new Money(transfer.getAmount());
-////        for (Transfer transfer1 : transferRepository.findAll()) {
-//        for (Transfer transfer1 : findByTransferDate(transfer.getTransferDate())) {
-//
-//        }
-//    }

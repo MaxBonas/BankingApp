@@ -45,7 +45,7 @@ public class AdminController implements AdminControllerInterface {
 
 
     @Override
-    @PostMapping("/admin")
+    @PostMapping("/admin/admin")
     @ResponseStatus(HttpStatus.CREATED)
     public Admin addAdmin(@RequestBody Admin admin) {
         return adminServiceInterface.addAdmin(admin);
@@ -180,6 +180,8 @@ public class AdminController implements AdminControllerInterface {
     public AccountGetDTO patchStatusAccount(@PathVariable Long id) {
         return accountServiceInterface.patchStatusAccount(id);
     }
+
+//    AccountGetDTO validateAndActivateAccount(Long id);
 
 
 //    Account patchStatusAccount (Long id);

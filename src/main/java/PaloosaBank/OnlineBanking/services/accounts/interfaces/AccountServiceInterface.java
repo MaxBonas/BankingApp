@@ -15,6 +15,7 @@ public interface AccountServiceInterface {
     void addAccountByHolder(TypeAccount typeAccount, AccountPostDTO account);
     String deleteAccount(Long id);
     AccountGetDTO patchStatusAccount (Long id);
+    AccountGetDTO validateAndActivateAccount(Long id);
     Account getAccountById(Long id);
     List<Account> getAllAccounts();
 

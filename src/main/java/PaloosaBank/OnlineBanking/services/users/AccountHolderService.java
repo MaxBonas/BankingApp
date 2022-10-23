@@ -38,7 +38,7 @@ public class AccountHolderService implements AccountHolderServiceInterface {
         String encodedPassword = passwordEncoder.encode(accountHolder.getPassword());
         accountHolder.setPassword(encodedPassword);
         AccountHolder accountHolder2 = accountHolderRepository.save(accountHolder);
-        roleRepository.save(new Role("HOLDER_", accountHolder2));
+        roleRepository.save(new Role("HOLDER", accountHolder2));
         return accountHolderRepository.save(accountHolder2);
     }
 

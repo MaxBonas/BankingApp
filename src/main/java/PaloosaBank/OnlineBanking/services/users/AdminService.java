@@ -36,7 +36,7 @@ public class AdminService implements AdminServiceInterface {
         String encodedPassword = passwordEncoder.encode(admin.getPassword());
         admin.setPassword(encodedPassword);
         Admin admin2 = adminRepository.save(admin);
-        roleRepository.save(new Role("ADMIN_", admin2));
+        roleRepository.save(new Role("ADMIN", admin2));
         return adminRepository.save(admin2);
     }
 
