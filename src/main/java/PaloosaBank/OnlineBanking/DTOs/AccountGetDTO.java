@@ -1,4 +1,4 @@
-package PaloosaBank.OnlineBanking.DTOs.accounts;
+package PaloosaBank.OnlineBanking.DTOs;
 
 import PaloosaBank.OnlineBanking.enums.Status;
 import com.sun.istack.NotNull;

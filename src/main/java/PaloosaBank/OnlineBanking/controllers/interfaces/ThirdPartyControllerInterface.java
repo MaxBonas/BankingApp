@@ -1,6 +1,6 @@
 package PaloosaBank.OnlineBanking.controllers.interfaces;
 
-import PaloosaBank.OnlineBanking.DTOs.accounts.PaymentTPGetDTO;
+import PaloosaBank.OnlineBanking.DTOs.PaymentTPGetDTO;
 
 import java.math.BigDecimal;
 

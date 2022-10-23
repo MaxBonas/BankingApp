@@ -1,10 +1,9 @@
 package PaloosaBank.OnlineBanking.services.accounts;
 
-import PaloosaBank.OnlineBanking.DTOs.accounts.*;
+import PaloosaBank.OnlineBanking.DTOs.*;
 import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.accounts.*;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
-import PaloosaBank.OnlineBanking.entities.users.Admin;
 import PaloosaBank.OnlineBanking.enums.Status;
 import PaloosaBank.OnlineBanking.enums.TypeAccount;
 import PaloosaBank.OnlineBanking.repositories.TransferRepository;
@@ -37,14 +36,6 @@ public class AccountService implements AccountServiceInterface {
     @Autowired
     StudentsCheckingRepository studentsCheckingRepository;
     @Autowired
-    CheckingService checkingService;
-    @Autowired
-    CreditCardService creditCardService;
-    @Autowired
-    SavingsService savingsService;
-    @Autowired
-    StudentsCheckingService studentsCheckingService;
-    @Autowired
     ThirdPartyRepository thirdPartyRepository;
     @Autowired
     AccountHolderRepository accountHolderRepository;
@@ -54,7 +45,7 @@ public class AccountService implements AccountServiceInterface {
     TransferService transferService;
 
     @Override
-    public void addAccountByHolder(TypeAccount typeAccount, AccountPostDTO account) {
+    public AccountPostDTO addAccountByHolder(TypeAccount typeAccount, AccountPostDTO account) {
         AccountHolder accountHolder = accountHolderRepository.findById(account.getPrimaryOwnerId()).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "An Account Holder with the given id doesn't exist"));
@@ -77,32 +68,39 @@ public class AccountService implements AccountServiceInterface {
 
             Checking checking1 = new Checking(balance, accountHolder, accountHolder2);
             checking1.setStatus(Status.INACTIVE);
-            checking1.setMinimumBalance(new Money(BigDecimal.valueOf(account.getMinimumBalance())));
-            checking1.setMonthlyMaintenanceFee(new Money(BigDecimal.valueOf(account.getMonthlyFee())));
+            if (account.getMinimumBalance() != null) {
+                checking1.setMinimumBalance(new Money(BigDecimal.valueOf(account.getMinimumBalance())));}
+            if (account.getMonthlyFee() != null) {
+                checking1.setMonthlyMaintenanceFee(new Money(BigDecimal.valueOf(account.getMonthlyFee())));}
             checkingRepository.save(checking1);
         }
         if (typeAccount == TypeAccount.CREDITCARD) {
             Money balance2 = new Money(BigDecimal.valueOf(account.getBalance()));
             CreditCard creditCard1 = new CreditCard(balance2, accountHolder, accountHolder2);
             creditCard1.setStatus(Status.INACTIVE);
-            creditCard1.setCreditLimit(new Money(BigDecimal.valueOf(account.getCreditLimit())));
-            creditCard1.setInterestRate(account.getInterestRate());
+            if (account.getCreditLimit() != null) {
+            creditCard1.setCreditLimit(new Money(BigDecimal.valueOf(account.getCreditLimit())));}
+            if (account.getInterestRate() != null) {
+            creditCard1.setInterestRate(account.getInterestRate());}
             creditCardRepository.save(creditCard1);
         }
         if (typeAccount == TypeAccount.SAVINGS) {
             Money balance3 = new Money(BigDecimal.valueOf(account.getBalance()));
             Savings savings1 = new Savings(balance3, accountHolder, accountHolder2);
             savings1.setStatus(Status.INACTIVE);
-            savings1.setMinimumBalance(new Money(BigDecimal.valueOf(account.getMinimumBalance())));
-            savings1.setInterestRate(account.getInterestRate());
+            if (account.getMinimumBalance() != null) {
+            savings1.setMinimumBalance(new Money(BigDecimal.valueOf(account.getMinimumBalance())));}
+            if (account.getInterestRate() != null) {
+            savings1.setInterestRate(account.getInterestRate());}
             savingsRepository.save(savings1);
         }
-        if (typeAccount == TypeAccount.STUDENT_CHECKING) {
+        if (typeAccount == TypeAccount.STUDENTSCHECKING) {
             Money balance4 = new Money(BigDecimal.valueOf(account.getBalance()));
             StudentsChecking studentsChecking = new StudentsChecking(balance4, accountHolder, accountHolder2);
             studentsChecking.setStatus(Status.INACTIVE);
             studentsCheckingRepository.save(studentsChecking);
         }
+        return account;
     }
 
     @Override
@@ -126,25 +124,31 @@ public class AccountService implements AccountServiceInterface {
             }
 
             Checking checking1 = new Checking(balance, accountHolder, accountHolder2);
-            checking1.setMinimumBalance(new Money(BigDecimal.valueOf(account.getMinimumBalance())));
-            checking1.setMonthlyMaintenanceFee(new Money(BigDecimal.valueOf(account.getMonthlyFee())));
+            if (account.getMinimumBalance() != null) {
+            checking1.setMinimumBalance(new Money(BigDecimal.valueOf(account.getMinimumBalance())));}
+            if (account.getMonthlyFee() != null) {
+            checking1.setMonthlyMaintenanceFee(new Money(BigDecimal.valueOf(account.getMonthlyFee())));}
             checkingRepository.save(checking1);
         }
         if (typeAccount == TypeAccount.CREDITCARD) {
             Money balance2 = new Money(BigDecimal.valueOf(account.getBalance()));
             CreditCard creditCard1 = new CreditCard(balance2, accountHolder, accountHolder2);
-            creditCard1.setCreditLimit(new Money(BigDecimal.valueOf(account.getCreditLimit())));
-            creditCard1.setInterestRate(account.getInterestRate());
+            if (account.getCreditLimit() != null) {
+            creditCard1.setCreditLimit(new Money(BigDecimal.valueOf(account.getCreditLimit())));}
+            if (account.getInterestRate() != null) {
+            creditCard1.setInterestRate(account.getInterestRate());}
             creditCardRepository.save(creditCard1);
         }
         if (typeAccount == TypeAccount.SAVINGS) {
             Money balance3 = new Money(BigDecimal.valueOf(account.getBalance()));
             Savings savings1 = new Savings(balance3, accountHolder, accountHolder2);
-            savings1.setMinimumBalance(new Money(BigDecimal.valueOf(account.getMinimumBalance())));
-            savings1.setInterestRate(account.getInterestRate());
+            if (account.getMinimumBalance() != null) {
+            savings1.setMinimumBalance(new Money(BigDecimal.valueOf(account.getMinimumBalance())));}
+            if (account.getInterestRate() != null) {
+            savings1.setInterestRate(account.getInterestRate());}
             savingsRepository.save(savings1);
         }
-        if (typeAccount == TypeAccount.STUDENT_CHECKING) {
+        if (typeAccount == TypeAccount.STUDENTSCHECKING) {
             Money balance4 = new Money(BigDecimal.valueOf(account.getBalance()));
             studentsCheckingRepository.save(new StudentsChecking(balance4, accountHolder, accountHolder2));
         }

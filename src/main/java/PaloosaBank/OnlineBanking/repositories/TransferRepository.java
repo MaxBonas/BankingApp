@@ -20,7 +20,6 @@ public interface TransferRepository extends JpaRepository<Transfer, Long> {
     List<Transfer> findByTransferDate (LocalDate transferDate);
     List<Transfer> findByTransferTime (LocalTime transferTime);
 
-    @Query(value = "select sum(amount) as suma from transfer where primary_owner_id = primary_owner_id " +
-            "group by transfer_date order by suma DESC limit 1;", nativeQuery = true)
+    @Query(value = "select sum(amount) as suma from transfer where primary_owner_id = :primaryOwnerId group by transfer_date order by suma DESC limit 1;", nativeQuery = true)
     Money max24HourAmount(Long primaryOwnerId);
 }

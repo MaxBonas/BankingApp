@@ -1,7 +1,7 @@
 package PaloosaBank.OnlineBanking.controllers.interfaces;
 
-import PaloosaBank.OnlineBanking.DTOs.accounts.AccountGetDTO;
-import PaloosaBank.OnlineBanking.DTOs.accounts.AccountPostDTO;
+import PaloosaBank.OnlineBanking.DTOs.AccountGetDTO;
+import PaloosaBank.OnlineBanking.DTOs.AccountPostDTO;
 import PaloosaBank.OnlineBanking.entities.accounts.*;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 import PaloosaBank.OnlineBanking.entities.users.Admin;

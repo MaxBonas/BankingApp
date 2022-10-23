@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface CheckingRepository extends JpaRepository<Checking, Long> {
 
     Optional<Checking> findBySecretKey(String secretKey);
-//    List<Checking> findByBalance(Money balance); // Just for Tests
+    List<Checking> findByBalance(Money balance); // Just for testing
 //    List<Checking> findByPrimaryOwner(String primaryOwner);
 //    List<Checking> findBySecondaryOwner(String secondaryOwner);
 //    List<Checking> findByStatus(String status);

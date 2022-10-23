@@ -1,8 +1,8 @@
 package PaloosaBank.OnlineBanking.controllers;
 
-import PaloosaBank.OnlineBanking.DTOs.accounts.AccountPostDTO;
-import PaloosaBank.OnlineBanking.DTOs.accounts.TransferGetDTO;
-import PaloosaBank.OnlineBanking.DTOs.accounts.TransferPostDTO;
+import PaloosaBank.OnlineBanking.DTOs.AccountPostDTO;
+import PaloosaBank.OnlineBanking.DTOs.TransferGetDTO;
+import PaloosaBank.OnlineBanking.DTOs.TransferPostDTO;
 import PaloosaBank.OnlineBanking.controllers.interfaces.AccountHolderControllerInterface;
 import PaloosaBank.OnlineBanking.enums.TypeAccount;
 import PaloosaBank.OnlineBanking.services.accounts.interfaces.AccountServiceInterface;
@@ -23,11 +23,10 @@ public class AccountHolderController implements AccountHolderControllerInterface
     AccountServiceInterface accountServiceInterface;
 
     @Override
-    @PostMapping("/account_holder/account")
-    @ResponseStatus(HttpStatus.CREATED)
-    public String addAccountByHolder(@RequestParam TypeAccount typeAccount, @RequestBody AccountPostDTO account) {
-        return "Your Account has been solicitated correctly. Please, wait until we process your data, " +
-                "and we will activate it and contact with you.";
+    @PatchMapping("/account_holder/transfer_amount_account")  // todo iria aqui o solo en account?
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public TransferGetDTO transferAccountHolderAnyAccount(@RequestBody TransferPostDTO transferPostDTO) {
+        return accountServiceInterface.transferAccountHolderAnyAccount(transferPostDTO);
     }
 
     @Override
@@ -38,9 +37,11 @@ public class AccountHolderController implements AccountHolderControllerInterface
     }
 
     @Override
-    @PatchMapping("/account_holder/transfer_amount_account")  // todo iria aqui o solo en account?
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public TransferGetDTO transferAccountHolderAnyAccount(@RequestBody TransferPostDTO transferPostDTO) {
-        return accountServiceInterface.transferAccountHolderAnyAccount(transferPostDTO);
+    @PostMapping("/account_holder/account")
+    @ResponseStatus(HttpStatus.CREATED)
+    public AccountPostDTO addAccountByHolder(@RequestParam TypeAccount typeAccount, @RequestBody AccountPostDTO account) {
+        System.out.println("Your Account has been solicitated correctly. Please, wait until we process your data, " +
+                "and we will activate it and contact with you.");
+        return accountServiceInterface.addAccountByHolder(typeAccount, account);
     }
 }

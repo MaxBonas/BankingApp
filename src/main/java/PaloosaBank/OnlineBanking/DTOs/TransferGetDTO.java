@@ -1,4 +1,4 @@
-package PaloosaBank.OnlineBanking.DTOs.accounts;
+package PaloosaBank.OnlineBanking.DTOs;
 
 import java.math.BigDecimal;
 

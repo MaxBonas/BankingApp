@@ -1,10 +1,13 @@
 package PaloosaBank.OnlineBanking.controllersTest;
 
-import PaloosaBank.OnlineBanking.DTOs.accounts.AccountPostDTO;
+import PaloosaBank.OnlineBanking.DTOs.AccountPostDTO;
 import PaloosaBank.OnlineBanking.embedables.Address;
+import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 import PaloosaBank.OnlineBanking.entities.users.Admin;
 import PaloosaBank.OnlineBanking.entities.users.ThirdParty;
+import PaloosaBank.OnlineBanking.enums.Status;
+import PaloosaBank.OnlineBanking.enums.TypeAccount;
 import PaloosaBank.OnlineBanking.repositories.accounts.CheckingRepository;
 import PaloosaBank.OnlineBanking.repositories.accounts.CreditCardRepository;
 import PaloosaBank.OnlineBanking.repositories.accounts.SavingsRepository;
@@ -26,6 +29,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -145,27 +149,24 @@ public class AdminControllerTest {
     }
 
     @Test
-    @DisplayName("Testing the method addChecking from Admin")
+    @DisplayName("Testing that the method addAccount from Admin creates a Checking Account correctly")
     void postCheckingFromAdmin_OK() throws Exception {
 
         AccountPostDTO accountPostDTOTest = new AccountPostDTO(accountHolderTest1.getId(), accountHolderTest2.getId(),523123D,
-                null, null, null, null );
+                null, null, null, null);
 
         String body = objectMapper.writeValueAsString(accountPostDTOTest);
 
-        MvcResult mvcResult = mockMvc.perform(post("/admin/checking_account").content(body).
+        MvcResult mvcResult = mockMvc.perform(post("/admin/account").
+                param("typeAccount", "CHECKING").content(body).
                 contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated()).andReturn();
 
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode tree = mapper.readTree(mvcResult.getResponse().getContentAsString());
-        JsonNode node = tree.get("id");
-        Long id = node.asLong();
-
-        assertTrue(checkingRepository.findById(id).isPresent());
+        assertFalse(checkingRepository.findByBalance(new Money(BigDecimal.valueOf(523123D))).isEmpty());
     }
 
     @Test
-    @DisplayName("Testing that the method addChecking from Admin creates StudentsChecking when owner is under 24")
+    @DisplayName("Testing that the method addAccount from Admin creates StudentsChecking " +
+            "when owner is under 24 instead a Checking.")
     void postCheckingFromAdminCreateStudentsCheckingUnder24_OK() throws Exception {
 
         AccountPostDTO accountPostDTOTest = new AccountPostDTO(accountHolderTest2.getId(), accountHolderTest1.getId(), 523123D,
@@ -185,7 +186,7 @@ public class AdminControllerTest {
     }
 
     @Test
-    @DisplayName("Testing the method addCreditCard from Admin")
+    @DisplayName("Testing the method addAccount from Admin creates a Checking Account correctly")
     void postCreditCardFromAdmin_OK() throws Exception {
 
         AccountPostDTO accountPostDTOTest = new AccountPostDTO(accountHolderTest1.getId(), accountHolderTest2.getId(), 523123D,
@@ -205,7 +206,7 @@ public class AdminControllerTest {
     }
 
     @Test
-    @DisplayName("Testing the method addSavings from Admin")
+    @DisplayName("Testing the method addAccount from Admin creates a Checking Account correctly")
     void postSavingsFromAdmin_OK() throws Exception {
 
         AccountPostDTO accountPostDTOTest = new AccountPostDTO(accountHolderTest2.getId(), accountHolderTest1.getId(), 523123D,
@@ -225,7 +226,7 @@ public class AdminControllerTest {
     }
 
     @Test
-    @DisplayName("Testing the method addStudentsChecking from Admin")
+    @DisplayName("Testing the method addAccount from Admin creates a Checking Account correctly")
     void postStudentsCheckingFromAdmin_OK() throws Exception {
 
         AccountPostDTO accountPostDTOTest = new AccountPostDTO(accountHolderTest2.getId(), accountHolderTest1.getId(), 523123D,

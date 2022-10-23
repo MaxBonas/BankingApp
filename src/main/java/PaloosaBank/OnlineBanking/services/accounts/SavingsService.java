@@ -1,20 +1,17 @@
 package PaloosaBank.OnlineBanking.services.accounts;
 
-import PaloosaBank.OnlineBanking.DTOs.accounts.AccountPostDTO;
 import PaloosaBank.OnlineBanking.embedables.Money;
-import PaloosaBank.OnlineBanking.entities.accounts.CreditCard;
+import PaloosaBank.OnlineBanking.entities.accounts.Checking;
 import PaloosaBank.OnlineBanking.entities.accounts.Savings;
-import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 import PaloosaBank.OnlineBanking.repositories.accounts.SavingsRepository;
-import PaloosaBank.OnlineBanking.repositories.users.AccountHolderRepository;
 import PaloosaBank.OnlineBanking.services.accounts.interfaces.SavingsServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class SavingsService implements SavingsServiceInterface {
@@ -29,6 +26,9 @@ public class SavingsService implements SavingsServiceInterface {
                         "A Savings Account with the given id doesn't exist"));
     }
 
+    public List<Savings> findByBalance(Money balance) {
+        return savingsRepository.findByBalance(balance);
+    }
     @Override
     public List<Savings> getAllSavings() {
         return savingsRepository.findAll();

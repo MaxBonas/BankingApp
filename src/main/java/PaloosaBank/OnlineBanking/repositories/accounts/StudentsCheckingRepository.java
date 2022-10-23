@@ -13,6 +13,7 @@ import java.util.Optional;
 public interface StudentsCheckingRepository  extends JpaRepository<StudentsChecking, Long> {
 
     Optional<StudentsChecking> findBySecretKey(String secretKey);
+    List<StudentsChecking> findByBalance(Money balance); // Just for testing
 //    List<StudentsChecking> findByBalance(Money balance); // Just for Tests
 //    List<StudentsChecking> findByPrimaryOwner(String primaryOwner);
 //    List<StudentsChecking> findBySecondaryOwner(String secondaryOwner);

@@ -162,6 +162,7 @@ public class OnlineBankingApplication implements CommandLineRunner {
 
 		transferService.addTransfer(checking3, accountHolder3.getName(), checking3.getPrimaryOwner(), BigDecimal.valueOf(1200000.00));
 		 */
+//		System.out.println(transferRepository.max24HourAmount(checking1.getPrimaryOwner().getId()));
 	}
 }
 
