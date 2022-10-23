@@ -10,5 +10,4 @@ public interface CheckingServiceInterface {
 
     Checking getCheckingById(Long id);
     List<Checking> getAllCheckings();
-    Checking updateChecking(Long id, AccountPostDTO checking);
 }

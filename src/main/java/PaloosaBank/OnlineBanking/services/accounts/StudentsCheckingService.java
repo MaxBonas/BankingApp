@@ -22,9 +22,6 @@ public class StudentsCheckingService implements StudentsCheckingServiceInterface
     @Autowired
     StudentsCheckingRepository studentsCheckingRepository;
 
-    @Autowired
-    AccountHolderRepository accountHolderRepository;
-
     @Override
     public StudentsChecking getStudentsCheckingById(Long id) {
         return studentsCheckingRepository.findById(id).orElseThrow(() ->
@@ -35,29 +32,6 @@ public class StudentsCheckingService implements StudentsCheckingServiceInterface
     @Override
     public List<StudentsChecking> getAllStudentsCheckings() {
         return studentsCheckingRepository.findAll();
-    }
-
-    @Override
-    public StudentsChecking updateStudentsChecking(Long id, AccountPostDTO studentsChecking) {
-        if (studentsCheckingRepository.findById(id).isEmpty())
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This Students Checking Account doesn't exist");
-
-        AccountHolder accountHolder = accountHolderRepository.findById(studentsChecking.getPrimaryOwnerId()).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "An Account Holder with the given id doesn't exist"));
-        AccountHolder accountHolder2 = null;
-
-        if (studentsChecking.getSecondaryOwnerId() != null) {
-            accountHolder2 = accountHolderRepository.findById(studentsChecking.getSecondaryOwnerId()).orElseThrow(() ->
-                    new ResponseStatusException(HttpStatus.NOT_FOUND,
-                            "An Account Holder with the given id doesn't exist"));
-        }
-
-        Money balance = new Money(BigDecimal.valueOf(studentsChecking.getBalance()));
-        StudentsChecking studentsChecking1 = new StudentsChecking(balance, accountHolder, accountHolder2);
-        studentsChecking1.setId(id);
-
-        return studentsCheckingRepository.save(new StudentsChecking(balance, accountHolder, accountHolder2));
     }
 }
 

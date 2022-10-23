@@ -152,11 +152,16 @@ public class OnlineBankingApplication implements CommandLineRunner {
 				new Transfer(checking2, accountHolder6.getName(), checking2.getPrimaryOwner(), BigDecimal.valueOf(342.30))));
 		Transfer transfer1 = new Transfer(checking3, accountHolder3.getName(), checking3.getPrimaryOwner(), BigDecimal.valueOf(3230.00));
 		transfer1.setTransferDate(LocalDate.of(1973, 11, 20));
+		transferRepository.save(transfer1);
 		Transfer transfer2 = new Transfer(checking2, "Bar Tolo S.A.", checking2.getPrimaryOwner(), BigDecimal.valueOf(250.45));
 		transfer2.setTransferDate(LocalDate.of(1973, 11, 20));
-		transferService.addTransfer(checking3, accountHolder3.getName(), checking3.getPrimaryOwner(), BigDecimal.valueOf(1200000.00));
-		transferRepository.save(transfer1);
 		transferRepository.save(transfer2);
+
+		/* ---This next Transfer is created by the add method. Then checks if Fraud.
+		Works, but I let it commented.----
+
+		transferService.addTransfer(checking3, accountHolder3.getName(), checking3.getPrimaryOwner(), BigDecimal.valueOf(1200000.00));
+		 */
 	}
 }
 

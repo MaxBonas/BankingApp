@@ -18,11 +18,9 @@ public interface AccountServiceInterface {
     AccountGetDTO validateAndActivateAccount(Long id);
     Account getAccountById(Long id);
     List<Account> getAllAccounts();
-
+    AccountGetDTO updateAccountByAdmin(Long id, AccountPostDTO account);
     PaymentTPGetDTO patchThirdPartyAnyAccountBalance(Long id, Money amount, String hashkey);
     Account patchAdminAnyAccountBalance(Long id, Money amount);
     TransferGetDTO transferAccountHolderAnyAccount(TransferPostDTO transferPostDTO);
-
-    BigDecimal getBalanceAccountAccountHolder(Long id);
-
+    BigDecimal getBalanceAccountAccountHolder(Long id, String secretKey);
 }

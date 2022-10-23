@@ -33,8 +33,8 @@ public class AccountHolderController implements AccountHolderControllerInterface
     @Override
     @GetMapping("/account_holder/check_balance_account/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public BigDecimal getBalanceAccountAccountHolder(@PathVariable Long id) {
-        return accountServiceInterface.getBalanceAccountAccountHolder(id);
+    public BigDecimal getBalanceAccountAccountHolder(@PathVariable Long id, @RequestParam String secretKey) {
+        return accountServiceInterface.getBalanceAccountAccountHolder(id, secretKey);
     }
 
     @Override
@@ -43,28 +43,4 @@ public class AccountHolderController implements AccountHolderControllerInterface
     public TransferGetDTO transferAccountHolderAnyAccount(@RequestBody TransferPostDTO transferPostDTO) {
         return accountServiceInterface.transferAccountHolderAnyAccount(transferPostDTO);
     }
-
-
-//    @Override
-//    @PostMapping("/account_holder")
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public AccountHolder addAccountHolder(AccountHolder accountHolder) {
-//        return accountHolderServiceInterface.addAccountHolder(accountHolder);
-//    }
-//
-
-//
-//    @Override
-//    @GetMapping("/account_holders")
-//    @ResponseStatus(HttpStatus.OK)
-//    public List<AccountHolder> getAllAccountHolders() {
-//        return accountHolderServiceInterface.getAllAccountHolders();
-//    }
-//
-//    @Override
-//    @PutMapping("/account_holder/{id}")
-//    @ResponseStatus(HttpStatus.ACCEPTED)
-//    public AccountHolder updateAccountHolder(@PathVariable Long id, @RequestBody AccountHolder accountHolder) {
-//        return accountHolderServiceInterface.updateAccountHolder(id,accountHolder);
-//    }
 }

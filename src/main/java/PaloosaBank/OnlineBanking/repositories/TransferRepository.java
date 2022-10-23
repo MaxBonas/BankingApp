@@ -1,6 +1,5 @@
 package PaloosaBank.OnlineBanking.repositories;
 
-import PaloosaBank.OnlineBanking.DTOs.users.UserDTO;
 import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.Transfer;
 import org.springframework.data.jpa.repository.JpaRepository;

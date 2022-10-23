@@ -9,5 +9,4 @@ public interface StudentsCheckingServiceInterface {
 
     StudentsChecking getStudentsCheckingById(Long id);
     List<StudentsChecking> getAllStudentsCheckings();
-    StudentsChecking updateStudentsChecking(Long id, AccountPostDTO studentsChecking);
 }

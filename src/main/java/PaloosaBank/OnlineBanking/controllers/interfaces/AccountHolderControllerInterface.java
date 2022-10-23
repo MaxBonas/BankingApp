@@ -9,10 +9,7 @@ import java.math.BigDecimal;
 
 public interface AccountHolderControllerInterface {
 
-//    AccountHolder addAccountHolder(AccountHolder accountHolder);
-//    AccountHolder updateAccountHolder(Long id, AccountHolder accountHolder);
-
     String addAccountByHolder(TypeAccount typeAccount, AccountPostDTO account);
-    BigDecimal getBalanceAccountAccountHolder(Long id);
+    BigDecimal getBalanceAccountAccountHolder(Long id, String secretKey);
     TransferGetDTO transferAccountHolderAnyAccount(TransferPostDTO transferPostDTO);
 }

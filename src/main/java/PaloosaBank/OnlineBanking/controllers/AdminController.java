@@ -160,6 +160,13 @@ public class AdminController implements AdminControllerInterface {
     }
 
     @Override
+    @PutMapping("/admin/account/{id}")
+    @ResponseStatus(HttpStatus.CREATED)
+    public AccountGetDTO updateAccountByAdmin(@PathVariable Long id, @RequestBody AccountPostDTO account) {
+        return accountServiceInterface.updateAccountByAdmin(id, account);
+    }
+
+    @Override
     @DeleteMapping("/admin/account/{id}")
     @ResponseStatus(HttpStatus.OK)
     public String deleteAccountById(@PathVariable Long id) {
@@ -181,45 +188,10 @@ public class AdminController implements AdminControllerInterface {
         return accountServiceInterface.patchStatusAccount(id);
     }
 
-//    AccountGetDTO validateAndActivateAccount(Long id);
-
-
-//    Account patchStatusAccount (Long id);
-//
-//
-//    @GetMapping("/credit_card/{id}")
-//    @ResponseStatus(HttpStatus.OK)
-//    public CreditCard getCreditCardById(@PathVariable Long id) {
-//        return creditCardServiceInterface.getCreditCardById(id);
-//    }
-//
-//    @Override
-//    @GetMapping("/admin/savings/{id}")
-//    @ResponseStatus(HttpStatus.OK)
-//    public Savings getSavingsById(Long id) {
-//        return savingsServiceInterface.getSavingsById(id);
-//    }
-//
-//    @Override
-//    @GetMapping("/admin/students_checking/{id}")
-//    @ResponseStatus(HttpStatus.OK)
-//    public StudentsChecking getStudentsCheckingById(Long id) {
-//        return studentsCheckingServiceInterface.getStudentsCheckingById(id);
-//    }
-//    @GetMapping("/credit_cards")
-//    @ResponseStatus(HttpStatus.OK)
-//    public List<CreditCard> getAllCreditCards() {
-//        return creditCardServiceInterface.getAllCreditCards();
-//    }
-//
-
-    //    createAccount()
-//    showAccounts()
-//    validateAccount()
-//    modifyAccount()
-//    deleteAccount()
-//    freezeAccount()
-//    checkBalance()
-//    modifyBalance()
-//    addThirdParty()
+    @Override
+    @PatchMapping("/admin/validate_account/{id}")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public AccountGetDTO validateAndActivateAccount(@PathVariable Long id) {
+        return accountServiceInterface.validateAndActivateAccount(id);
+    }
 }

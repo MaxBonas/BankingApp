@@ -9,5 +9,4 @@ public interface SavingsServiceInterface {
 
     Savings getSavingsById(Long id);
     List<Savings> getAllSavings();
-    Savings updateSavings(Long id, AccountPostDTO savings);
 }

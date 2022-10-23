@@ -22,9 +22,6 @@ public interface AdminControllerInterface {
     ThirdParty getThirdPartyById(Long id);
     List<ThirdParty> getAllThirdPartys();
     ThirdParty updateThirdParty(Long id, ThirdParty thirdParty);
-//    Admin updateAdmin(Long id, Admin admin);
-//    ThirdParty updateThirdParty(Long id, ThirdParty thirdParty);
-//    AccountHolder updateAccountHolder(Long id, AccountHolder accountHolder);
     AccountHolder addAccountHolder(AccountHolder accountHolder);
     AccountHolder getAccountHolderById(Long id);
     List<AccountHolder> getAllAccountHolders();
@@ -34,13 +31,13 @@ public interface AdminControllerInterface {
 
     AccountPostDTO addAccountByAdmin(TypeAccount typeAccount, AccountPostDTO account);
     Account getAccountById(Long id);
-
     List<Account> getAllAccounts();
+    AccountGetDTO updateAccountByAdmin(Long id, AccountPostDTO account);
 
     String deleteAccountById(Long id);
 
     Account patchAdminAnyAccountBalance(Long accountId, BigDecimal amount);
     AccountGetDTO patchStatusAccount (Long id);
-//    AccountGetDTO validateAndActivateAccount(Long id);
+    AccountGetDTO validateAndActivateAccount(Long id);
 
 }

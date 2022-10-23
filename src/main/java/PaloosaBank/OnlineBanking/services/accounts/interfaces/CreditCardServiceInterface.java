@@ -9,5 +9,4 @@ public interface CreditCardServiceInterface {
 
     CreditCard getCreditCardById(Long id);
     List<CreditCard> getAllCreditCards();
-    CreditCard updateCreditCard(Long id, AccountPostDTO creditCard);
 }
