@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface CheckingServiceInterface {
 
-    Account addChecking(AccountPostDTO checking);
     Checking getCheckingById(Long id);
     List<Checking> getAllCheckings();
     Checking updateChecking(Long id, AccountPostDTO checking);

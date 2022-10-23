@@ -2,13 +2,12 @@ package PaloosaBank.OnlineBanking.services.accounts;
 
 import PaloosaBank.OnlineBanking.DTOs.accounts.*;
 import PaloosaBank.OnlineBanking.embedables.Money;
-import PaloosaBank.OnlineBanking.entities.Transfer;
-import PaloosaBank.OnlineBanking.entities.accounts.Account;
-import PaloosaBank.OnlineBanking.entities.accounts.Checking;
+import PaloosaBank.OnlineBanking.entities.accounts.*;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 import PaloosaBank.OnlineBanking.enums.Status;
+import PaloosaBank.OnlineBanking.enums.TypeAccount;
 import PaloosaBank.OnlineBanking.repositories.TransferRepository;
-import PaloosaBank.OnlineBanking.repositories.accounts.AccountRepository;
+import PaloosaBank.OnlineBanking.repositories.accounts.*;
 import PaloosaBank.OnlineBanking.repositories.users.AccountHolderRepository;
 import PaloosaBank.OnlineBanking.repositories.users.ThirdPartyRepository;
 import PaloosaBank.OnlineBanking.services.TransferService;
@@ -19,8 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
-import java.time.LocalTime;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
 @Service
@@ -28,10 +27,24 @@ public class AccountService implements AccountServiceInterface {
 
     @Autowired
     AccountRepository accountRepository;
-
+    @Autowired
+    CheckingRepository checkingRepository;
+    @Autowired
+    CreditCardRepository creditCardRepository;
+    @Autowired
+    SavingsRepository savingsRepository;
+    @Autowired
+    StudentsCheckingRepository studentsCheckingRepository;
+    @Autowired
+    CheckingService checkingService;
+    @Autowired
+    CreditCardService creditCardService;
+    @Autowired
+    SavingsService savingsService;
+    @Autowired
+    StudentsCheckingService studentsCheckingService;
     @Autowired
     ThirdPartyRepository thirdPartyRepository;
-
     @Autowired
     AccountHolderRepository accountHolderRepository;
     @Autowired
@@ -40,7 +53,7 @@ public class AccountService implements AccountServiceInterface {
     TransferService transferService;
 
     @Override
-    public Account addAccount(AccountPostDTO account) {
+    public void addAccountByHolder(TypeAccount typeAccount, AccountPostDTO account) {
         AccountHolder accountHolder = accountHolderRepository.findById(account.getPrimaryOwnerId()).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "An Account Holder with the given id doesn't exist"));
@@ -51,8 +64,91 @@ public class AccountService implements AccountServiceInterface {
                             "An Account Holder with the given id doesn't exist"));
         }
         Money balance = new Money(BigDecimal.valueOf(account.getBalance()));
+        if (typeAccount == TypeAccount.CHECKING) {
+            Money balance1 = new Money(BigDecimal.valueOf(account.getBalance()));
+            LocalDate birth1 = accountHolder.getDateOfBirth();
+            Period period = Period.between(birth1, LocalDate.now());
+            if (period.getYears() < 24) {
+                StudentsChecking studentsChecking = new StudentsChecking(balance1, accountHolder, accountHolder2);
+                studentsChecking.setStatus(Status.INACTIVE);
+                studentsCheckingRepository.save(studentsChecking);
+            }
 
-        return accountRepository.save(new Checking(balance, accountHolder, accountHolder2));
+            Checking checking1 = new Checking(balance, accountHolder, accountHolder2);
+            checking1.setStatus(Status.INACTIVE);
+            checking1.setMinimumBalance(new Money(BigDecimal.valueOf(account.getMinimumBalance())));
+            checking1.setMonthlyMaintenanceFee(new Money(BigDecimal.valueOf(account.getMonthlyFee())));
+            checkingRepository.save(checking1);
+        }
+        if (typeAccount == TypeAccount.CREDITCARD) {
+            Money balance2 = new Money(BigDecimal.valueOf(account.getBalance()));
+            CreditCard creditCard1 = new CreditCard(balance2, accountHolder, accountHolder2);
+            creditCard1.setStatus(Status.INACTIVE);
+            creditCard1.setCreditLimit(new Money(BigDecimal.valueOf(account.getCreditLimit())));
+            creditCard1.setInterestRate(account.getInterestRate());
+            creditCardRepository.save(creditCard1);
+        }
+        if (typeAccount == TypeAccount.SAVINGS) {
+            Money balance3 = new Money(BigDecimal.valueOf(account.getBalance()));
+            Savings savings1 = new Savings(balance3, accountHolder, accountHolder2);
+            savings1.setStatus(Status.INACTIVE);
+            savings1.setMinimumBalance(new Money(BigDecimal.valueOf(account.getMinimumBalance())));
+            savings1.setInterestRate(account.getInterestRate());
+            savingsRepository.save(savings1);
+        }
+        if (typeAccount == TypeAccount.STUDENT_CHECKING) {
+            Money balance4 = new Money(BigDecimal.valueOf(account.getBalance()));
+            StudentsChecking studentsChecking = new StudentsChecking(balance4, accountHolder, accountHolder2);
+            studentsChecking.setStatus(Status.INACTIVE);
+            studentsCheckingRepository.save(studentsChecking);
+        }
+    }
+
+    @Override
+    public AccountPostDTO addAccountByAdmin(TypeAccount typeAccount, AccountPostDTO account) {
+        AccountHolder accountHolder = accountHolderRepository.findById(account.getPrimaryOwnerId()).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "An Account Holder with the given id doesn't exist"));
+        AccountHolder accountHolder2 = null;
+        if (account.getSecondaryOwnerId() != null) {
+            accountHolder2 = accountHolderRepository.findById(account.getSecondaryOwnerId()).orElseThrow(() ->
+                    new ResponseStatusException(HttpStatus.NOT_FOUND,
+                            "An Account Holder with the given id doesn't exist"));
+        }
+        Money balance = new Money(BigDecimal.valueOf(account.getBalance()));
+        if (typeAccount == TypeAccount.CHECKING) {
+            Money balance1 = new Money(BigDecimal.valueOf(account.getBalance()));
+            LocalDate birth1 = accountHolder.getDateOfBirth();
+            Period period = Period.between(birth1, LocalDate.now());
+            if (period.getYears() < 24) {
+                studentsCheckingRepository.save(new StudentsChecking(balance1, accountHolder, accountHolder2));
+            }
+
+            Checking checking1 = new Checking(balance, accountHolder, accountHolder2);
+            checking1.setMinimumBalance(new Money(BigDecimal.valueOf(account.getMinimumBalance())));
+            checking1.setMonthlyMaintenanceFee(new Money(BigDecimal.valueOf(account.getMonthlyFee())));
+            checkingRepository.save(checking1);
+        }
+        if (typeAccount == TypeAccount.CREDITCARD) {
+            Money balance2 = new Money(BigDecimal.valueOf(account.getBalance()));
+            CreditCard creditCard1 = new CreditCard(balance2, accountHolder, accountHolder2);
+            creditCard1.setCreditLimit(new Money(BigDecimal.valueOf(account.getCreditLimit())));
+            creditCard1.setInterestRate(account.getInterestRate());
+            creditCardRepository.save(creditCard1);
+        }
+        if (typeAccount == TypeAccount.SAVINGS) {
+            Money balance3 = new Money(BigDecimal.valueOf(account.getBalance()));
+            Savings savings1 = new Savings(balance3, accountHolder, accountHolder2);
+            savings1.setMinimumBalance(new Money(BigDecimal.valueOf(account.getMinimumBalance())));
+            savings1.setInterestRate(account.getInterestRate());
+            savingsRepository.save(savings1);
+        }
+        if (typeAccount == TypeAccount.STUDENT_CHECKING) {
+            Money balance4 = new Money(BigDecimal.valueOf(account.getBalance()));
+            studentsCheckingRepository.save(new StudentsChecking(balance4, accountHolder, accountHolder2));
+        }
+
+        return account;
     }
 
     @Override
@@ -76,11 +172,15 @@ public class AccountService implements AccountServiceInterface {
             accountRepository.save(account1);
             return account2;
         }
-        account1.setStatus(Status.FROZEN);
-        AccountGetDTO account2 = new AccountGetDTO(account1.getId(), account1.getPrimaryOwner().getName(),
-                account1.getBalance().getAmount().doubleValue(), account1.getStatus(), account1.getCreationDate());
-        accountRepository.save(account1);
-        return account2;
+        if (account1.getStatus() == Status.ACTIVE) {
+            account1.setStatus(Status.FROZEN);
+            AccountGetDTO account2 = new AccountGetDTO(account1.getId(), account1.getPrimaryOwner().getName(),
+                    account1.getBalance().getAmount().doubleValue(), account1.getStatus(), account1.getCreationDate());
+            accountRepository.save(account1);
+            return account2;
+        }
+        throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,
+                "This Account is not activated yet. Please, Validate it first.");
     }
 
     @Override
@@ -96,28 +196,10 @@ public class AccountService implements AccountServiceInterface {
     }
 
     @Override
-    public PaymentTPGetDTO patchThirdPartyAnyAccountBalance(Long id, Money amount, String hashkey) {
-
-        Account account1 = accountRepository.findById(id).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "No Account with this id exist in the system."));
-        if (thirdPartyRepository.findByHashkey(hashkey).isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "This Hashkey doesn't match with the system.");
-        }
-        if (account1.getBalance().getAmount().compareTo(amount.getAmount()) < 0) {
-            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "This Account don't have enough founds.");
-        }
-        Transfer transfer = new Transfer(account1, account1.getPrimaryOwner(), amount.getAmount());
-        transferRepository.save(transfer);
-
-        account1.setBalance(new Money(account1.getBalance().decreaseAmount(amount.getAmount())));
-        accountRepository.save(account1);
-        return new PaymentTPGetDTO(account1.getId(), account1.getPrimaryOwner().getName(), amount.getAmount().doubleValue());
-    }
-
-    @Override
     public Account patchAdminAnyAccountBalance(Long id, Money amount) {
         Account account1 = accountRepository.findById(id).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND, "No Account with this id exist in the system."));
+                new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "No Account with this id exist in the system."));
 
         account1.setBalance(amount);
         return accountRepository.save(account1);
@@ -131,6 +213,32 @@ public class AccountService implements AccountServiceInterface {
         return account1.getBalance().getAmount();
     }
 
+    @Override
+    public PaymentTPGetDTO patchThirdPartyAnyAccountBalance(Long id, Money amount, String hashkey) {
+
+        Account account1 = accountRepository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND, "No Account with this id exist in the system."));
+        if (thirdPartyRepository.findByHashkey(hashkey).isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "This Hashkey doesn't match with the system.");
+        }
+        if (account1.getBalance().getAmount().compareTo(amount.getAmount()) < 0) {
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "This Account don't have enough founds.");
+        }
+        if (account1.getStatus().equals(Status.FROZEN)) {
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,
+                    "This Account is Frozen. Contact with the receiver or try another Account.");
+        }
+        if (account1.getStatus().equals(Status.INACTIVE)) {
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,
+                    "This Account is not activated yet. Contact with the receiver or try another Account");
+        }
+            transferService.addTransfer(account1, thirdPartyRepository.findByHashkey(hashkey).get().getName(),
+                    account1.getPrimaryOwner(), amount.getAmount());
+
+            account1.setBalance(new Money(account1.getBalance().decreaseAmount(amount.getAmount())));
+            accountRepository.save(account1);
+            return new PaymentTPGetDTO(account1.getId(), account1.getPrimaryOwner().getName(), amount.getAmount().doubleValue());
+        }
 
     @Override
     public TransferGetDTO transferAccountHolderAnyAccount(TransferPostDTO transferPostDTO) {
@@ -145,8 +253,24 @@ public class AccountService implements AccountServiceInterface {
         if (accountOut.getBalance().getAmount().compareTo(amount2.getAmount()) < 0) {
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "This Account don't have enough founds.");
         }
+        if (accountOut.getStatus().equals(Status.FROZEN)) {
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,
+                    "Your Account is Frozen. Contact with your PaloosaBank Office");
+        }
+        if (accountIn.getStatus().equals(Status.FROZEN)) {
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,
+                    "The Receiver Account is Frozen. Contact with the receiver or try another Account.");
+        }
+        if (accountOut.getStatus().equals(Status.INACTIVE)) {
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,
+                    "Your Account is not activated yet. Contact with your PaloosaBank Office");
+        }
+        if (accountIn.getStatus().equals(Status.INACTIVE)) {
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,
+                    "The Receiver Account is not active yet. Contact with the receiver or try another Account.");
+        }
 
-        transferService.addTransfer(accountOut, accountOut.getPrimaryOwner(), transferPostDTO.getAmount());
+        transferService.addTransfer(accountOut, accountIn.getPrimaryOwner().getName(), accountOut.getPrimaryOwner(), transferPostDTO.getAmount());
 
         accountOut.getBalance().decreaseAmount(amount2);
         accountIn.getBalance().increaseAmount(amount2);

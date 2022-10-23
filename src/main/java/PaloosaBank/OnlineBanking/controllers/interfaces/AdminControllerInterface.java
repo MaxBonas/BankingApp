@@ -6,6 +6,7 @@ import PaloosaBank.OnlineBanking.entities.accounts.*;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 import PaloosaBank.OnlineBanking.entities.users.Admin;
 import PaloosaBank.OnlineBanking.entities.users.ThirdParty;
+import PaloosaBank.OnlineBanking.enums.TypeAccount;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -30,12 +31,8 @@ public interface AdminControllerInterface {
     AccountHolder updateAccountHolder(Long id, AccountHolder accountHolder);
     String deleteUserById(Long id);
 
-    Account addChecking(AccountPostDTO checking);
-    CreditCard addCreditCard(AccountPostDTO creditCard);
-    Savings addSavings(AccountPostDTO savings);
-    StudentsChecking addStudentsChecking(AccountPostDTO studentsChecking);
 
-//    Account addAccount(AccountPostDTO account); // todo esto que?
+    AccountPostDTO addAccountByAdmin(TypeAccount typeAccount, AccountPostDTO account);
     Account getAccountById(Long id);
 
     List<Account> getAllAccounts();

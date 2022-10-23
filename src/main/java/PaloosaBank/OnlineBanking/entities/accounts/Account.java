@@ -40,7 +40,7 @@ public abstract class Account {
 
     @OneToMany(mappedBy = "senderAccount")
     @JsonIgnore
-    private List<Transfer> transfers;
+    private List<Transfer> senderTransfers;
 
     @NotNull
 //    @NotBlank
@@ -118,11 +118,12 @@ public abstract class Account {
         this.secretKey = secretKey;
     }
 
-    public List<Transfer> getTransfers() {
-        return transfers;
+    public List<Transfer> getSenderTransfers() {
+        return senderTransfers;
     }
 
-    public void setTransfers(List<Transfer> transfers) {
-        this.transfers = transfers;
+    public void setSenderTransfers(List<Transfer> senderTransfers) {
+        this.senderTransfers = senderTransfers;
     }
+
 }

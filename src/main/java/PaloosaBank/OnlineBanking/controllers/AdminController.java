@@ -8,6 +8,7 @@ import PaloosaBank.OnlineBanking.entities.accounts.*;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 import PaloosaBank.OnlineBanking.entities.users.Admin;
 import PaloosaBank.OnlineBanking.entities.users.ThirdParty;
+import PaloosaBank.OnlineBanking.enums.TypeAccount;
 import PaloosaBank.OnlineBanking.services.accounts.interfaces.*;
 import PaloosaBank.OnlineBanking.services.users.interfaces.AccountHolderServiceInterface;
 import PaloosaBank.OnlineBanking.services.users.interfaces.AdminServiceInterface;
@@ -137,36 +138,11 @@ public class AdminController implements AdminControllerInterface {
 
 
     @Override
-    @PostMapping("/admin/checking_account")
+    @PostMapping("/admin/account")
     @ResponseStatus(HttpStatus.CREATED)
-    public Account addChecking(@RequestBody AccountPostDTO checking) {
-        return checkingServiceInterface.addChecking(checking);
+    public AccountPostDTO addAccountByAdmin(@RequestParam TypeAccount typeAccount, @RequestBody AccountPostDTO account) {
+        return accountServiceInterface.addAccountByAdmin(typeAccount, account);
     }
-
-    @PostMapping("/admin/credit_card")
-    @ResponseStatus(HttpStatus.CREATED)
-    public CreditCard addCreditCard(@RequestBody AccountPostDTO creditCard) {
-        return creditCardServiceInterface.addCreditCard(creditCard);
-    }
-
-    @Override
-    @PostMapping("/admin/savings")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Savings addSavings(@RequestBody AccountPostDTO savings) {
-        return savingsServiceInterface.addSavings(savings);
-    }
-
-    @Override
-    @PostMapping("/admin/students_checking")
-    @ResponseStatus(HttpStatus.CREATED)
-    public StudentsChecking addStudentsChecking(@RequestBody AccountPostDTO studentsChecking) {
-        return studentsCheckingServiceInterface.addStudentsChecking(studentsChecking);
-    }
-
-//    @Override
-//    public Account addAccount(AccountPostDTO account) {
-//        return null;
-//    }
 
     @Override
     @GetMapping("/admin/account/{id}")

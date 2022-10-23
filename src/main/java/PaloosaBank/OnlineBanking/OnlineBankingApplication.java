@@ -146,12 +146,12 @@ public class OnlineBankingApplication implements CommandLineRunner {
 				new StudentsChecking(new Money(BigDecimal.valueOf(27.90)), accountHolder5, accountHolder3)));
 
 		transferRepository.saveAll(List.of(
-		new Transfer(checking1, checking1.getPrimaryOwner(), BigDecimal.valueOf(134.23)),
-		new Transfer(checking2, checking2.getPrimaryOwner(), BigDecimal.valueOf(2650.26)),
-		new Transfer(checking2, checking2.getPrimaryOwner(), BigDecimal.valueOf(3230.00)),
-		new Transfer(checking3, checking3.getPrimaryOwner(), BigDecimal.valueOf(3230.00)),
-		new Transfer(checking2, checking2.getPrimaryOwner(), BigDecimal.valueOf(250.45)),
-		new Transfer(checking2, checking2.getPrimaryOwner(), BigDecimal.valueOf(342.30))));
+		new Transfer(checking1, "SushiGo.com", checking1.getPrimaryOwner(), BigDecimal.valueOf(134.23)),
+		new Transfer(checking2, accountHolder4.getName(), checking2.getPrimaryOwner(), BigDecimal.valueOf(2650.26)),
+		new Transfer(checking2, accountHolder3.getName(), checking2.getPrimaryOwner(), BigDecimal.valueOf(3230.00)),
+		new Transfer(checking3, accountHolder3.getName(), checking3.getPrimaryOwner(), BigDecimal.valueOf(3230.00)),
+		new Transfer(checking2, "Bar Tolo S.A.", checking2.getPrimaryOwner(), BigDecimal.valueOf(250.45)),
+		new Transfer(checking2, accountHolder6.getName(), checking2.getPrimaryOwner(), BigDecimal.valueOf(342.30))));
 	}
 }
 

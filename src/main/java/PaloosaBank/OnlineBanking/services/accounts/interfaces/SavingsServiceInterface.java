@@ -7,7 +7,6 @@ import java.util.List;
 
 public interface SavingsServiceInterface {
 
-    Savings addSavings(AccountPostDTO savings);
     Savings getSavingsById(Long id);
     List<Savings> getAllSavings();
     Savings updateSavings(Long id, AccountPostDTO savings);

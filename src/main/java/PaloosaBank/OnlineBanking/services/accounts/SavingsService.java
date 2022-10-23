@@ -26,24 +26,6 @@ public class SavingsService implements SavingsServiceInterface {
     AccountHolderRepository accountHolderRepository;
 
     @Override
-    public Savings addSavings(AccountPostDTO savings) {
-        AccountHolder accountHolder = accountHolderRepository.findById(savings.getPrimaryOwnerId()).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "An Account Holder with the given id doesn't exist"));
-        AccountHolder accountHolder2 = null;
-        if (savings.getSecondaryOwnerId() != null) {
-            accountHolder2 = accountHolderRepository.findById(savings.getSecondaryOwnerId()).orElseThrow(() ->
-                    new ResponseStatusException(HttpStatus.NOT_FOUND,
-                            "An Account Holder with the given id doesn't exist"));
-        }
-        Money balance = new Money(BigDecimal.valueOf(savings.getBalance()));
-        Savings savings1 = new Savings(balance, accountHolder, accountHolder2);
-        savings1.setMinimumBalance(new Money(BigDecimal.valueOf(savings.getMinimumBalance())));
-        savings1.setInterestRate(savings.getInterestRate());
-        return savingsRepository.save(savings1);
-    }
-
-    @Override
     public Savings getSavingsById(Long id) {
         return savingsRepository.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND,

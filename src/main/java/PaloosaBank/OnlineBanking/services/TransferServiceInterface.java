@@ -11,6 +11,6 @@ public interface TransferServiceInterface {
 
     List<Transfer> findBySenderAccountId (Long id);
     List<Transfer> findByPrimaryOwnerId (Long id);
-    Transfer addTransfer(Account senderAccount, AccountHolder primaryOwner, BigDecimal amount);
+    void addTransfer(Account senderAccount, String receiverName, AccountHolder primaryOwner, BigDecimal amount);
     void checkFraudLessThanSecond(Transfer transfer);
 }

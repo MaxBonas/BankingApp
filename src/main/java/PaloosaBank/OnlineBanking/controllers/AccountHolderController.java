@@ -1,8 +1,10 @@
 package PaloosaBank.OnlineBanking.controllers;
 
+import PaloosaBank.OnlineBanking.DTOs.accounts.AccountPostDTO;
 import PaloosaBank.OnlineBanking.DTOs.accounts.TransferGetDTO;
 import PaloosaBank.OnlineBanking.DTOs.accounts.TransferPostDTO;
 import PaloosaBank.OnlineBanking.controllers.interfaces.AccountHolderControllerInterface;
+import PaloosaBank.OnlineBanking.enums.TypeAccount;
 import PaloosaBank.OnlineBanking.services.accounts.interfaces.AccountServiceInterface;
 import PaloosaBank.OnlineBanking.services.users.interfaces.AccountHolderServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,13 @@ public class AccountHolderController implements AccountHolderControllerInterface
     @Autowired
     AccountServiceInterface accountServiceInterface;
 
+    @Override
+    @PostMapping("/account_holder/account")
+    @ResponseStatus(HttpStatus.CREATED)
+    public String addAccountByHolder(@RequestParam TypeAccount typeAccount, @RequestBody AccountPostDTO account) {
+        return "Your Account has been solicitated correctly. Please, wait until we process your data, " +
+                "and we will activate it and contact with you.";
+    }
 
     @Override
     @GetMapping("/account_holder/check_balance_account/{id}")

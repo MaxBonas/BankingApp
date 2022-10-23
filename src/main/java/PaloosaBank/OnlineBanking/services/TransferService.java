@@ -1,6 +1,5 @@
 package PaloosaBank.OnlineBanking.services;
 
-import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.Transfer;
 import PaloosaBank.OnlineBanking.entities.accounts.Account;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
@@ -49,12 +48,12 @@ public class TransferService implements TransferServiceInterface {
         return transferRepository.findByTransferTime(transferTime);
     }
 
-    public Transfer addTransfer(Account senderAccount, AccountHolder primaryOwner, BigDecimal amount) {
-        Transfer transfer = new Transfer(senderAccount, primaryOwner, amount);
+    public void addTransfer(Account senderAccount, String receiverName, AccountHolder primaryOwner, BigDecimal amount) {
+        Transfer transfer = new Transfer(senderAccount, receiverName, primaryOwner, amount);
 
         checkFraudLessThanSecond(transfer);
 
-        return transferRepository.save(transfer);
+        transferRepository.save(transfer);
     }
 
     public void checkFraudLessThanSecond(Transfer transfer) {

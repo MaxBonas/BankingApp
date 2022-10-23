@@ -23,6 +23,7 @@ public class Transfer {
     @ManyToOne
     @JoinColumn(name = "sender_account_ID")
     private Account senderAccount;
+    private String receiverName;
     @ManyToOne
     @JoinColumn(name = "primary_owner_ID")
     private AccountHolder primaryOwner;
@@ -30,8 +31,9 @@ public class Transfer {
     private LocalDate transferDate = LocalDate.now();
     private LocalTime transferTime = LocalTime.now();
 
-    public Transfer(Account senderAccount, AccountHolder primaryOwner, BigDecimal amount) {
+    public Transfer(Account senderAccount, String receiverName, AccountHolder primaryOwner, BigDecimal amount) {
         this.senderAccount = senderAccount;
+        this.receiverName = receiverName;
         this.primaryOwner = primaryOwner;
         this.amount = amount;
         setPrimaryOwner(senderAccount.getPrimaryOwner());
