@@ -1,12 +1,18 @@
 package PaloosaBank.OnlineBanking.entities;
 
+import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.accounts.Account;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
+import PaloosaBank.OnlineBanking.repositories.TransferRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 @Entity
 public class Transfer {
@@ -89,4 +95,5 @@ public class Transfer {
     public void setPrimaryOwner(AccountHolder primaryOwner) {
         this.primaryOwner = primaryOwner;
     }
+
 }

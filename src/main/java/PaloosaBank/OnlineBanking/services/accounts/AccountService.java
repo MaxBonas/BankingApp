@@ -11,6 +11,7 @@ import PaloosaBank.OnlineBanking.repositories.TransferRepository;
 import PaloosaBank.OnlineBanking.repositories.accounts.AccountRepository;
 import PaloosaBank.OnlineBanking.repositories.users.AccountHolderRepository;
 import PaloosaBank.OnlineBanking.repositories.users.ThirdPartyRepository;
+import PaloosaBank.OnlineBanking.services.TransferService;
 import PaloosaBank.OnlineBanking.services.accounts.interfaces.AccountServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.time.LocalTime;
 import java.util.List;
 
 @Service
@@ -34,6 +36,8 @@ public class AccountService implements AccountServiceInterface {
     AccountHolderRepository accountHolderRepository;
     @Autowired
     TransferRepository transferRepository;
+    @Autowired
+    TransferService transferService;
 
     @Override
     public Account addAccount(AccountPostDTO account) {
@@ -65,7 +69,7 @@ public class AccountService implements AccountServiceInterface {
         Account account1 = accountRepository.findById(id).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "No Account with this id exist in the system."));
-        if (account1.getStatus() == Status.FROZEN){
+        if (account1.getStatus() == Status.FROZEN) {
             account1.setStatus(Status.ACTIVE);
             AccountGetDTO account2 = new AccountGetDTO(account1.getId(), account1.getPrimaryOwner().getName(),
                     account1.getBalance().getAmount().doubleValue(), account1.getStatus(), account1.getCreationDate());
@@ -120,6 +124,15 @@ public class AccountService implements AccountServiceInterface {
     }
 
     @Override
+    public BigDecimal getBalanceAccountAccountHolder (Long id){
+        Account account1 = accountRepository.findById(id).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "An Account with the given id doesn't exist"));
+        return account1.getBalance().getAmount();
+    }
+
+
+    @Override
     public TransferGetDTO transferAccountHolderAnyAccount(TransferPostDTO transferPostDTO) {
         Money amount2 = new Money(transferPostDTO.getAmount());
         Account accountOut = accountRepository.findById(transferPostDTO.getAccountOutId()).orElseThrow(() ->
@@ -132,25 +145,16 @@ public class AccountService implements AccountServiceInterface {
         if (accountOut.getBalance().getAmount().compareTo(amount2.getAmount()) < 0) {
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "This Account don't have enough founds.");
         }
-        Transfer transfer = new Transfer(accountOut, accountOut.getPrimaryOwner(), transferPostDTO.getAmount());
-        transferRepository.save(transfer);
 
-        accountOut.setBalance(new Money(accountOut.getBalance().getAmount().subtract(amount2.getAmount(), new MathContext(2))));
-        accountIn.setBalance(new Money(accountIn.getBalance().getAmount().add(amount2.getAmount(), new MathContext(2))));
+        transferService.addTransfer(accountOut, accountOut.getPrimaryOwner(), transferPostDTO.getAmount());
+
+        accountOut.getBalance().decreaseAmount(amount2);
+        accountIn.getBalance().increaseAmount(amount2);
 
         TransferGetDTO transferGetDTO = new TransferGetDTO(accountOut.getPrimaryOwner().getName(),
-                accountIn.getPrimaryOwner().getName(), amount2.getAmount());
+                    accountIn.getPrimaryOwner().getName(), amount2.getAmount());
         accountRepository.save(accountOut);
         accountRepository.save(accountIn);
         return transferGetDTO;
     }
-
-    @Override
-    public BigDecimal getBalanceAccountAccountHolder(Long id) {
-        Account account1 = accountRepository.findById(id).orElseThrow(() ->
-                new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "An Account with the given id doesn't exist"));
-        return account1.getBalance().getAmount();
-    }
-
 }

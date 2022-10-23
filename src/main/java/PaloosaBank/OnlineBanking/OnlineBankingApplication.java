@@ -14,6 +14,7 @@ import PaloosaBank.OnlineBanking.entities.users.ThirdParty;
 import PaloosaBank.OnlineBanking.repositories.TransferRepository;
 import PaloosaBank.OnlineBanking.repositories.accounts.*;
 import PaloosaBank.OnlineBanking.repositories.users.*;
+import PaloosaBank.OnlineBanking.services.TransferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -48,6 +49,8 @@ public class OnlineBankingApplication implements CommandLineRunner {
 	ThirdPartyRepository thirdPartyRepository;
 	@Autowired
 	TransferRepository transferRepository;
+	@Autowired
+	TransferService transferService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(OnlineBankingApplication.class, args);
@@ -124,7 +127,7 @@ public class OnlineBankingApplication implements CommandLineRunner {
 
 		Checking checking1 = new Checking(new Money(BigDecimal.valueOf(1010.13)), accountHolder1, null);
 		Checking checking2 = new Checking(new Money(BigDecimal.valueOf(23002.23)), accountHolder3, accountHolder2);
-		Checking checking3 = new Checking(new Money(BigDecimal.valueOf(53)), accountHolder5, accountHolder4);
+		Checking checking3 = new Checking(new Money(BigDecimal.valueOf(53346.34)), accountHolder5, accountHolder4);
 		checkingRepository.saveAll(List.of(checking1, checking2, checking3));
 
 		creditCardRepository.saveAll(List.of(
@@ -142,10 +145,13 @@ public class OnlineBankingApplication implements CommandLineRunner {
 				new StudentsChecking(new Money(BigDecimal.valueOf(1010.00)), accountHolder2, null),
 				new StudentsChecking(new Money(BigDecimal.valueOf(27.90)), accountHolder5, accountHolder3)));
 
-		Transfer transfer1 = new Transfer(checking1, BigDecimal.valueOf(134.23));
-		Transfer transfer2 = new Transfer(checking2, BigDecimal.valueOf(2650.26));
-		Transfer transfer3 = new Transfer(checking2, BigDecimal.valueOf(3230.00));
-		transferRepository.saveAll(List.of(transfer1, transfer2, transfer3));
+		transferRepository.saveAll(List.of(
+		new Transfer(checking1, checking1.getPrimaryOwner(), BigDecimal.valueOf(134.23)),
+		new Transfer(checking2, checking2.getPrimaryOwner(), BigDecimal.valueOf(2650.26)),
+		new Transfer(checking2, checking2.getPrimaryOwner(), BigDecimal.valueOf(3230.00)),
+		new Transfer(checking3, checking3.getPrimaryOwner(), BigDecimal.valueOf(3230.00)),
+		new Transfer(checking2, checking2.getPrimaryOwner(), BigDecimal.valueOf(250.45)),
+		new Transfer(checking2, checking2.getPrimaryOwner(), BigDecimal.valueOf(342.30))));
 	}
 }
 

@@ -19,8 +19,6 @@ public class SecurityConfiguration {
 
     @Autowired
     CustomUserDetailsSevice customUserDetailsSevice;
-
-
     @Bean
     PasswordEncoder passwordEncoder() {return new BCryptPasswordEncoder(); }
 
@@ -47,7 +45,6 @@ public class SecurityConfiguration {
         httpSecurity.csrf().disable();
 
         return httpSecurity.build();
-
     }
 
 }
