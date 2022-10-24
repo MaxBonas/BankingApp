@@ -33,50 +33,92 @@ I invested all my time to do it and redo it the best that i can. Because de lear
 
 **AccountHolderController Tests:**
 -transferAccountHolderAnyAccountReduce_OK
+
 -transferAccountHolderAnyAccountIncrements_OK
+
 -transferAccountHolderAnyAccountAddTransfer_OK
+
 -transferAccountHolderAnyAccountWrongSecretKey_OK
+
 -transferAccountHolderAnyAccountNotEnoughFounds_OK
+
 -transferAccountHolderAnyAccountFrozenOrInactive_OK
+
 -transferAccountHolderAnyAccountCheckFraudLessSecond_OK
+
 -transferAccountHolderAnyAccountCheckFraudTooMuch24h_OK
+
 -transferAccountHolderAnyAccountMinimumBalanceAndPenaltyFee_OK
+
 -transferAccountHolderAnyAccountMonthlyMaintanceFee_OK
+
 -transferAccountHolderAnyAccountMonthlyInterestsAdded_OK
+
 -transferAccountHolderAnyAccountYearlyInterestsAdded_OK
+
 -getBalanceAccountAccountHolder_OK
+
 -getBalanceAccountAccountHolderWrongSecretKey_OK
+
 -postCheckingFromHolder_OK
+
 -postCreditCardFromHolder_OK
+
 -postSavingsFromHolder_OK
+
 -postStudentsCheckingFromHolder_OK
+
 -postStudentsCheckingFromHolderIf24_OK
+
 -postAccountFromHolderINACTIVE_OK
 
 **AdminController Tests:**
 -postAdminByAdmin_OK
+
 -postThirdPartyByAdmin_OK
+
 -postAccountHolderByAdmin_OK
+
 -postCheckingFromAdmin_OK
+
 -postStudentsCheckingFromAdminIf24_OK
+
 -postCreditCardFromAdmin_OK
+
 -postSavingsFromAdmin_OK
+
 -postStudentsCheckingFromAdmin_OK
+
 -getAdminById_OK
+
 -getAllAdmins_OK
+
 -getAccountHolderById_OK
+
 -getAllAccountHolders_OK
+
 -getThirdPartyById_OK
+
 -getAllThirdPartys_OK
+
 -getAccountById_OK
+
 -getAllAccounts_OK
+
 -deleteUserById_OK
+
 -deleteAccountById_OK
+
 -patchAnyAccountBalanceFromAdmin_OK
+
 -patchAnyAccountStatusFromAdmin_OK
+
 -updateAdminByAdmin_OK
+
 -updateupdateThirdPartyByAdmin_OK
+
 -updateAccountHolderByAdmin_OK
+
 -updateAnyAccountByAdmin_OK
 
 **ThirdPartyController Tests:**
@@ -84,10 +126,15 @@ I invested all my time to do it and redo it the best that i can. Because de lear
 
 **TransferRepository Tests:**
 -findBySenderAccountId_OK
+
 -findByPrimaryOwnerId_OK
+
 -findByAmount_OK
+
 -findByTransferDate_OK
+
 -findByTransferTime_OK
+
 -max24HourAmount_OK
 
 
