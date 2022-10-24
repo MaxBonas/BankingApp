@@ -19,7 +19,8 @@ MORE BONUS!!!
 - Swagger friendly ;)![img_1.png](img_1.png)
 - 
   ![](src/bankingAdminMethods.png)
-  ![](src/accounholder and third methods.png)
+  
+![img_3.png](img_3.png)
 - 
 This is my final project in IronHack. It's gonna be a Java based OnlineApp using Spring to work with a database.
 I invested all my time to do it and redo it the best that i can. Because de learning. ^^
