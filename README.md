@@ -3,12 +3,12 @@
 
 ## EXTRA, EXTRA!!
 
-**BONUS DONE!**
+### **BONUS DONE!**
 
-**- Check Fraud 2 transfers in less than a second. CHECKED
-- Check Fraud Primary Owner spended daily 150% more than ever. CHECKED**
+- **Check Fraud 2 transfers in less than a second. CHECKED**
+- **Check Fraud Primary Owner spended daily 150% more than ever. CHECKED**
 
-# MORE BONUS!!!
+## MORE BONUS!!!
 - **Account Holder can create an INACTIVE Account, pending to be revised an activated by an Admin.**
 - **Admins can Validate() an Account created by an AccountHolder.**
 - **Admin can GET, POST, PUT and DELETE everything. I made him OmniPowerful.**
@@ -17,21 +17,22 @@
 - Haskeys and SecretKeys are created automatically.
 - I tested more and beyond! ^^
 - **Swagger friendly** ;)![img_1.png](img_1.png)
-- 
-  ![](src/bankingAdminMethods.png)
-  
+-
+![](src/bankingAdminMethods.png)
+
 ![img_3.png](img_3.png)
 - 
 This is my final project in IronHack. It's gonna be a Java based OnlineApp using Spring to work with a database.
 I invested all my time to do it and redo it the best that i can. Because de learning. ^^
 
-![img_4.png](img_4.png)
+![](src/diagramBanking.png)
 
 ![UML Diagram (1)](https://user-images.githubusercontent.com/113984950/195988299-570e82e5-456a-4de0-a608-8986d1e33642.jpg)
 
 # -------------TRASCENDENT TESTS----------
 
-**AccountHolderController Tests:**
+### **AccountHolderController Tests:**
+
 -transferAccountHolderAnyAccountReduce_OK
 
 -transferAccountHolderAnyAccountIncrements_OK
@@ -72,7 +73,8 @@ I invested all my time to do it and redo it the best that i can. Because de lear
 
 -postAccountFromHolderINACTIVE_OK
 
-**AdminController Tests:**
+### **AdminController Tests:**
+
 -postAdminByAdmin_OK
 
 -postThirdPartyByAdmin_OK
@@ -121,10 +123,11 @@ I invested all my time to do it and redo it the best that i can. Because de lear
 
 -updateAnyAccountByAdmin_OK
 
-**ThirdPartyController Tests:**
+### **ThirdPartyController Tests:**
 - patchThirdPartyAnyAccountBalance_OK
 
-**TransferRepository Tests:**
+### **TransferRepository Tests:**
+
 -findBySenderAccountId_OK
 
 -findByPrimaryOwnerId_OK
@@ -146,7 +149,7 @@ I invested all my time to do it and redo it the best that i can. Because de lear
 
 The system must have 4 types of accounts: StudentChecking, Checking, Savings, and CreditCard.
 
-Checking
+### Checking
 
 Checking Accounts should have:
 
@@ -160,21 +163,21 @@ A monthlyMaintenanceFee
 A creationDate
 A status (FROZEN, ACTIVE)
 
-StudentChecking
+### StudentChecking
 
-Student Checking Accounts are identical to Checking Accounts except that they do NOT have:
+### Student Checking Accounts are identical to Checking Accounts except that they do NOT have:
 
 A monthlyMaintenanceFee
 A minimumBalance
 
-Savings
+### Savings
 
 Savings are identical to Checking accounts except that they
 
 Do NOT have a monthlyMaintenanceFee
 Do have an interestRate
 
-CreditCard
+### CreditCard
 
 CreditCard Accounts have:
 
@@ -187,7 +190,7 @@ A penaltyFee
 
 The system must have 3 types of Users: Admins and AccountHolders.
 
-AccountHolders
+### AccountHolders
 
 The AccountHolders should be able to access their own accounts and only their accounts when passing the correct 
 credentials using Basic Auth. AccountHolders have:
@@ -197,12 +200,12 @@ Date of birth
 A primaryAddress (which should be a separate address class)
 An optional mailingAddress
 
-Admins
+### Admins
 
 Admins only have a name
 
 
-ThirdParty
+### ThirdParty
 
 The ThirdParty Accounts have a hashed key and a name.
 
