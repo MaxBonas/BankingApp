@@ -1,7 +1,6 @@
 package PaloosaBank.OnlineBanking.services.accounts;
 
 import PaloosaBank.OnlineBanking.embedables.Money;
-import PaloosaBank.OnlineBanking.entities.accounts.Checking;
 import PaloosaBank.OnlineBanking.entities.accounts.Savings;
 import PaloosaBank.OnlineBanking.repositories.accounts.SavingsRepository;
 import PaloosaBank.OnlineBanking.services.accounts.interfaces.SavingsServiceInterface;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class SavingsService implements SavingsServiceInterface {

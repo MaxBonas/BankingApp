@@ -2,8 +2,6 @@ package PaloosaBank.OnlineBanking.services.users;
 
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 import PaloosaBank.OnlineBanking.entities.users.Role;
-import PaloosaBank.OnlineBanking.entities.users.ThirdParty;
-import PaloosaBank.OnlineBanking.repositories.accounts.AccountRepository;
 import PaloosaBank.OnlineBanking.repositories.users.AccountHolderRepository;
 import PaloosaBank.OnlineBanking.repositories.users.RoleRepository;
 import PaloosaBank.OnlineBanking.services.users.interfaces.AccountHolderServiceInterface;
@@ -20,16 +18,10 @@ public class AccountHolderService implements AccountHolderServiceInterface {
 
     @Autowired
     AccountHolderRepository accountHolderRepository;
-
     @Autowired
     RoleRepository roleRepository;
-
     @Autowired
     PasswordEncoder passwordEncoder;
-
-    @Autowired
-    AccountRepository accountRepository;
-
     @Override
     public AccountHolder addAccountHolder(AccountHolder accountHolder) {
         if (accountHolderRepository.findById(accountHolder.getId()).isPresent())

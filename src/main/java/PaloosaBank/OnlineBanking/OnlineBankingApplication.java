@@ -14,7 +14,6 @@ import PaloosaBank.OnlineBanking.entities.users.ThirdParty;
 import PaloosaBank.OnlineBanking.repositories.TransferRepository;
 import PaloosaBank.OnlineBanking.repositories.accounts.*;
 import PaloosaBank.OnlineBanking.repositories.users.*;
-import PaloosaBank.OnlineBanking.services.TransferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -49,15 +48,15 @@ public class OnlineBankingApplication implements CommandLineRunner {
 	ThirdPartyRepository thirdPartyRepository;
 	@Autowired
 	TransferRepository transferRepository;
-	@Autowired
-	TransferService transferService;
 
 	public static void main(String[] args) {
 		SpringApplication.run(OnlineBankingApplication.class, args);
 	}
 
 	@Override
-	public void run(String... args) throws Exception {
+	public void run(String... args) {
+
+		//------------ SOME RANDOM DATA TO FILL THE TABLES. NOT NECESSARY, BUT HANDY:-----------
 
 		AccountHolder accountHolder1 = new AccountHolder("May Lord", "mylo@gmail.com",
 				passwordEncoder.encode("C@r@1212"), LocalDate.of(1989, 3, 22),
@@ -163,15 +162,6 @@ public class OnlineBankingApplication implements CommandLineRunner {
 		transferService.addTransfer(checking3, accountHolder3.getName(), checking3.getPrimaryOwner(), BigDecimal.valueOf(1200000.00));
 		 */
 //		System.out.println(transferRepository.max24HourAmount(checking1.getPrimaryOwner().getId()));
+
 	}
 }
-
-
-//TODO: SECURITY// cualquier user lo puede hacer todo
-
-//TODO: tests, con la security?, me pedira password?
-
-
-
-
-

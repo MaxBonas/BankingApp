@@ -1,7 +1,6 @@
 package PaloosaBank.OnlineBanking.services.accounts;
 
 import PaloosaBank.OnlineBanking.embedables.Money;
-import PaloosaBank.OnlineBanking.entities.accounts.Checking;
 import PaloosaBank.OnlineBanking.entities.accounts.StudentsChecking;
 import PaloosaBank.OnlineBanking.repositories.accounts.StudentsCheckingRepository;
 import PaloosaBank.OnlineBanking.services.accounts.interfaces.StudentsCheckingServiceInterface;
@@ -11,7 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class StudentsCheckingService implements StudentsCheckingServiceInterface {

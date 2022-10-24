@@ -2,7 +2,6 @@ package PaloosaBank.OnlineBanking.services.users;
 
 import PaloosaBank.OnlineBanking.entities.users.Admin;
 import PaloosaBank.OnlineBanking.entities.users.Role;
-import PaloosaBank.OnlineBanking.repositories.accounts.AccountRepository;
 import PaloosaBank.OnlineBanking.repositories.users.AdminRepository;
 import PaloosaBank.OnlineBanking.repositories.users.RoleRepository;
 import PaloosaBank.OnlineBanking.services.users.interfaces.AdminServiceInterface;
@@ -19,14 +18,10 @@ public class AdminService implements AdminServiceInterface {
 
     @Autowired
     PasswordEncoder passwordEncoder;
-
     @Autowired
     RoleRepository roleRepository;
     @Autowired
     AdminRepository adminRepository;
-
-    @Autowired
-    AccountRepository accountRepository;
 
     @Override
     public Admin addAdmin(Admin admin) {

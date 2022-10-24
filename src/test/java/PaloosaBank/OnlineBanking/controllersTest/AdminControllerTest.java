@@ -1,7 +1,6 @@
 package PaloosaBank.OnlineBanking.controllersTest;
 
 import PaloosaBank.OnlineBanking.DTOs.AccountPostDTO;
-import PaloosaBank.OnlineBanking.DTOs.TransferPostDTO;
 import PaloosaBank.OnlineBanking.embedables.Address;
 import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.accounts.Checking;
@@ -11,8 +10,6 @@ import PaloosaBank.OnlineBanking.entities.accounts.StudentsChecking;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 import PaloosaBank.OnlineBanking.entities.users.Admin;
 import PaloosaBank.OnlineBanking.entities.users.ThirdParty;
-import PaloosaBank.OnlineBanking.enums.Status;
-import PaloosaBank.OnlineBanking.enums.TypeAccount;
 import PaloosaBank.OnlineBanking.repositories.accounts.*;
 import PaloosaBank.OnlineBanking.repositories.users.AccountHolderRepository;
 import PaloosaBank.OnlineBanking.repositories.users.AdminRepository;
@@ -73,6 +70,7 @@ public class AdminControllerTest {
     ThirdParty thirdPartyTest2;
     Checking accountTest1;
     Checking accountTest2;
+    Checking accountTest3;
 
     @BeforeEach
     void setUp() {
@@ -107,7 +105,7 @@ public class AdminControllerTest {
 
         String body = objectMapper.writeValueAsString(adminTest2);
 
-        MvcResult mvcResult = mockMvc.perform(post("/admin").content(body).
+        MvcResult mvcResult = mockMvc.perform(post("/admin/admin").content(body).
                 contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated()).andReturn();
 
         ObjectMapper mapper = new ObjectMapper();
@@ -405,23 +403,67 @@ public class AdminControllerTest {
 
     //------------------UPDATE TESTS-------------------
 
-//    Admin updateAdmin(Long id, Admin admin);
-//    ThirdParty updateThirdParty();
+    @Test
+    @DisplayName("Testing the method updateAdmin by Admin")
+    void updateAdminByAdmin_OK() throws Exception {
 
-//    AccountHolder updateAccountHolder();
+        adminTest2 = new Admin("Test2 AdminUser", "test3@email.com", "adminpass2");
 
+        String body = objectMapper.writeValueAsString(adminTest2);
 
+        MvcResult mvcResult = mockMvc.perform(put("/admin/admin/" + adminTest1.getId().toString())
+                .content(body).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isAccepted()).andReturn();
 
+        assertEquals("Test2 AdminUser", adminRepository.findById(adminTest1.getId()).get().getName());
+    }
 
+    @Test
+    @DisplayName("Testing the method updateThirdParty by Admin")
+    void updateupdateThirdPartyByAdmin_OK() throws Exception {
 
+        ThirdParty thirdPartyTest = new ThirdParty("Testtodesapear", "test32@Testtodesapear.com",
+                "Testtodesapear");
+        thirdPartyRepository.save(thirdPartyTest);
 
+        thirdPartyTest2 = new ThirdParty("Test2 ThirdPartyUser", "test32@email.com", "adminpass22");
 
+        String body = objectMapper.writeValueAsString(thirdPartyTest2);
 
+        MvcResult mvcResult = mockMvc.perform(put("/admin/third_party/" + thirdPartyTest.getId().toString())
+                .content(body).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isAccepted()).andReturn();
 
-//
+        assertEquals("Test2 ThirdPartyUser", thirdPartyRepository.findById(thirdPartyTest.getId()).get().getName());
+    }
 
-//
+    @Test
+    @DisplayName("Testing the method updateAccountHolder by Admin")
+    void updateAccountHolderByAdmin_OK() throws Exception {
 
+        accountHolderTest3 = new AccountHolder("Test Kant BeRight", "test56@email.com",
+                "tsetpass6", LocalDate.of(2010, 1, 24),
+                new Address("Test Crisol ave. 365", "Test New York", "Test 46266"),
+                null);
 
+        String body = objectMapper.writeValueAsString(accountHolderTest3);
 
+        MvcResult mvcResult = mockMvc.perform(put("/admin/account_holder/" + accountHolderTest1.getId().toString())
+                .content(body).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isAccepted()).andReturn();
+
+        assertEquals("Test Kant BeRight", accountHolderRepository.findById(accountHolderTest1.getId()).get().getName());
+    }
+
+    @Test
+    @DisplayName("Testing the method updateAnyAccountByAdmin by Admin")
+    void updateAnyAccountByAdmin_OK() throws Exception {
+
+        AccountPostDTO accountPostDTOTest = new AccountPostDTO(accountHolderTest1.getId(), accountHolderTest2.getId(),
+                5231254D, null, null, null, null);
+
+        String body = objectMapper.writeValueAsString(accountPostDTOTest);
+
+        MvcResult mvcResult = mockMvc.perform(put("/admin/account/" + accountTest1.getId().toString())
+                .content(body).contentType(MediaType.APPLICATION_JSON)).andExpect(status().isAccepted()).andReturn();
+
+        assertEquals(5231254D, accountRepository.findById(accountTest1.getId()).get().getBalance().getAmount().doubleValue());
+    }
 }

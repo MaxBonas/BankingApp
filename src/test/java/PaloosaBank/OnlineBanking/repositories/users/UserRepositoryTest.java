@@ -45,4 +45,13 @@ public class UserRepositoryTest {
         assertTrue(userRepository.findByName("Test ThirdPartyUser").isPresent());
 
     }
+
+    @Test
+    @DisplayName("Check method findByEmail on any User")
+    void findAnyUserByEmail_OK () {
+
+        assertTrue(userRepository.findByEmail("test5@email.com").isPresent());
+        assertTrue(userRepository.findByEmail("test9@email.com").isPresent());
+
+    }
 }

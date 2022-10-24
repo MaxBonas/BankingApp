@@ -27,15 +27,7 @@ public class AdminController implements AdminControllerInterface {
     @Autowired
     AdminServiceInterface adminServiceInterface;
     @Autowired
-    CreditCardServiceInterface creditCardServiceInterface;
-    @Autowired
     AccountServiceInterface accountServiceInterface;
-    @Autowired
-    CheckingServiceInterface checkingServiceInterface;
-    @Autowired
-    StudentsCheckingServiceInterface studentsCheckingServiceInterface;
-    @Autowired
-    SavingsServiceInterface savingsServiceInterface;
     @Autowired
     ThirdPartyServiceInterface thirdPartyServiceInterface;
     @Autowired
@@ -66,7 +58,7 @@ public class AdminController implements AdminControllerInterface {
     }
 
     @Override
-    @PutMapping("/admin/{id}")
+    @PutMapping("/admin/admin/{id}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public Admin updateAdmin(@PathVariable Long id, @RequestBody Admin admin) {
         return adminServiceInterface.updateAdmin(id, admin);
@@ -161,7 +153,7 @@ public class AdminController implements AdminControllerInterface {
 
     @Override
     @PutMapping("/admin/account/{id}")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public AccountGetDTO updateAccountByAdmin(@PathVariable Long id, @RequestBody AccountPostDTO account) {
         return accountServiceInterface.updateAccountByAdmin(id, account);
     }

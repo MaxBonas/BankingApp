@@ -1,7 +1,5 @@
 package PaloosaBank.OnlineBanking.services.users.interfaces;
 
-import PaloosaBank.OnlineBanking.embedables.Money;
-import PaloosaBank.OnlineBanking.entities.accounts.Account;
 import PaloosaBank.OnlineBanking.entities.users.ThirdParty;
 
 import java.util.List;

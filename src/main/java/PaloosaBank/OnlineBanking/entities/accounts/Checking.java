@@ -9,8 +9,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Period;
 
-import static org.apache.el.lang.ELArithmetic.multiply;
-
 @Entity
 public class Checking extends Account{
 

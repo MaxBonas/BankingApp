@@ -1,18 +1,12 @@
 package PaloosaBank.OnlineBanking.entities;
 
-import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.accounts.Account;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
-import PaloosaBank.OnlineBanking.repositories.TransferRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 
 @Entity
 public class Transfer {
@@ -23,7 +17,6 @@ public class Transfer {
     @ManyToOne
     @JoinColumn(name = "sender_account_ID")
     private Account senderAccount;
-    private String receiverName;
     @ManyToOne
     @JoinColumn(name = "primary_owner_ID")
     private AccountHolder primaryOwner;
@@ -33,7 +26,6 @@ public class Transfer {
 
     public Transfer(Account senderAccount, String receiverName, AccountHolder primaryOwner, BigDecimal amount) {
         this.senderAccount = senderAccount;
-        this.receiverName = receiverName;
         this.primaryOwner = primaryOwner;
         this.amount = amount;
         setPrimaryOwner(senderAccount.getPrimaryOwner());

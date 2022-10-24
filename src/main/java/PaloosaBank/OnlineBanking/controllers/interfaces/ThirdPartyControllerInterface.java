@@ -6,5 +6,5 @@ import java.math.BigDecimal;
 
 public interface ThirdPartyControllerInterface {
 
-    PaymentTPGetDTO patchThirdPartyAnyAccountBalance(Long accountId, BigDecimal amount, String hashkey);  // TODO esta bien?
+    PaymentTPGetDTO patchThirdPartyAnyAccountBalance(Long accountId, BigDecimal amount, String hashkey);
 }

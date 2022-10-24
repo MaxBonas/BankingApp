@@ -1,9 +1,7 @@
 package PaloosaBank.OnlineBanking.services.users;
 
-import PaloosaBank.OnlineBanking.entities.users.Admin;
 import PaloosaBank.OnlineBanking.entities.users.Role;
 import PaloosaBank.OnlineBanking.entities.users.ThirdParty;
-import PaloosaBank.OnlineBanking.repositories.accounts.AccountRepository;
 import PaloosaBank.OnlineBanking.repositories.users.RoleRepository;
 import PaloosaBank.OnlineBanking.repositories.users.ThirdPartyRepository;
 import PaloosaBank.OnlineBanking.services.users.interfaces.ThirdPartyServiceInterface;

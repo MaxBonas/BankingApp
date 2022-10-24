@@ -1,14 +1,11 @@
 package PaloosaBank.OnlineBanking.repositories.users;
 
-import PaloosaBank.OnlineBanking.entities.users.Admin;
 import PaloosaBank.OnlineBanking.entities.users.ThirdParty;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -46,6 +43,4 @@ public class ThirdPartyRepositoryTest {
         assertTrue(thirdPartyRepository.findByHashkey(hashkeyTest).isPresent());
 
     }
-
-//    Optional<ThirdParty> findByHashkey(String hashkey);
 }

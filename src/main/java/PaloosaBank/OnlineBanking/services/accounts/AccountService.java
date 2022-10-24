@@ -6,7 +6,6 @@ import PaloosaBank.OnlineBanking.entities.accounts.*;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 import PaloosaBank.OnlineBanking.enums.Status;
 import PaloosaBank.OnlineBanking.enums.TypeAccount;
-import PaloosaBank.OnlineBanking.repositories.TransferRepository;
 import PaloosaBank.OnlineBanking.repositories.accounts.*;
 import PaloosaBank.OnlineBanking.repositories.users.AccountHolderRepository;
 import PaloosaBank.OnlineBanking.repositories.users.ThirdPartyRepository;
@@ -39,8 +38,6 @@ public class AccountService implements AccountServiceInterface {
     ThirdPartyRepository thirdPartyRepository;
     @Autowired
     AccountHolderRepository accountHolderRepository;
-    @Autowired
-    TransferRepository transferRepository;
     @Autowired
     TransferService transferService;
 
@@ -245,24 +242,30 @@ public class AccountService implements AccountServiceInterface {
             }
 
             Checking checking1 = new Checking(balance, accountHolder, accountHolder2);
-            checking1.setMinimumBalance(new Money(BigDecimal.valueOf(account.getMinimumBalance())));
-            checking1.setMonthlyMaintenanceFee(new Money(BigDecimal.valueOf(account.getMonthlyFee())));
+            if (account.getMinimumBalance() != null) {
+                checking1.setMinimumBalance(new Money(BigDecimal.valueOf(account.getMinimumBalance())));}
+            if (account.getMonthlyFee() != null) {
+                checking1.setMonthlyMaintenanceFee(new Money(BigDecimal.valueOf(account.getMonthlyFee())));}
             checking1.setId(id);
             checkingRepository.save(checking1);
         }
         if (account1 instanceof CreditCard) {
             Money balance2 = new Money(BigDecimal.valueOf(account.getBalance()));
             CreditCard creditCard1 = new CreditCard(balance2, accountHolder, accountHolder2);
-            creditCard1.setCreditLimit(new Money(BigDecimal.valueOf(account.getCreditLimit())));
-            creditCard1.setInterestRate(account.getInterestRate());
+            if (account.getCreditLimit() != null) {
+                creditCard1.setCreditLimit(new Money(BigDecimal.valueOf(account.getCreditLimit())));}
+            if (account.getInterestRate() != null) {
+                creditCard1.setInterestRate(account.getInterestRate());}
             creditCard1.setId(id);
             creditCardRepository.save(creditCard1);
         }
         if (account1 instanceof Savings) {
             Money balance3 = new Money(BigDecimal.valueOf(account.getBalance()));
             Savings savings1 = new Savings(balance3, accountHolder, accountHolder2);
-            savings1.setMinimumBalance(new Money(BigDecimal.valueOf(account.getMinimumBalance())));
-            savings1.setInterestRate(account.getInterestRate());
+            if (account.getMinimumBalance() != null) {
+                savings1.setMinimumBalance(new Money(BigDecimal.valueOf(account.getMinimumBalance())));}
+            if (account.getInterestRate() != null) {
+                savings1.setInterestRate(account.getInterestRate());}
             savings1.setId(id);
             savingsRepository.save(savings1);
         }

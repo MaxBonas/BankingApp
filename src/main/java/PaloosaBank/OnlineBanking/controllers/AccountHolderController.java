@@ -6,7 +6,6 @@ import PaloosaBank.OnlineBanking.DTOs.TransferPostDTO;
 import PaloosaBank.OnlineBanking.controllers.interfaces.AccountHolderControllerInterface;
 import PaloosaBank.OnlineBanking.enums.TypeAccount;
 import PaloosaBank.OnlineBanking.services.accounts.interfaces.AccountServiceInterface;
-import PaloosaBank.OnlineBanking.services.users.interfaces.AccountHolderServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -15,9 +14,6 @@ import java.math.BigDecimal;
 
 @RestController
 public class AccountHolderController implements AccountHolderControllerInterface {
-
-    @Autowired
-    AccountHolderServiceInterface accountHolderServiceInterface;
 
     @Autowired
     AccountServiceInterface accountServiceInterface;

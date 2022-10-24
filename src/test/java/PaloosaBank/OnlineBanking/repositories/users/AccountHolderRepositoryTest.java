@@ -2,7 +2,6 @@ package PaloosaBank.OnlineBanking.repositories.users;
 
 import PaloosaBank.OnlineBanking.embedables.Address;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
-import PaloosaBank.OnlineBanking.entities.users.ThirdParty;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -10,9 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
@@ -53,7 +51,7 @@ public class AccountHolderRepositoryTest {
     void findAccountHolderByDateOfBirth_OK () {
 
         LocalDate birthTest = accountHolderTest1.getDateOfBirth();
-        assertTrue(accountHolderRepository.findByDateOfBirth(birthTest).get(0).getEmail().equals(accountHolderTest1.getEmail()));
+        assertEquals(accountHolderRepository.findByDateOfBirth(birthTest).get(0).getEmail(), accountHolderTest1.getEmail());
         System.out.println(accountHolderRepository.findByDateOfBirth(birthTest).get(0).getEmail());
     }
 

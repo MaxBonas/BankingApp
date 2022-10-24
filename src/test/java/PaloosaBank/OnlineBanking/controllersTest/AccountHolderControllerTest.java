@@ -14,7 +14,6 @@ import PaloosaBank.OnlineBanking.enums.Status;
 import PaloosaBank.OnlineBanking.repositories.TransferRepository;
 import PaloosaBank.OnlineBanking.repositories.accounts.*;
 import PaloosaBank.OnlineBanking.repositories.users.AccountHolderRepository;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -30,8 +29,6 @@ import org.springframework.web.context.WebApplicationContext;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -42,8 +39,6 @@ public class AccountHolderControllerTest {
 
     @Autowired
     AccountHolderRepository accountHolderRepository;
-    @Autowired
-    AccountRepository accountRepository;
     @Autowired
     CheckingRepository checkingRepository;
     @Autowired
@@ -106,6 +101,8 @@ public class AccountHolderControllerTest {
         savingsRepository.save(savingsTest);
 
     }
+
+    // -----------PATCH TESTS ------------
 
     @Test
     @DisplayName("Testing that the method transferAccountHolderAnyAccount from AccountHolder " +
@@ -336,6 +333,9 @@ public class AccountHolderControllerTest {
                 new BigDecimal("1002.50"));
     }
 
+    // -----------GET TESTS ------------
+
+
     @Test
     @DisplayName("Testing that the method getBalanceAccountAccountHolder from AccountHolder returns balance correctly.")
     void getBalanceAccountAccountHolder_OK() throws Exception {
@@ -360,6 +360,8 @@ public class AccountHolderControllerTest {
 
         assertFalse(mvcResult.getResponse().getContentAsString().contains("1000.53"));
     }
+
+    // -----------POST TESTS ------------
 
     @Test
     @DisplayName("Testing that the method addAccount from Account Holder creates a Checking Account correctly")

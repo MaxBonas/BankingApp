@@ -1,17 +1,14 @@
 package PaloosaBank.OnlineBanking.entities.users;
 
 import PaloosaBank.OnlineBanking.embedables.Address;
-import PaloosaBank.OnlineBanking.embedables.Money;
 import PaloosaBank.OnlineBanking.entities.Transfer;
 import PaloosaBank.OnlineBanking.entities.accounts.Account;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 public class AccountHolder extends User{

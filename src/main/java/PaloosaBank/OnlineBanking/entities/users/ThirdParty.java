@@ -3,8 +3,6 @@ package PaloosaBank.OnlineBanking.entities.users;
 import PaloosaBank.OnlineBanking.tools.HashkeyGenerator;
 
 import javax.persistence.Entity;
-import javax.validation.constraints.NotNull;
-import java.util.Set;
 
 @Entity
 public class ThirdParty extends User{
