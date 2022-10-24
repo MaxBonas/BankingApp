@@ -25,7 +25,8 @@ MORE BONUS!!!
 This is my final project in IronHack. It's gonna be a Java based OnlineApp using Spring to work with a database.
 I invested all my time to do it and redo it the best that i can. Because de learning. ^^
 
-![](src/diagram bankingapp.png)
+![img_4.png](img_4.png)
+
 ![UML Diagram (1)](https://user-images.githubusercontent.com/113984950/195988299-570e82e5-456a-4de0-a608-8986d1e33642.jpg)
 
 
