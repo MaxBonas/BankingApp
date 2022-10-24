@@ -1,22 +1,22 @@
 # BankingApp
-WELCOME to PaloosaBank App!
+# **WELCOME to PaloosaBank App!**
 
-EXTRA, EXTRA!!
-BONUS DONE!
+## EXTRA, EXTRA!!
 
-- Check Fraud 2 transfers in less than a second. CHECKED
-- Check Fraud Primary Owner spended daily 150% more than ever. CHECKED
+**BONUS DONE!**
 
-MORE BONUS!!!
-- 
-- Account Holder can create an INACTIVE Account, pending to be revised an activated by an Admin.
-- Admins can Validate() an Account created by an AccountHolder.
-- Admin can GET, POST, PUT and DELETE everything. I made him OmniPowerful.
-- The MonthlyMaintanceFee is substracted correctly even if the rquirements don't talk about it.
+**- Check Fraud 2 transfers in less than a second. CHECKED
+- Check Fraud Primary Owner spended daily 150% more than ever. CHECKED**
+
+# MORE BONUS!!!
+- **Account Holder can create an INACTIVE Account, pending to be revised an activated by an Admin.**
+- **Admins can Validate() an Account created by an AccountHolder.**
+- **Admin can GET, POST, PUT and DELETE everything. I made him OmniPowerful.**
+- **The MonthlyMaintanceFee is substracted correctly even if the rquirements don't talk about it.**
 - I use the SecretKey to ensure that AccountHolders just can use their accounts.
 - Haskeys and SecretKeys are created automatically.
 - I tested more and beyond! ^^
-- Swagger friendly ;)![img_1.png](img_1.png)
+- **Swagger friendly** ;)![img_1.png](img_1.png)
 - 
   ![](src/bankingAdminMethods.png)
   
@@ -29,8 +29,74 @@ I invested all my time to do it and redo it the best that i can. Because de lear
 
 ![UML Diagram (1)](https://user-images.githubusercontent.com/113984950/195988299-570e82e5-456a-4de0-a608-8986d1e33642.jpg)
 
+# -------------TRASCENDENT TESTS----------
 
-Requirements
+**AccountHolderController Tests:**
+-transferAccountHolderAnyAccountReduce_OK
+-transferAccountHolderAnyAccountIncrements_OK
+-transferAccountHolderAnyAccountAddTransfer_OK
+-transferAccountHolderAnyAccountWrongSecretKey_OK
+-transferAccountHolderAnyAccountNotEnoughFounds_OK
+-transferAccountHolderAnyAccountFrozenOrInactive_OK
+-transferAccountHolderAnyAccountCheckFraudLessSecond_OK
+-transferAccountHolderAnyAccountCheckFraudTooMuch24h_OK
+-transferAccountHolderAnyAccountMinimumBalanceAndPenaltyFee_OK
+-transferAccountHolderAnyAccountMonthlyMaintanceFee_OK
+-transferAccountHolderAnyAccountMonthlyInterestsAdded_OK
+-transferAccountHolderAnyAccountYearlyInterestsAdded_OK
+-getBalanceAccountAccountHolder_OK
+-getBalanceAccountAccountHolderWrongSecretKey_OK
+-postCheckingFromHolder_OK
+-postCreditCardFromHolder_OK
+-postSavingsFromHolder_OK
+-postStudentsCheckingFromHolder_OK
+-postStudentsCheckingFromHolderIf24_OK
+-postAccountFromHolderINACTIVE_OK
+
+**AdminController Tests:**
+-postAdminByAdmin_OK
+-postThirdPartyByAdmin_OK
+-postAccountHolderByAdmin_OK
+-postCheckingFromAdmin_OK
+-postStudentsCheckingFromAdminIf24_OK
+-postCreditCardFromAdmin_OK
+-postSavingsFromAdmin_OK
+-postStudentsCheckingFromAdmin_OK
+-getAdminById_OK
+-getAllAdmins_OK
+-getAccountHolderById_OK
+-getAllAccountHolders_OK
+-getThirdPartyById_OK
+-getAllThirdPartys_OK
+-getAccountById_OK
+-getAllAccounts_OK
+-deleteUserById_OK
+-deleteAccountById_OK
+-patchAnyAccountBalanceFromAdmin_OK
+-patchAnyAccountStatusFromAdmin_OK
+-updateAdminByAdmin_OK
+-updateupdateThirdPartyByAdmin_OK
+-updateAccountHolderByAdmin_OK
+-updateAnyAccountByAdmin_OK
+
+**ThirdPartyController Tests:**
+- patchThirdPartyAnyAccountBalance_OK
+
+**TransferRepository Tests:**
+-findBySenderAccountId_OK
+-findByPrimaryOwnerId_OK
+-findByAmount_OK
+-findByTransferDate_OK
+-findByTransferTime_OK
+-max24HourAmount_OK
+
+
+## **ALL THE SCHEMAS**
+
+![img_2.png](img_2.png)
+
+# **Requirements**
+
 The system must have 4 types of accounts: StudentChecking, Checking, Savings, and CreditCard.
 
 Checking
@@ -171,5 +237,3 @@ Patterns that indicate fraud include:
 Transactions made in 24 hours total to more than 150% of the customers highest daily total transactions in any other 
 24 hour period.
 More than 2 transactions occurring on a single account within a 1 second period.
-
-![img_2.png](img_2.png)
