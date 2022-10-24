@@ -1,15 +1,14 @@
 # BankingApp
 WELCOME to PaloosaBank App!
 
-
 EXTRA, EXTRA!!
 BONUS DONE!
 
 - Check Fraud 2 transfers in less than a second. CHECKED
 - Check Fraud Primary Owner spended daily 150% more than ever. CHECKED
 
-MORE BONUS!!
-
+MORE BONUS!!!
+- 
 - Account Holder can create an INACTIVE Account, pending to be revised an activated by an Admin.
 - Admins can Validate() an Account created by an AccountHolder.
 - Admin can GET, POST, PUT and DELETE everything. I made him OmniPowerful.
@@ -17,20 +16,19 @@ MORE BONUS!!
 - I use the SecretKey to ensure that AccountHolders just can use their accounts.
 - Haskeys and SecretKeys are created automatically.
 - I tested more and beyond! ^^
-- Swagger friendly ;)
-  ![](C:/Users/Max/Downloads/FireShot/FireShot Capture 002 - Swagger UI - localhostlogo.png)
-
-
+- Swagger friendly ;)![img_1.png](img_1.png)
+- 
+  ![](src/bankingAdminMethods.png)
+  ![](src/accounholder and third methods.png)
+- 
 This is my final project in IronHack. It's gonna be a Java based OnlineApp using Spring to work with a database.
-![](C:/Users/Max/Pictures/diagram bankingapp.png)
+I invested all my time to do it and redo it the best that i can. Because de learning. ^^
+
+![](src/diagram bankingapp.png)
 ![UML Diagram (1)](https://user-images.githubusercontent.com/113984950/195988299-570e82e5-456a-4de0-a608-8986d1e33642.jpg)
 
-![](C:/Users/Max/Downloads/FireShot/bankingAdminMethods.png)
-
-![](C:/Users/Max/Downloads/FireShot/accounholder and third methods.png)
 
 Requirements
-
 The system must have 4 types of accounts: StudentChecking, Checking, Savings, and CreditCard.
 
 Checking
@@ -172,4 +170,4 @@ Transactions made in 24 hours total to more than 150% of the customers highest d
 24 hour period.
 More than 2 transactions occurring on a single account within a 1 second period.
 
-![](C:/Users/Max/Downloads/FireShot/FireShot Capture 003 - Swagger UI - localhost schemas.png)
+![img_2.png](img_2.png)
