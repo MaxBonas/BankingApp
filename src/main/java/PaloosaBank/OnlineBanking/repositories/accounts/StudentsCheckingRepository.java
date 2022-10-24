@@ -14,9 +14,4 @@ public interface StudentsCheckingRepository  extends JpaRepository<StudentsCheck
 
     Optional<StudentsChecking> findBySecretKey(String secretKey);
     List<StudentsChecking> findByBalance(Money balance); // Just for testing
-//    List<StudentsChecking> findByBalance(Money balance); // Just for Tests
-//    List<StudentsChecking> findByPrimaryOwner(String primaryOwner);
-//    List<StudentsChecking> findBySecondaryOwner(String secondaryOwner);
-//    List<StudentsChecking> findByStatus(String status);
-//    List<StudentsChecking> findByCreationDate(String creationDate);
 }

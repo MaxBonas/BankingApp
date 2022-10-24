@@ -1,17 +1,19 @@
 package PaloosaBank.OnlineBanking.controllersTest;
 
 import PaloosaBank.OnlineBanking.DTOs.AccountPostDTO;
+import PaloosaBank.OnlineBanking.DTOs.TransferPostDTO;
 import PaloosaBank.OnlineBanking.embedables.Address;
 import PaloosaBank.OnlineBanking.embedables.Money;
+import PaloosaBank.OnlineBanking.entities.accounts.Checking;
+import PaloosaBank.OnlineBanking.entities.accounts.CreditCard;
+import PaloosaBank.OnlineBanking.entities.accounts.Savings;
+import PaloosaBank.OnlineBanking.entities.accounts.StudentsChecking;
 import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 import PaloosaBank.OnlineBanking.entities.users.Admin;
 import PaloosaBank.OnlineBanking.entities.users.ThirdParty;
 import PaloosaBank.OnlineBanking.enums.Status;
 import PaloosaBank.OnlineBanking.enums.TypeAccount;
-import PaloosaBank.OnlineBanking.repositories.accounts.CheckingRepository;
-import PaloosaBank.OnlineBanking.repositories.accounts.CreditCardRepository;
-import PaloosaBank.OnlineBanking.repositories.accounts.SavingsRepository;
-import PaloosaBank.OnlineBanking.repositories.accounts.StudentsCheckingRepository;
+import PaloosaBank.OnlineBanking.repositories.accounts.*;
 import PaloosaBank.OnlineBanking.repositories.users.AccountHolderRepository;
 import PaloosaBank.OnlineBanking.repositories.users.AdminRepository;
 import PaloosaBank.OnlineBanking.repositories.users.ThirdPartyRepository;
@@ -32,9 +34,8 @@ import org.springframework.web.context.WebApplicationContext;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -55,6 +56,8 @@ public class AdminControllerTest {
     @Autowired
     ThirdPartyRepository thirdPartyRepository;
     @Autowired
+    AccountRepository accountRepository;
+    @Autowired
     private WebApplicationContext webApplicationContext;
 
     private MockMvc mockMvc;
@@ -67,6 +70,9 @@ public class AdminControllerTest {
     Admin adminTest1;
     Admin adminTest2;
     ThirdParty thirdPartyTest;
+    ThirdParty thirdPartyTest2;
+    Checking accountTest1;
+    Checking accountTest2;
 
     @BeforeEach
     void setUp() {
@@ -80,6 +86,12 @@ public class AdminControllerTest {
                 new Address("Test Crisol ave. 365", "Test New York", "Test 46266"),
                 null);
         accountHolderRepository.save(accountHolderTest2);
+
+        accountTest1 = new Checking(new Money(BigDecimal.valueOf(1000.53)), accountHolderTest1, accountHolderTest2);
+        checkingRepository.save(accountTest1);
+
+        accountTest2 = new Checking(new Money(BigDecimal.valueOf(2000000.00)), accountHolderTest2, accountHolderTest1);
+        checkingRepository.save(accountTest2);
 
         adminTest1 = new Admin("Test AdminUser", "test5@email.com", "adminpass3");
         adminRepository.save(adminTest1);
@@ -152,8 +164,8 @@ public class AdminControllerTest {
     @DisplayName("Testing that the method addAccount from Admin creates a Checking Account correctly")
     void postCheckingFromAdmin_OK() throws Exception {
 
-        AccountPostDTO accountPostDTOTest = new AccountPostDTO(accountHolderTest1.getId(), accountHolderTest2.getId(),523123D,
-                null, null, null, null);
+        AccountPostDTO accountPostDTOTest = new AccountPostDTO(accountHolderTest1.getId(), accountHolderTest2.getId(),
+                52312D, null, null, null, null);
 
         String body = objectMapper.writeValueAsString(accountPostDTOTest);
 
@@ -161,124 +173,246 @@ public class AdminControllerTest {
                 param("typeAccount", "CHECKING").content(body).
                 contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated()).andReturn();
 
-        assertFalse(checkingRepository.findByBalance(new Money(BigDecimal.valueOf(523123D))).isEmpty());
+        Checking checkingTest = checkingRepository.findByBalance
+                (new Money(BigDecimal.valueOf(52312D))).get(0);
+        assertEquals(checkingTest.getBalance().getAmount().doubleValue(), (accountPostDTOTest.getBalance()));
     }
 
     @Test
-    @DisplayName("Testing that the method addAccount from Admin creates StudentsChecking " +
-            "when owner is under 24 instead a Checking.")
-    void postCheckingFromAdminCreateStudentsCheckingUnder24_OK() throws Exception {
+    @DisplayName("Testing that the method addAccount from Admin creates a Students Checking Account " +
+            "instead of a Checking if the Primary Owner is under 24 correctly")
+    void postStudentsCheckingFromAdminIf24_OK() throws Exception {
 
-        AccountPostDTO accountPostDTOTest = new AccountPostDTO(accountHolderTest2.getId(), accountHolderTest1.getId(), 523123D,
-                null, null, null, null );
+        AccountPostDTO accountPostDTOTest = new AccountPostDTO(accountHolderTest2.getId(), accountHolderTest1.getId(),
+                5231271D, null, null, null, null);
 
         String body = objectMapper.writeValueAsString(accountPostDTOTest);
 
-        MvcResult mvcResult = mockMvc.perform(post("/admin/checking_account").content(body).
+        MvcResult mvcResult = mockMvc.perform(post("/account_holder/account").
+                param("typeAccount", "CHECKING").content(body).
                 contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated()).andReturn();
 
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode tree = mapper.readTree(mvcResult.getResponse().getContentAsString());
-        JsonNode node = tree.get("id");
-        Long id = node.asLong();
+        StudentsChecking studentsCheckingTest = studentsCheckingRepository.findByBalance
+                (new Money(BigDecimal.valueOf(5231271D))).get(0);
+        assertEquals(studentsCheckingTest.getBalance().getAmount().doubleValue(), (accountPostDTOTest.getBalance()));
 
-        assertTrue(studentsCheckingRepository.findById(id).isPresent());
     }
 
     @Test
-    @DisplayName("Testing the method addAccount from Admin creates a Checking Account correctly")
+    @DisplayName("Testing that the method addAccount from Admin creates a Credit Card Account correctly")
     void postCreditCardFromAdmin_OK() throws Exception {
 
-        AccountPostDTO accountPostDTOTest = new AccountPostDTO(accountHolderTest1.getId(), accountHolderTest2.getId(), 523123D,
-                null, null, 110D, 0.14D );
+        AccountPostDTO accountPostDTOTest = new AccountPostDTO(accountHolderTest1.getId(), accountHolderTest2.getId(),
+                5231211D, null, null, null, null);
 
         String body = objectMapper.writeValueAsString(accountPostDTOTest);
 
-        MvcResult mvcResult = mockMvc.perform(post("/admin/credit_card").content(body).
+        MvcResult mvcResult = mockMvc.perform(post("/admin/account").
+                param("typeAccount", "CREDITCARD").content(body).
                 contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated()).andReturn();
 
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode tree = mapper.readTree(mvcResult.getResponse().getContentAsString());
-        JsonNode node = tree.get("id");
-        Long id = node.asLong();
-
-        assertTrue(creditCardRepository.findById(id).isPresent());
+        CreditCard creditCardTest = creditCardRepository.findByBalance
+                (new Money(BigDecimal.valueOf(5231211D))).get(0);
+        assertEquals(creditCardTest.getBalance().getAmount().doubleValue(), (accountPostDTOTest.getBalance()));
     }
 
     @Test
-    @DisplayName("Testing the method addAccount from Admin creates a Checking Account correctly")
+    @DisplayName("Testing that the method addAccount from Admin creates a Savings Account correctly")
     void postSavingsFromAdmin_OK() throws Exception {
 
-        AccountPostDTO accountPostDTOTest = new AccountPostDTO(accountHolderTest2.getId(), accountHolderTest1.getId(), 523123D,
-                null, null, null, null );
+        AccountPostDTO accountPostDTOTest = new AccountPostDTO(accountHolderTest1.getId(), accountHolderTest2.getId(),
+                5231254D, null, null, null, null);
 
         String body = objectMapper.writeValueAsString(accountPostDTOTest);
 
-        MvcResult mvcResult = mockMvc.perform(post("/admin/savings").content(body).
+        MvcResult mvcResult = mockMvc.perform(post("/account_holder/account").
+                param("typeAccount", "SAVINGS").content(body).
                 contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated()).andReturn();
 
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode tree = mapper.readTree(mvcResult.getResponse().getContentAsString());
-        JsonNode node = tree.get("id");
-        Long id = node.asLong();
+        Savings savingsTest = savingsRepository.findByBalance
+                (new Money(BigDecimal.valueOf(5231254D))).get(0);
+        assertEquals(savingsTest.getBalance().getAmount().doubleValue(), (accountPostDTOTest.getBalance()));
 
-        assertTrue(savingsRepository.findById(id).isPresent());
+    }
+
+
+    @Test
+    @DisplayName("Testing that the method addAccount from Admin creates a Students Checking Account correctly")
+    void postStudentsCheckingFromAdmin_OK() throws Exception {
+
+        AccountPostDTO accountPostDTOTest = new AccountPostDTO(accountHolderTest1.getId(), accountHolderTest2.getId(),
+                5231277D, null, null, null, null);
+
+        String body = objectMapper.writeValueAsString(accountPostDTOTest);
+
+        MvcResult mvcResult = mockMvc.perform(post("/account_holder/account").
+                param("typeAccount", "STUDENTSCHECKING").content(body).
+                contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated()).andReturn();
+
+        StudentsChecking studentsCheckingTest = studentsCheckingRepository.findByBalance
+                (new Money(BigDecimal.valueOf(5231277D))).get(0);
+        assertEquals(studentsCheckingTest.getBalance().getAmount().doubleValue(), (accountPostDTOTest.getBalance()));
+    }
+
+    //------------------GET TESTS--------------
+
+    @Test
+    @DisplayName("Testing that the method getAdminById from Admin returns Admin correctly.")
+    void getAdminById_OK() throws Exception {
+
+        MvcResult mvcResult = mockMvc.perform(
+                        get("/admin/" + adminTest1.getId().toString()).
+                                contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
+
+        assertTrue(mvcResult.getResponse().getContentAsString().contains("Test AdminUser"));
     }
 
     @Test
-    @DisplayName("Testing the method addAccount from Admin creates a Checking Account correctly")
-    void postStudentsCheckingFromAdmin_OK() throws Exception {
+    @DisplayName("Testing that the method getAllAdmins from Admin returns all Admins correctly.")
+    void getAllAdmins_OK() throws Exception {
 
-        AccountPostDTO accountPostDTOTest = new AccountPostDTO(accountHolderTest2.getId(), accountHolderTest1.getId(), 523123D,
-                null, null, null, null );
+        adminTest2 = new Admin("Test AdminUser2", "test11@email.com", "adminpass4");
+        adminRepository.save(adminTest2);
+        MvcResult mvcResult = mockMvc.perform(
+                get("/admin/admins").
+                        contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
 
-        String body = objectMapper.writeValueAsString(accountPostDTOTest);
+        assertTrue(mvcResult.getResponse().getContentAsString().contains("Test AdminUser") &&
+                mvcResult.getResponse().getContentAsString().contains("Test AdminUser2"));
+}
 
-        MvcResult mvcResult = mockMvc.perform(post("/admin/students_checking").content(body).
-                contentType(MediaType.APPLICATION_JSON)).andExpect(status().isCreated()).andReturn();
+    @Test
+    @DisplayName("Testing that the method getAccountHolderById from Admin returns AccountHolder correctly.")
+    void getAccountHolderById_OK() throws Exception {
 
-        ObjectMapper mapper = new ObjectMapper();
-        JsonNode tree = mapper.readTree(mvcResult.getResponse().getContentAsString());
-        JsonNode node = tree.get("id");
-        Long id = node.asLong();
+        MvcResult mvcResult = mockMvc.perform(
+                get("/admin/account_holder/" + accountHolderTest1.getId().toString()).
+                        contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
 
-        assertTrue(studentsCheckingRepository.findById(id).isPresent());
+        assertTrue(mvcResult.getResponse().getContentAsString().contains("Test May Lord"));
     }
 
+    @Test
+    @DisplayName("Testing that the method getAllAccountHolders from Admin returns all AccountHoldera correctly.")
+    void getAllAccountHolders_OK() throws Exception {
 
-    //    TODO AccountHolder addAccountHolder(); // Con un error
+        MvcResult mvcResult = mockMvc.perform(
+                get("/admin/account_holders").
+                        contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
 
-    //------------------GET TESTS--------------  // TODO no se hacerlos
+        assertTrue(mvcResult.getResponse().getContentAsString().contains("Test May Lord") &&
+                mvcResult.getResponse().getContentAsString().contains("Test Kant BeRight"));
+    }
 
-    //    Admin getAdminById(Long id);
-//    List<Admin> getAllAdmins();
-//    Admin updateAdmin(Long id, Admin admin);
-//
+    @Test
+    @DisplayName("Testing that the method getThirdPartyById from Admin returns ThirdParty correctly.")
+    void getThirdPartyById_OK() throws Exception {
 
-    //    ThirdParty getThirdPartyById(Long id);
-//    List<ThirdParty> adminGetAllThirdPartys();
-//    ThirdParty updateThirdParty();
+        thirdPartyTest = new ThirdParty("Test ThirdPartyUser1", "test12@email.com", "adminpass5");
+        thirdPartyRepository.save(thirdPartyTest);
+        MvcResult mvcResult = mockMvc.perform(
+                get("/admin/third_part/" + adminTest1.getId().toString()).
+                        contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
 
-//    AccountHolder getAccountHolderById(Long id);
-//    List<AccountHolder> adminGetAllAccountHolders();
-//    AccountHolder updateAccountHolder();
+        assertTrue(mvcResult.getResponse().getContentAsString().contains("Test AdminUser"));
+    }
 
-    //    Account getAccountById(Long id);
-//    List<Account> getAllAccounts();
+    @Test
+    @DisplayName("Testing that the method getAllThirdPartys from Admin returns all ThirdPartys correctly.")
+    void getAllThirdPartys_OK() throws Exception {
 
-    //------------------UPDATE TESTS-------------------
+        thirdPartyTest2 = new ThirdParty("Test ThirdPartyUser2", "test13@email.com", "adminpass6");
+        thirdPartyRepository.save(thirdPartyTest2);
+        thirdPartyTest = new ThirdParty("Test ThirdPartyUser1", "test14@email.com", "adminpass7");
+        thirdPartyRepository.save(thirdPartyTest);
+        MvcResult mvcResult = mockMvc.perform(
+                get("/admin/third_partys").
+                        contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
 
+        assertTrue(mvcResult.getResponse().getContentAsString().contains("Test ThirdPartyUser1") &&
+                mvcResult.getResponse().getContentAsString().contains("Test ThirdPartyUser2"));
+    }
 
+    @Test
+    @DisplayName("Testing that the method getAccountById from Admin returns Account correctly.")
+    void getAccountById_OK() throws Exception {
+
+        MvcResult mvcResult = mockMvc.perform(
+                get("/admin/account/" + accountTest1.getId().toString()).
+                        contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
+
+        assertTrue(mvcResult.getResponse().getContentAsString().contains("1000.53"));
+    }
+
+    @Test
+    @DisplayName("Testing that the method getAllThirdPartys from Admin returns all ThirdPartys correctly.")
+    void getAllAccounts_OK() throws Exception {
+
+        MvcResult mvcResult = mockMvc.perform(
+                get("/admin/accounts").
+                        contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andReturn();
+
+        assertTrue(mvcResult.getResponse().getContentAsString().contains("1000.53") &&
+                mvcResult.getResponse().getContentAsString().contains("2000000.00"));
+    }
 
     //-----------------DELETE TESTS-----------------
 
-    //    User deleteUser();
-    //    Account deleteAccountById(Long id);
+    @Test
+    @DisplayName("Testing that the method deleteUserById from Admin deletes User correctly.")
+    void deleteUserById_OK() throws Exception {
+
+        MvcResult mvcResult = mockMvc.perform(
+                delete("/admin/user/" + adminTest1.getId().toString()).
+                        contentType(MediaType.APPLICATION_JSON)).andExpect(status().isAccepted()).andReturn();
+
+        assertFalse(adminRepository.findByName("Test AdminUser").isPresent());
+    }
+
+    @Test
+    @DisplayName("Testing that the method deleteAccountById from Admin deletes Account correctly.")
+    void deleteAccountById_OK() throws Exception {
+
+        MvcResult mvcResult = mockMvc.perform(
+                delete("/admin/account/" + accountTest1.getId().toString()).
+                        contentType(MediaType.APPLICATION_JSON)).andExpect(status().isAccepted()).andReturn();
+
+        assertFalse(accountRepository.findById(accountTest1.getId()).isPresent());
+    }
 
     //-----------------PATCH TESTS------------------
 
-    //    Account patchAdminAnyAccountBalance(Long accountId, BigDecimal amount);
-//    Account patchStatusAccount (Long id);
+    @Test
+    @DisplayName("Testing the method patchAdminAnyAccountBalance from Admin")
+    void patchAnyAccountBalanceFromAdmin_OK() throws Exception {
+
+        MvcResult mvcResult = mockMvc.perform(
+                patch("/admin/reduce_balance_account/" + accountTest1.getId().toString()).
+                        param("amount", "100.00").
+                        contentType(MediaType.APPLICATION_JSON)).andExpect(status().isAccepted()).andReturn();
+        assertTrue(mvcResult.getResponse().getContentAsString().contains(accountTest1.getPrimaryOwner().getName()));
+    }
+
+    @Test
+    @DisplayName("Testing the method patchAdminAnyAccountStatus from Admin")
+    void patchAnyAccountStatusFromAdmin_OK() throws Exception {
+
+        MvcResult mvcResult = mockMvc.perform(
+                patch("/admin/change_status_account/" + accountTest1.getId().toString()).
+                        contentType(MediaType.APPLICATION_JSON)).andExpect(status().isAccepted()).andReturn();
+        assertTrue(mvcResult.getResponse().getContentAsString().contains("FROZEN"));
+    }
+
+    //------------------UPDATE TESTS-------------------
+
+//    Admin updateAdmin(Long id, Admin admin);
+//    ThirdParty updateThirdParty();
+
+//    AccountHolder updateAccountHolder();
+
+
+
+
 
 
 

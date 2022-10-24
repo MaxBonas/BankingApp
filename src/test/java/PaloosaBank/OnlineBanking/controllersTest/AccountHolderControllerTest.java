@@ -64,6 +64,11 @@ public class AccountHolderControllerTest {
     AccountHolder accountHolderTest2;
     Checking accountTest1;
     Checking accountTest2;
+    Checking accountTest3;
+
+    CreditCard creditCardTest;
+
+    Savings savingsTest;
 
     @BeforeEach
     void setUp() {
@@ -87,6 +92,19 @@ public class AccountHolderControllerTest {
 
         accountTest2 = new Checking(new Money(BigDecimal.valueOf(2000000.00)), accountHolderTest2, accountHolderTest1);
         checkingRepository.save(accountTest2);
+
+        accountTest3 = new Checking(new Money(BigDecimal.valueOf(1100.00)), accountHolderTest1, accountHolderTest2);
+        accountTest3.setLastMonthlyFee(LocalDate.of(2022, 8, 20));
+        checkingRepository.save(accountTest3);
+
+        creditCardTest = new CreditCard(new Money(BigDecimal.valueOf(1100.00)), accountHolderTest1, null);
+        creditCardTest.setLastInterest(LocalDate.of(2022, 8, 20));
+        creditCardRepository.save(creditCardTest);
+
+        savingsTest = new Savings(new Money(BigDecimal.valueOf(1100.00)), accountHolderTest1, null);
+        savingsTest.setLastInterest(LocalDate.of(2021, 8, 20));
+        savingsRepository.save(savingsTest);
+
     }
 
     @Test
@@ -246,6 +264,76 @@ public class AccountHolderControllerTest {
                 new BigDecimal("1000.53"));
 
         assertEquals(checkingRepository.findById(accountTest1.getId()).get().getStatus(), Status.FROZEN);
+    }
+
+    @Test
+    @DisplayName("Testing that the method transferAccountHolderAnyAccount from AccountHolder " +
+            "checks if the minimumBalance is reached, and substract the penalty fee.")
+    void transferAccountHolderAnyAccountMinimumBalanceAndPenaltyFee_OK() throws Exception {
+
+        TransferPostDTO transferPostDTO = new TransferPostDTO(accountTest1.getId(), accountTest2.getId(),
+                new BigDecimal("860.53"), accountTest1.getSecretKey());
+
+        String body = objectMapper.writeValueAsString(transferPostDTO);
+
+        MvcResult mvcResult = mockMvc.perform(patch("/account_holder/transfer_amount_account").content(body).
+                contentType(MediaType.APPLICATION_JSON)).andExpect(status().isAccepted()).andReturn();
+
+        assertEquals(checkingRepository.findById(accountTest1.getId()).get().getBalance().getAmount(),
+                new BigDecimal("100.00"));
+    }
+
+    @Test
+    @DisplayName("Testing that the method transferAccountHolderAnyAccount from AccountHolder " +
+            "checks if the monthlyMaintanceFee substract every month.")
+    void transferAccountHolderAnyAccountMonthlyMaintanceFee_OK() throws Exception {
+
+        TransferPostDTO transferPostDTO = new TransferPostDTO(accountTest3.getId(), accountTest2.getId(),
+                new BigDecimal("100.00"), accountTest3.getSecretKey());
+
+        String body = objectMapper.writeValueAsString(transferPostDTO);
+
+        MvcResult mvcResult = mockMvc.perform(patch("/account_holder/transfer_amount_account").content(body).
+                contentType(MediaType.APPLICATION_JSON)).andExpect(status().isAccepted()).andReturn();
+
+        assertEquals(checkingRepository.findById(accountTest3.getId()).get().getBalance().getAmount(),
+                new BigDecimal("976.00"));
+    }
+
+    @Test
+    @DisplayName("Testing that the method transferAccountHolderAnyAccount from AccountHolder " +
+            "checks if the Interests are added so many times like months passed, when is CreditCard")
+    void transferAccountHolderAnyAccountMonthlyInterestsAdded_OK() throws Exception {
+
+        TransferPostDTO transferPostDTO = new TransferPostDTO(creditCardTest.getId(), accountTest2.getId(),
+                new BigDecimal("100.00"), creditCardTest.getSecretKey());
+
+
+        String body = objectMapper.writeValueAsString(transferPostDTO);
+
+        MvcResult mvcResult = mockMvc.perform(patch("/account_holder/transfer_amount_account").content(body).
+                contentType(MediaType.APPLICATION_JSON)).andExpect(status().isAccepted()).andReturn();
+
+        assertEquals(creditCardRepository.findById(creditCardTest.getId()).get().getBalance().getAmount(),
+                new BigDecimal("966.67"));
+    }
+
+    @Test
+    @DisplayName("Testing that the method transferAccountHolderAnyAccount from AccountHolder " +
+            "checks if the Interests are added so many times like years passed, when is Savings")
+    void transferAccountHolderAnyAccountYearlyInterestsAdded_OK() throws Exception {
+
+        TransferPostDTO transferPostDTO = new TransferPostDTO(savingsTest.getId(), accountTest2.getId(),
+                new BigDecimal("100.00"), savingsTest.getSecretKey());
+
+
+        String body = objectMapper.writeValueAsString(transferPostDTO);
+
+        MvcResult mvcResult = mockMvc.perform(patch("/account_holder/transfer_amount_account").content(body).
+                contentType(MediaType.APPLICATION_JSON)).andExpect(status().isAccepted()).andReturn();
+
+        assertEquals(savingsRepository.findById(savingsTest.getId()).get().getBalance().getAmount(),
+                new BigDecimal("1002.50"));
     }
 
     @Test

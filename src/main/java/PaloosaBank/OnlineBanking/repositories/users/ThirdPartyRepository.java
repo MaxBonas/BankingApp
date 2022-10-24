@@ -11,7 +11,6 @@ import java.util.Optional;
 public interface ThirdPartyRepository  extends JpaRepository<ThirdParty, Long> {
 
     Optional<ThirdParty> findByName(String name);
-    Optional<User> findByEmail(String email);
 
     Optional<ThirdParty> findByHashkey(String hashkey);
 }

@@ -6,6 +6,10 @@ import PaloosaBank.OnlineBanking.entities.users.AccountHolder;
 import javax.validation.constraints.NotNull;
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.Period;
+
+import static org.apache.el.lang.ELArithmetic.multiply;
 
 @Entity
 public class Checking extends Account{
@@ -33,6 +37,8 @@ public class Checking extends Account{
             @AttributeOverride(name = "amount", column = @Column(name = "monthly_amount"))
     })
     private Money monthlyMaintenanceFee = new Money(BigDecimal.valueOf(12));
+
+    private LocalDate lastMonthlyFee = LocalDate.now();
 
 
     public Checking(Money balance, AccountHolder primaryOwner, AccountHolder secondaryOwner) {
@@ -62,11 +68,29 @@ public class Checking extends Account{
         this.monthlyMaintenanceFee = monthlyMaintenanceFee;
     }
 
+    public LocalDate getLastMonthlyFee() {
+        return lastMonthlyFee;
+    }
+
+    public void setLastMonthlyFee(LocalDate lastMonthlyFee) {
+        this.lastMonthlyFee = lastMonthlyFee;
+    }
+
     @Override
     public void setBalance(Money balance) {
         if (balance.getAmount().compareTo(minimumBalance.getAmount()) < 0){
             balance.decreaseAmount(penaltyFee);
         }
+
+        Period period = Period.between(lastMonthlyFee, LocalDate.now());
+        int monthsPast = period.getMonths();
+        if (monthsPast >= 1) {
+            BigDecimal toFee = new BigDecimal(monthsPast * monthlyMaintenanceFee.getAmount().intValue());
+            balance.decreaseAmount(toFee);
+            setLastMonthlyFee(LocalDate.now());
+        }
+
         super.setBalance(balance);
     }
+
 }

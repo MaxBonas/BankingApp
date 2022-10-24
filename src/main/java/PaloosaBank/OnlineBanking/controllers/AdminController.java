@@ -168,13 +168,13 @@ public class AdminController implements AdminControllerInterface {
 
     @Override
     @DeleteMapping("/admin/account/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.ACCEPTED)
     public String deleteAccountById(@PathVariable Long id) {
         return accountServiceInterface.deleteAccount(id);
     }
 
     @Override
-    @PatchMapping("/admin/reduce_balance_account/{id}")
+    @PatchMapping("/admin/reduce_balance_account/{accountId}")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public Account patchAdminAnyAccountBalance(@PathVariable Long accountId, @RequestParam BigDecimal amount) {
         Money amount1 = new Money(amount);

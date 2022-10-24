@@ -13,11 +13,7 @@ import java.util.Optional;
 public interface AccountHolderRepository  extends JpaRepository<AccountHolder, Long> {
 
     Optional<AccountHolder> findByName(String name);
-    Optional<User> findByEmail(String email);
     List<AccountHolder> findByDateOfBirth(LocalDate dateOfBirth);
-//    List<AccountHolder> findByPrimaryAddress(String primaryAddress);
-//    List<AccountHolder> findByMailingAddress(String mailingAddress);
-//    List<AccountHolder> findByPrimaryAccountList(String primaryAccountList);
 
 
 }

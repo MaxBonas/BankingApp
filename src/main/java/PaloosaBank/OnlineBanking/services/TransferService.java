@@ -78,6 +78,7 @@ public class TransferService implements TransferServiceInterface {
 
     public void checkFraudTooMuch24h(Transfer transfer) {
         Money maxAmount24h = transferRepository.max24HourAmount(transfer.getPrimaryOwner().getId());
+        if (maxAmount24h == null) {return;}
         if (transfer.getAmount().compareTo(maxAmount24h.getAmount().multiply(BigDecimal.valueOf(1.5))) > 0) {
             transfer.getSenderAccount().setStatus(Status.FROZEN);
             accountRepository.save(transfer.getSenderAccount());

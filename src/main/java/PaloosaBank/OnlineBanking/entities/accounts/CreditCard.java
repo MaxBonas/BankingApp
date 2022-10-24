@@ -92,11 +92,12 @@ public class CreditCard extends Account{
         Period period = Period.between(lastInterest, LocalDate.now());
         int yearsPast = period.getYears();
         int monthsPast = period.getMonths();
-        Double monthlyInterest = interestRate / 12D;
+        double monthlyInterest = interestRate / 12;
         if (monthsPast >= 1) {
             balance.decreaseAmount(((balance.getAmount().multiply(new BigDecimal(monthlyInterest)).multiply(new BigDecimal(monthsPast)))));
             setLastInterest(LocalDate.now());
         }
+
         super.setBalance(balance);
     }
 }

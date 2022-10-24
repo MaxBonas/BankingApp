@@ -14,9 +14,4 @@ public interface CreditCardRepository  extends JpaRepository<CreditCard, Long> {
 
     Optional<CreditCard> findBySecretKey(String secretKey);
     List<CreditCard> findByBalance(Money balance); // Just for testing
-//    List<CreditCard> findByBalance(Money balance); // Just for Tests
-//    List<CreditCard> findByPrimaryOwner(String primaryOwner);
-//    List<CreditCard> findBySecondaryOwner(String secondaryOwner);
-//    List<CreditCard> findByStatus(String status);
-//    List<CreditCard> findByCreationDate(String creationDate);
 }

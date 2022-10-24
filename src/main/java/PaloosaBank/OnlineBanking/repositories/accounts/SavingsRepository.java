@@ -14,9 +14,4 @@ public interface SavingsRepository  extends JpaRepository<Savings, Long> {
 
     Optional<Savings> findBySecretKey(String secretKey);
     List<Savings> findByBalance(Money balance); // Just for testing
-//    List<Savings> findByBalance(Money balance); // Just for Tests
-//    List<Savings> findByPrimaryOwner(String primaryOwner);
-//    List<Savings> findBySecondaryOwner(String secondaryOwner);
-//    List<Savings> findByStatus(String status);
-//    List<Savings> findByCreationDate(String creationDate);
 }
