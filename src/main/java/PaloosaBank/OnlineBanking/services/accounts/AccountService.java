@@ -330,11 +330,17 @@ public class AccountService implements AccountServiceInterface {
 
     @Override
     public TransferGetDTO transferAccountHolderAnyAccount(TransferPostDTO transferPostDTO) {
+        if (transferPostDTO.getAmount().compareTo(BigDecimal.valueOf(0.01D)) < 0) {
+            throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE,
+                    "The amount to transfer can't be inferior to 0.01");
+        }
         Money amount2 = new Money(transferPostDTO.getAmount());
+
         Account accountOut = accountRepository.findById(transferPostDTO.getAccountOutId()).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "The Account Id of the Sender doesn't exist."));
         Account accountIn = accountRepository.findById(transferPostDTO.getAccountInId()).orElseThrow(() ->
                 new ResponseStatusException(HttpStatus.NOT_FOUND, "The Account Id of the Receiver doesn't exist."));
+
         if (accountRepository.findBySecretKey(transferPostDTO.getSecretKey()).isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "The password doesn't match with the system.");
         }
@@ -358,7 +364,8 @@ public class AccountService implements AccountServiceInterface {
                     "The Receiver Account is not active yet. Contact with the receiver or try another Account.");
         }
 
-        transferService.addTransfer(accountOut, accountIn.getPrimaryOwner().getName(), accountOut.getPrimaryOwner(), transferPostDTO.getAmount());
+        transferService.addTransfer
+                (accountOut, accountIn.getPrimaryOwner().getName(), accountOut.getPrimaryOwner(), transferPostDTO.getAmount());
 
         accountOut.setBalance(new Money(accountOut.getBalance().getAmount().subtract(amount2.getAmount())));
         accountIn.setBalance(new Money(accountIn.getBalance().getAmount().add(amount2.getAmount())));

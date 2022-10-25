@@ -17,7 +17,13 @@
 - Haskeys and SecretKeys are created automatically.
 - I tested more and beyond! ^^
 - **Swagger friendly** ;)![img_1.png](img_1.png)
--
+
+## NOTICE:
+**The ThirdPartys usually gonna charge payments to an Account. Most of the times at least.
+So if the amount that they put in the path is positive, that decreases the balance of the Account.
+If they need to make a return, a refound or something like that, they have to put the amount in negative.**
+
+
 ![](src/bankingAdminMethods.png)
 
 ![img_3.png](img_3.png)
