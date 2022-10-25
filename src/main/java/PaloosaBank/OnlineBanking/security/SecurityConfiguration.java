@@ -37,9 +37,9 @@ public class SecurityConfiguration {
                 .mvcMatchers(HttpMethod.PATCH, "/admin/**").hasRole("ADMIN")
                 .mvcMatchers(HttpMethod.PUT, "/admin/**").hasRole("ADMIN")
                 .mvcMatchers(HttpMethod.DELETE, "/admin/**").hasRole("ADMIN")
-                .mvcMatchers(HttpMethod.GET, "/account_holder/**").hasRole("HOLDER")
-                .mvcMatchers(HttpMethod.PATCH, "/account_holder/**").hasRole("HOLDER")
-                .mvcMatchers(HttpMethod.PATCH, "/third_party/**").hasRole("THIRD")
+                .mvcMatchers(HttpMethod.GET, "/account_holder/**").hasAnyRole("HOLDER", "ADMIN")
+                .mvcMatchers(HttpMethod.PATCH, "/account_holder/**").hasAnyRole("HOLDER", "ADMIN")
+                .mvcMatchers(HttpMethod.PATCH, "/third_party/**").hasAnyRole("THIRD", "ADMIN")
                 .anyRequest().permitAll();
 
         httpSecurity.csrf().disable();
