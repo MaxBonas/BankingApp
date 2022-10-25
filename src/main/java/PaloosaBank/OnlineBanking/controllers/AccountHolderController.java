@@ -36,8 +36,6 @@ public class AccountHolderController implements AccountHolderControllerInterface
     @PostMapping("/account_holder/account")
     @ResponseStatus(HttpStatus.CREATED)
     public AccountPostDTO addAccountByHolder(@RequestParam TypeAccount typeAccount, @RequestBody AccountPostDTO account) {
-        System.out.println("Your Account has been solicitated correctly. Please, wait until we process your data, " +
-                "and we will activate it and contact with you.");
         return accountServiceInterface.addAccountByHolder(typeAccount, account);
     }
 }
